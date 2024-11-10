@@ -4,8 +4,10 @@ import './index.css'
 import App from './App.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Dashboard from '../src/app/dashboard/dashboard'
-import Home from './components/home'
-import Referrer from './components/referrer'
+import Home from './components/pages/home'
+import Referrer from './components/pages/referrer'
+import Login from './components/pages/login'
+import Signup from './components/pages/signup'
 
 const router = createBrowserRouter([
   {
@@ -13,7 +15,7 @@ const router = createBrowserRouter([
     element: <App/>
   },
   {
-    path: '/dashboard',
+    path: 'dashboard',
     element: <Dashboard/>,
     children: [
       {
@@ -25,6 +27,14 @@ const router = createBrowserRouter([
         element: <Referrer/>
       }
     ]
+  },
+  {
+    path: 'login',
+    element: <Login/>
+  },
+  {
+    path: 'signup',
+    element: <Signup/>
   }
 ])
 
