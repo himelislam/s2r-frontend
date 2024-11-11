@@ -1,5 +1,5 @@
 // import Link from "next/link"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -11,8 +11,37 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useState } from "react"
+import { useMutation } from "@tanstack/react-query"
+import userApi from "../api/userApi"
 
 export function LoginForm() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const navigate = useNavigate()
+
+  const loginMutation = useMutation({
+    mutationFn: userApi.login,
+    onSuccess: (data) => {
+      console.log('Login successful:', data);
+      navigate('/dashboard')
+    },
+    onError: (error) => {
+      console.error('Login failed:', error?.message);
+    },
+  })
+
+  const handleLoginFrom = (e) => { 
+    e.preventDefault()
+    loginMutation.mutate({
+      email,
+      password
+    })
+    console.log(email, "hemail");
+    console.log(password, "hpass");
+  }
+
   return (
     <Card className="mx-auto max-w-sm">
       <CardHeader>
@@ -22,6 +51,7 @@ export function LoginForm() {
         </CardDescription>
       </CardHeader>
       <CardContent>
+        <form onSubmit={handleLoginFrom}>
         <div className="grid gap-4">
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
@@ -30,6 +60,7 @@ export function LoginForm() {
               type="email"
               placeholder="m@example.com"
               required
+              onChange={(e)=>setEmail(e.target.value)}
             />
           </div>
           <div className="grid gap-2">
@@ -39,7 +70,12 @@ export function LoginForm() {
                 Forgot your password?
               </Link>
             </div>
-            <Input id="password" type="password" required />
+            <Input 
+            id="password" 
+            type="password" 
+            required
+            onChange={(e)=>setPassword(e.target.value)}
+            />
           </div>
           <Button type="submit" className="w-full">
             Login
@@ -54,6 +90,7 @@ export function LoginForm() {
             Sign up
           </Link>
         </div>
+        </form>
       </CardContent>
     </Card>
   )

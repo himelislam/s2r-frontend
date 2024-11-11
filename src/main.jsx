@@ -9,37 +9,43 @@ import Referrer from './components/pages/referrer'
 import Login from './components/pages/login'
 import Signup from './components/pages/signup'
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+const queryClient = new QueryClient()
+
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App/>
+    element: <App />
   },
   {
     path: 'dashboard',
-    element: <Dashboard/>,
+    element: <Dashboard />,
     children: [
       {
         index: true,
-        element: <Home/>
+        element: <Home />
       },
       {
         path: 'referrer',
-        element: <Referrer/>
+        element: <Referrer />
       }
     ]
   },
   {
     path: 'login',
-    element: <Login/>
+    element: <Login />
   },
   {
     path: 'signup',
-    element: <Signup/>
+    element: <Signup />
   }
 ])
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <RouterProvider router={router}/>
-  </StrictMode>,
+  <QueryClientProvider client={queryClient}>
+    <StrictMode>
+      <RouterProvider router={router} />
+    </StrictMode>
+  </QueryClientProvider>,
 )

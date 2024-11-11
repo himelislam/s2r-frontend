@@ -1,12 +1,10 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { SignupForm } from "@/components/signup-form"
 
 export default function Signup() {
   return (
-    <div>
-        <Link to='/login'>
-            <h1>Signup</h1>
-        </Link>
+    <div className="flex h-screen w-full items-center justify-center px-4">
+        <SignupForm/>
     </div>
     
   )

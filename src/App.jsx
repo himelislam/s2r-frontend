@@ -1,10 +1,11 @@
 import Dashboard from './app/dashboard/dashboard'
+import Login from './components/pages/login'
 
 function App() {
 
   return (
     <>
-      {/* <Dashboard></Dashboard> */}
+      <Login/>
     </>
   )
 }
