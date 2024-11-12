@@ -10,6 +10,10 @@ import Login from './components/pages/login'
 import Signup from './components/pages/signup'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import RoleSelection from './components/pages/roleSelection'
+import * as path from 'path'
+import BusinessSetup from './components/pages/businessSetup'
+import ReferrerSetup from './components/pages/referrerSetup'
 
 const queryClient = new QueryClient()
 
@@ -39,6 +43,18 @@ const router = createBrowserRouter([
   {
     path: 'signup',
     element: <Signup />
+  },
+  {
+    path: 'select-role',
+    element: <RoleSelection/>,
+  },
+  {
+    path: 'business-setup',
+    element: <BusinessSetup/>
+  },
+  {
+    path: 'referrer-setup',
+    element: <ReferrerSetup/>
   }
 ])
 

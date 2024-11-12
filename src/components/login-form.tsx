@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from "react"
 import { useMutation } from "@tanstack/react-query"
-import userApi from "../api/userApi"
+import userApi from "../api/authApi"
 
 export function LoginForm() {
   const [email, setEmail] = useState('');
@@ -32,7 +32,7 @@ export function LoginForm() {
     },
   })
 
-  const handleLoginFrom = (e) => { 
+  const handleLoginFrom = (e) => {
     e.preventDefault()
     loginMutation.mutate({
       email,
@@ -52,30 +52,30 @@ export function LoginForm() {
       </CardHeader>
       <CardContent>
         <form onSubmit={handleLoginFrom}>
-        <div className="grid gap-4">
-          <div className="grid gap-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="m@example.com"
-              required
-              onChange={(e)=>setEmail(e.target.value)}
-            />
-          </div>
-          <div className="grid gap-2">
-            <div className="flex items-center">
-              <Label htmlFor="password">Password</Label>
-              <Link to="/" className="ml-auto inline-block text-sm underline">
-                Forgot your password?
-              </Link>
+          <div className="grid gap-4">
+            <div className="grid gap-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="m@example.com"
+                required
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </div>
-            <Input 
-            id="password" 
-            type="password" 
-            required
-            onChange={(e)=>setPassword(e.target.value)}
-            />
+            <div className="grid gap-2">
+              <div className="flex items-center">
+                <Label htmlFor="password">Password</Label>
+                <Link to="/" className="ml-auto inline-block text-sm underline">
+                  Forgot your password?
+                </Link>
+              </div>
+              <Input
+                id="password"
+                type="password"
+                required
+                onChange={(e) => setPassword(e.target.value)}
+              />
           </div>
           <Button type="submit" className="w-full">
             Login
@@ -90,8 +90,8 @@ export function LoginForm() {
             Sign up
           </Link>
         </div>
-        </form>
-      </CardContent>
-    </Card>
+      </form>
+    </CardContent>
+    </Card >
   )
 }

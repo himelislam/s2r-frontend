@@ -35,10 +35,10 @@ const login = async (userData) => {
   return response.data;
 };
 
-const userApi = {
+const authApi = {
   signup,
   logout,
   login,
 };
 
-export default userApi;
+export default authApi;
