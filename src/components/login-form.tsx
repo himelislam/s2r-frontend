@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from "react"
 import { useMutation } from "@tanstack/react-query"
-import userApi from "../api/authApi"
+import authApi from "../api/authApi"
 
 export function LoginForm() {
   const [email, setEmail] = useState('');
@@ -22,7 +22,7 @@ export function LoginForm() {
   const navigate = useNavigate()
 
   const loginMutation = useMutation({
-    mutationFn: userApi.login,
+    mutationFn: authApi.login,
     onSuccess: (data) => {
       console.log('Login successful:', data);
       navigate('/dashboard')

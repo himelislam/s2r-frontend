@@ -4,16 +4,20 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
+import { useMutation } from "@tanstack/react-query";
+import userApi from "@/api/userApi";
+import { useNavigate } from "react-router-dom";
 
 export function BusinessSetup() {
   const [form, setForm] = useState({
     businessName: "",
-    ownerName: "",
-    email: "",
+    businessEmail: "",
     phone: "",
     address: ""
   });
+  const navigate = useNavigate()
 
+  const user = JSON.parse(localStorage.getItem('user'));
   const handleChange = (e) => {
     setForm({
       ...form,
@@ -21,10 +25,28 @@ export function BusinessSetup() {
     });
   };
 
+  const createBusinessMutation = useMutation({
+    mutationFn: userApi.createBusiness,
+    onSuccess: (data) => {
+      console.log('signed up as a Business', data);
+      navigate('/dashboard')
+    },
+    onError: (err)=>{
+      console.error('Cant sign up as a Busiess', err?.message);
+    }
+  })
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle submission logic, such as API call
-    console.log("Business setup data:", form);
+    console.log("Business setup data:", form, user.name, user.email, user.token);
+    createBusinessMutation.mutate({
+      name: user?.name,
+      email: user.email,
+      userType: 'owner',
+      ...form
+    })
   };
 
   return (
@@ -46,24 +68,13 @@ export function BusinessSetup() {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="ownerName">Owner Name</Label>
-            <Input
-              id="ownerName"
-              name="ownerName"
-              placeholder="Enter the owner's name"
-              value={form.ownerName}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
-              id="email"
-              name="email"
+              id="businessEmail"
+              name="businessEmail"
               type="email"
               placeholder="business@example.com"
-              value={form.email}
+              value={form.businessEmail}
               onChange={handleChange}
               required
             />
