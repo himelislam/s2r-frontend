@@ -3,6 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import userApi from "@/api/userApi";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export function ReferrerSetup() {
   const [form, setForm] = useState({
@@ -11,6 +15,8 @@ export function ReferrerSetup() {
     phone: "",
     signature: null,
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,11 +33,35 @@ export function ReferrerSetup() {
     });
   };
 
+  const createReferrerMutation = useMutation({
+    mutationFn: userApi.createReferrer,
+    onSuccess: (data) =>{
+      console.log('referrer created successfully', data);
+      navigate('/dashboard')
+    },
+    onError: (err)=>{
+      console.log('Unable to create referrer', err);
+    }
+  })
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle submission logic, such as API call
+
+    createReferrerMutation.mutate({
+      ...form
+    })
     console.log("Referrer setup data:", form);
   };
+
+
+  // const {data, isLoading, isError, error} = useQuery({
+  //   queryKey: ['businesses'], 
+  //   queryFn: async ()=>{
+  //     const response = await axios.post('http://localhost:4000/business')
+  //     return response.data;
+  //   }
+  // })
+
 
   return (
     <Card className="mx-auto max-w-md p-6">

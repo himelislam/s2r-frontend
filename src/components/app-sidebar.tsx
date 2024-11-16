@@ -25,17 +25,18 @@ import {
 } from "@/components/ui/sidebar"
 
 const user = JSON.parse(localStorage.getItem("user"));
+const business = JSON.parse(localStorage.getItem("business"))
 
 // This is sample data.
 const data = {
   user: {
-    name: user.name,
-    email: user.email,
+    name: user?.name,
+    email: user?.email,
     avatar: "/avatars/shadcn.jpg",
   },
   teams: [
     {
-      name: "Acme Inc",
+      name: business?.businessName,
       logo: GalleryVerticalEnd,
       plan: "Enterprise",
     },

@@ -29,6 +29,10 @@ export function BusinessSetup() {
     mutationFn: userApi.createBusiness,
     onSuccess: (data) => {
       console.log('signed up as a Business', data);
+      const user = JSON.parse(localStorage.getItem('user'))
+      user.userType = 'owner'
+      user.userID = data._id
+      localStorage.setItem('user', JSON.stringify(user))
       navigate('/dashboard')
     },
     onError: (err)=>{

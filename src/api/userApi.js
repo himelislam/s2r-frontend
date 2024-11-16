@@ -18,8 +18,23 @@ const createBusiness = async (userData) => {
     return response.data;
 }
 
+const createReferrer = async (userData) => {
+    const response = await axios.post(API_URL + "/createReferrer", userData, {
+        headers: {
+            Authorization: `Bearer ${user.token}`
+        }
+    })
+
+    if(response.data){
+        sessionStorage.setItem("referrer", JSON.stringify(response?.data));
+        localStorage.setItem("referrer", JSON.stringify(response?.data));
+    }
+    return response.data;
+}
+
 const userApi = {
-    createBusiness
-  };
-  
-  export default userApi;
+    createBusiness,
+    createReferrer
+};
+
+export default userApi;

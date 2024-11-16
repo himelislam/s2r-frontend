@@ -22,6 +22,10 @@ const logout = async () => {
   if (res.status === 200) {
     sessionStorage.removeItem("user");
     localStorage.removeItem("user");
+    sessionStorage.removeItem("business");
+    localStorage.removeItem("business");
+    sessionStorage.removeItem("referrer");
+    localStorage.removeItem("referrer");
   }
 };
 

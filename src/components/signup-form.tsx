@@ -22,7 +22,7 @@ export function SignupForm() {
 
     const navigate = useNavigate()
 
-    const loginMutation = useMutation({
+    const signupMutation = useMutation({
         mutationFn: authApi.signup,
         onSuccess: (data) => {
             console.log('Signup successful:', data);
@@ -33,9 +33,9 @@ export function SignupForm() {
         },
     })
 
-    const handleLoginFrom = (e) => {
+    const handleSignupForm = (e) => {
         e.preventDefault()
-        loginMutation.mutate({
+        signupMutation.mutate({
             name,
             email,
             password
@@ -51,7 +51,7 @@ export function SignupForm() {
                 </CardDescription>
             </CardHeader>
             <CardContent>
-                <form onSubmit={handleLoginFrom}>
+                <form onSubmit={handleSignupForm}>
                     <div className="grid gap-4">
                         <div className="grid gap-2">
                             <Label htmlFor="email">Name</Label>
@@ -91,7 +91,7 @@ export function SignupForm() {
                             Sign up
                         </Button>
                         <Button variant="outline" className="w-full">
-                            Login with Google
+                            Signup with Google
                         </Button>
                     </div>
                     <div className="mt-4 text-center text-sm">
