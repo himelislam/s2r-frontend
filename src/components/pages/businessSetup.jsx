@@ -31,7 +31,7 @@ export function BusinessSetup() {
       console.log('signed up as a Business', data);
       const user = JSON.parse(localStorage.getItem('user'))
       user.userType = 'owner'
-      user.userID = data._id
+      user.userId = data._id
       localStorage.setItem('user', JSON.stringify(user))
       navigate('/dashboard')
     },

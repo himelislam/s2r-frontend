@@ -17,6 +17,7 @@ export function ReferrerSetup() {
   });
 
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem('user'))
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -37,6 +38,10 @@ export function ReferrerSetup() {
     mutationFn: userApi.createReferrer,
     onSuccess: (data) =>{
       console.log('referrer created successfully', data);
+      const user = JSON.parse(localStorage.getItem('user'))
+      user.userType = 'referrer'
+      user.userId = data._id
+      localStorage.setItem('user', JSON.stringify(user))
       navigate('/dashboard')
     },
     onError: (err)=>{
@@ -48,7 +53,11 @@ export function ReferrerSetup() {
     e.preventDefault();
 
     createReferrerMutation.mutate({
-      ...form
+      name: user?.name,
+      email: user?.email,
+      phone: form.phone,
+      signature: form.signature,
+      userType: 'referrer',
     })
     console.log("Referrer setup data:", form);
   };
