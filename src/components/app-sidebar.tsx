@@ -24,8 +24,12 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 
-const user = JSON.parse(localStorage.getItem("user"));
-const business = JSON.parse(localStorage.getItem("business"))
+// const user = JSON.parse(localStorage.getItem("user"));
+// const business = JSON.parse(localStorage.getItem("business"))
+
+const user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")!) : null;
+const business = localStorage.getItem("business") ? JSON.parse(localStorage.getItem("business")!) : null;
+
 
 // This is sample data.
 const data = {
@@ -36,7 +40,7 @@ const data = {
   },
   teams: [
     {
-      name: "Acme",
+      name: business?.businessName ? business?.businessName : "Acme2",
       logo: GalleryVerticalEnd,
       plan: "Enterprise",
     },

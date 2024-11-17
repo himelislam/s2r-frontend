@@ -14,3 +14,27 @@
       "**/*.config.js"
     ]
 }
+
+
+// {
+//     "compilerOptions": {
+//       "baseUrl": ".",
+//       "paths": {
+//         "@/*": ["./src/*"]
+//       },
+//       "jsx": "react-jsx", // For React JSX support
+//       "allowJs": true, // Allows JavaScript files
+//       "outDir": "./dist", // Output directory for compiled files
+//       "rootDir": "./src", // Root directory for source files
+//       "target": "ES6", // Output JavaScript version
+//       "module": "commonjs", // Module system
+//       "strict": true, // Enable strict type checking
+//       "esModuleInterop": true, // Compatibility with ES modules
+//       "skipLibCheck": true, // Skips checking library files
+//       "noEmit": false, // Ensures files are emitted
+//       "resolveJsonModule": true // Enables importing JSON files
+//     },
+//     "include": ["src/**/*"], // Include all source files
+//     "exclude": ["node_modules", "dist", "**/*.config.js"] // Exclude unnecessary files
+//   }
+  

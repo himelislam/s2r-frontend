@@ -17,51 +17,12 @@ import ReferrerSetup from './components/pages/referrerSetup'
 
 const queryClient = new QueryClient()
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <App />
-  },
-  {
-    path: 'dashboard',
-    element: <Dashboard />,
-    children: [
-      {
-        index: true,
-        element: <Home />
-      },
-      {
-        path: 'referrer',
-        element: <Referrer />
-      }
-    ]
-  },
-  {
-    path: 'login',
-    element: <Login />
-  },
-  {
-    path: 'signup',
-    element: <Signup />
-  },
-  {
-    path: 'select-role',
-    element: <RoleSelection/>,
-  },
-  {
-    path: 'business-setup',
-    element: <BusinessSetup/>
-  },
-  {
-    path: 'referrer-setup',
-    element: <ReferrerSetup/>
-  }
-])
+import { appRoutes } from './Routes'
 
 createRoot(document.getElementById('root')).render(
   <QueryClientProvider client={queryClient}>
     <StrictMode>
-      <RouterProvider router={router} />
+      <RouterProvider router={appRoutes} />
     </StrictMode>
   </QueryClientProvider>,
 )
