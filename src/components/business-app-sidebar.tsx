@@ -1,4 +1,3 @@
-import * as React from "react"
 import {
   AudioWaveform,
   BookOpen,
@@ -24,14 +23,11 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 
-// const user = JSON.parse(localStorage.getItem("user"));
-// const business = JSON.parse(localStorage.getItem("business"))
-
 const user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")!) : null;
 const business = localStorage.getItem("business") ? JSON.parse(localStorage.getItem("business")!) : null;
 
 
-// This is sample data.
+// This is sample Business data.
 const data = {
   user: {
     name: user?.name,
@@ -40,7 +36,7 @@ const data = {
   },
   teams: [
     {
-      name: business?.businessName ? business?.businessName : "Acme2",
+      name: business?.businessName ? business?.businessName : "Business Dashboard",
       logo: GalleryVerticalEnd,
       plan: "Enterprise",
     },
@@ -207,7 +203,7 @@ const data = {
   ],
 }
 
-export function AppSidebar({ ...props }) {
+export function BusinessAppSidebar({ ...props }) {
   return (
     <Sidebar collapsible="icon" variant="floating" {...props}>
       <SidebarHeader>

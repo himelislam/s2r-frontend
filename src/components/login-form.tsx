@@ -24,8 +24,13 @@ export function LoginForm() {
   const loginMutation = useMutation({
     mutationFn: authApi.login,
     onSuccess: (data) => {
-      console.log('Login successful:', data);
-      navigate('/dashboard')
+      console.log('Login successful:', data.userType);
+      if(data.userType == 'owner'){
+        navigate('/b/dashboard')
+      }else if(data.userType == 'referrer'){
+        navigate('/r/dashboard')
+      }
+      // navigate('/dashboard')
     },
     onError: (error) => {
       console.error('Login failed:', error?.message);

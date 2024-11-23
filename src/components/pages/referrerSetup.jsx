@@ -42,7 +42,7 @@ export function ReferrerSetup() {
       user.userType = 'referrer'
       user.userId = data._id
       localStorage.setItem('user', JSON.stringify(user))
-      navigate('/dashboard')
+      navigate('/r/dashboard')
     },
     onError: (err)=>{
       console.log('Unable to create referrer', err);

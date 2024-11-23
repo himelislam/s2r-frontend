@@ -33,7 +33,7 @@ export function BusinessSetup() {
       user.userType = 'owner'
       user.userId = data._id
       localStorage.setItem('user', JSON.stringify(user))
-      navigate('/dashboard')
+      navigate('/b/dashboard')
     },
     onError: (err) => {
       console.error('Cant sign up as a Busiess', err?.message);
