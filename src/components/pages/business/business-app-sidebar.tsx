@@ -1,4 +1,3 @@
-import * as React from "react"
 import {
   AudioWaveform,
   BookOpen,
@@ -24,12 +23,11 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 
-
 const user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")!) : null;
 const business = localStorage.getItem("business") ? JSON.parse(localStorage.getItem("business")!) : null;
 
 
-// This is sample referrer data.
+// This is sample Business data.
 const data = {
   user: {
     name: user?.name,
@@ -38,7 +36,7 @@ const data = {
   },
   teams: [
     {
-      name: business?.businessName ? business?.businessName : "Referrer Dashboard",
+      name: business?.businessName ? business?.businessName : "Business Dashboard",
       logo: GalleryVerticalEnd,
       plan: "Enterprise",
     },
@@ -56,7 +54,7 @@ const data = {
   navMain: [
     {
       title: "Overview",
-      url: "/dashboard",
+      url: "/b/dashboard",
       icon: SquareTerminal,
       isActive: true,
       items: [
@@ -76,7 +74,7 @@ const data = {
     },
     {
       title: "Referrers",
-      url: "/dashboard/referrer",
+      url: "/b/dashboard/referrer",
       icon: Bot,
       items: [
         {
@@ -94,7 +92,7 @@ const data = {
       ],
     },
     {
-      title: "Details",
+      title: "Referrers Details",
       url: "#",
       icon: BookOpen,
       items: [
@@ -205,7 +203,7 @@ const data = {
   ],
 }
 
-export function ReferrerAppSidebar({ ...props }) {
+export function BusinessAppSidebar({ ...props }) {
   return (
     <Sidebar collapsible="icon" variant="floating" {...props}>
       <SidebarHeader>

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
+import { Label } from "../../ui/label";
+import { Input } from "../../ui/input";
+import { Button } from "../../ui/button";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import userApi from "@/api/userApi";
 import { useNavigate } from "react-router-dom";
@@ -122,7 +122,6 @@ export function ReferrerSetup() {
               type="file"
               accept="image/*"
               onChange={handleFileChange}
-              required
             />
           </div>
           <Button type="submit" className="w-full">

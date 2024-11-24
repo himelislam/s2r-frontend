@@ -1,4 +1,4 @@
-import { BusinessAppSidebar } from "@/components/business-app-sidebar"
+import { BusinessAppSidebar } from "@/components/pages/business/business-app-sidebar"
 import { Separator } from "@/components/ui/separator"
 import {
   SidebarInset,

@@ -1,4 +1,4 @@
-import { ReferrerAppSidebar } from "@/components/referrer-app-sidebar"
+import { ReferrerAppSidebar } from "@/components/pages/referrer/referrer-app-sidebar"
 import { Separator } from "@/components/ui/separator"
 import {
   SidebarInset,

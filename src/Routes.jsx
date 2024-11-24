@@ -2,16 +2,16 @@ import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import Login from "./components/pages/login";
 import Signup from "./components/pages/signup";
-import Dashboard from './app/dashboard/businessDashboard'
-import Home from "./components/pages/home";
+import BusinessOverview from "./components/pages/business/businessOverview";
 import Referrer from "./components/pages/referrer";
 import RoleSelection from "./components/pages/roleSelection";
-import BusinessSetup from "./components/pages/businessSetup";
-import ReferrerSetup from "./components/pages/referrerSetup";
+import BusinessSetup from "./components/pages/business/businessSetup";
+import ReferrerSetup from "./components/pages/referrer/referrerSetup";
 import AuthLayout from "./modules/authLayout";
 import PrivateRoute from "./modules/privateRoute";
 import BusinessDashboard from "./app/dashboard/businessDashboard";
 import ReferrerDashboard from "./app/dashboard/referrerDashboard";
+import ReferrerOverview from "./components/pages/referrer/referrerOverview";
 
 
 export const appRoutes = createBrowserRouter([
@@ -40,6 +40,16 @@ export const appRoutes = createBrowserRouter([
                     {
                         path: '',
                         element: <BusinessDashboard />, // Dashboard for owners
+                        children: [
+                            {
+                                index: true,
+                                element: <BusinessOverview/>
+                            },
+                            {
+                                path: 'referrer',
+                                element: <Referrer/>
+                            }
+                        ]
                     },
                 ],
             },
@@ -50,6 +60,16 @@ export const appRoutes = createBrowserRouter([
                     {
                         path: '',
                         element: <ReferrerDashboard />, // Dashboard for referrers
+                        children : [
+                            {
+                                index: true,
+                                element: <ReferrerOverview/>
+                            },
+                            {
+                                path: 'referrer',
+                                element: <Referrer/>
+                            }
+                        ]
                     },
                 ],
             },
@@ -68,3 +88,46 @@ export const appRoutes = createBrowserRouter([
         element: <ReferrerSetup />
     }
 ]);
+
+
+
+// export const appRoutes = createBrowserRouter([
+//     {
+//       path: '/',
+//       element: <App />
+//     },
+//     {
+//       path: 'login',
+//       element: <Login />
+//     },
+//     {
+//       path: 'signup',
+//       element: <Signup />
+//     },
+//     {
+//       path: 'dashboard',
+//       element: <Dashboard />,
+//       children: [
+//         {
+//           index: true,
+//           element: <Home />
+//         },
+//         {
+//           path: 'referrer',
+//           element: <Referrer />
+//         }
+//       ]
+//     },
+//     {
+//       path: 'select-role',
+//       element: <RoleSelection/>,
+//     },
+//     {
+//       path: 'business-setup',
+//       element: <BusinessSetup/>
+//     },
+//     {
+//       path: 'referrer-setup',
+//       element: <ReferrerSetup/>
+//     }
+//   ])

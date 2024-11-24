@@ -12,7 +12,6 @@ import {
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
-import { NavProjects } from "@/components/nav-projects"
 import { NavUser } from "@/components/nav-user"
 import { TeamSwitcher } from "@/components/team-switcher"
 import {
@@ -23,11 +22,12 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 
+
 const user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")!) : null;
-const business = localStorage.getItem("business") ? JSON.parse(localStorage.getItem("business")!) : null;
+const referrer = localStorage.getItem("referrer") ? JSON.parse(localStorage.getItem("referrer")!) : null;
 
 
-// This is sample Business data.
+// This is sample referrer data.
 const data = {
   user: {
     name: user?.name,
@@ -36,7 +36,7 @@ const data = {
   },
   teams: [
     {
-      name: business?.businessName ? business?.businessName : "Business Dashboard",
+      name: referrer?.name ? referrer?.name : "Referrer Dashboard",
       logo: GalleryVerticalEnd,
       plan: "Enterprise",
     },
@@ -73,7 +73,7 @@ const data = {
       ],
     },
     {
-      title: "Referrers",
+      title: "Referee",
       url: "/dashboard/referrer",
       icon: Bot,
       items: [
@@ -92,7 +92,7 @@ const data = {
       ],
     },
     {
-      title: "Details",
+      title: "Referee Details",
       url: "#",
       icon: BookOpen,
       items: [
@@ -115,7 +115,7 @@ const data = {
       ],
     },
     {
-      title: "Campaign Portal",
+      title: "Referee Emails",
       url: "#",
       icon: Settings2,
       items: [
@@ -138,30 +138,7 @@ const data = {
       ],
     },
     {
-      title: "Invite Referrer",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Agency Settings",
+      title: "Profile Settings",
       url: "#",
       icon: Settings2,
       items: [
@@ -203,7 +180,7 @@ const data = {
   ],
 }
 
-export function BusinessAppSidebar({ ...props }) {
+export function ReferrerAppSidebar({ ...props }) {
   return (
     <Sidebar collapsible="icon" variant="floating" {...props}>
       <SidebarHeader>
