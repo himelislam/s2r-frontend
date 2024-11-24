@@ -17,8 +17,18 @@ const createBusiness = async (userData) => {
     return response.data;
 }
 
+const getAllBusiness = async () => {
+    const response =  await axios.get(API_URL + "/getAllBusiness", {
+        headers: {
+            Authorization: `Bearer ${user?.token}`
+        }
+    })
+
+    return response.data;
+}
 const businessApi = {
     createBusiness,
+    getAllBusiness
 };
 
 export default businessApi;

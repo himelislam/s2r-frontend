@@ -7,6 +7,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import referrerApi from "@/api/referrerApi";
+import businessApi from "@/api/businessApi";
 
 export function ReferrerSetup() {
   const [form, setForm] = useState({
@@ -14,6 +15,7 @@ export function ReferrerSetup() {
     email: "",
     phone: "",
     signature: null,
+    selectedBusiness: ""
   });
 
   const navigate = useNavigate();
@@ -36,7 +38,7 @@ export function ReferrerSetup() {
 
   const createReferrerMutation = useMutation({
     mutationFn: referrerApi.createReferrer,
-    onSuccess: (data) =>{
+    onSuccess: (data) => {
       console.log('referrer created successfully', data);
       const user = JSON.parse(localStorage.getItem('user'))
       user.userType = 'referrer'
@@ -44,7 +46,7 @@ export function ReferrerSetup() {
       localStorage.setItem('user', JSON.stringify(user))
       navigate('/r/dashboard')
     },
-    onError: (err)=>{
+    onError: (err) => {
       console.log('Unable to create referrer', err);
     }
   })
@@ -58,18 +60,16 @@ export function ReferrerSetup() {
       phone: form.phone,
       signature: form.signature,
       userType: 'referrer',
+      businessId: form.selectedBusiness
     })
     console.log("Referrer setup data:", form);
   };
 
 
-  // const {data, isLoading, isError, error} = useQuery({
-  //   queryKey: ['businesses'], 
-  //   queryFn: async ()=>{
-  //     const response = await axios.post('http://localhost:4000/business')
-  //     return response.data;
-  //   }
-  // })
+  const { data: businesses = [], isLoading, isError, error } = useQuery({
+    queryKey: ['businesses'],
+    queryFn: businessApi.getAllBusiness
+  })
 
 
   return (
@@ -101,6 +101,45 @@ export function ReferrerSetup() {
               onChange={handleChange}
               required
             />
+          </div>
+          {/* <ul>
+            {isLoading && <p>Loading businesses...</p>}
+            {isError && <p>Error loading businesses: {error.message}</p>}
+            {businesses && businesses.length > 0 ? (
+              businesses.map((business) => (
+                <li key={business._id}>
+                  {business.name} - {business._id}
+                </li>
+              ))
+            ) : (
+              !isLoading && <p>No businesses available</p>
+            )}
+          </ul> */}
+           <div className="space-y-2">
+            <Label htmlFor="business">Select a Business</Label>
+            {isLoading ? (
+              <p>Loading businesses...</p>
+            ) : isError ? (
+              <p>Error loading businesses: {error.message}</p>
+            ) : (
+              <select
+                id="business"
+                name="selectedBusiness"
+                value={form.selectedBusiness}
+                onChange={handleChange}
+                required
+                className="w-full p-2 border rounded"
+              >
+                <option value="" disabled>
+                  Select a business
+                </option>
+                {businesses.map((business) => (
+                  <option key={business._id} value={business._id}>
+                    {business.name} - {business.location}
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
           <div className="space-y-2">
             <Label htmlFor="phone">Phone Number</Label>
