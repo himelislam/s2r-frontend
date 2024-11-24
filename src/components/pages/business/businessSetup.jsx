@@ -5,8 +5,8 @@ import { Input } from "../../ui/input";
 import { Label } from "../../ui/label";
 import { Button } from "../../ui/button";
 import { useMutation } from "@tanstack/react-query";
-import userApi from "@/api/userApi";
 import { useNavigate } from "react-router-dom";
+import businessApi from "@/api/businessApi";
 
 export function BusinessSetup() {
   const [form, setForm] = useState({
@@ -26,7 +26,7 @@ export function BusinessSetup() {
   };
 
   const createBusinessMutation = useMutation({
-    mutationFn: userApi.createBusiness,
+    mutationFn: businessApi.createBusiness,
     onSuccess: (data) => {
       console.log('signed up as a Business', data);
       const user = JSON.parse(localStorage.getItem('user'))

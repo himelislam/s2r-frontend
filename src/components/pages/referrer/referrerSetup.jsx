@@ -4,9 +4,9 @@ import { Label } from "../../ui/label";
 import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import userApi from "@/api/userApi";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import referrerApi from "@/api/referrerApi";
 
 export function ReferrerSetup() {
   const [form, setForm] = useState({
@@ -35,7 +35,7 @@ export function ReferrerSetup() {
   };
 
   const createReferrerMutation = useMutation({
-    mutationFn: userApi.createReferrer,
+    mutationFn: referrerApi.createReferrer,
     onSuccess: (data) =>{
       console.log('referrer created successfully', data);
       const user = JSON.parse(localStorage.getItem('user'))
