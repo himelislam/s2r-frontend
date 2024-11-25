@@ -3,7 +3,7 @@ import App from "./App";
 import Login from "./components/pages/login";
 import Signup from "./components/pages/signup";
 import BusinessOverview from "./components/pages/business/businessOverview";
-import Referrer from "./components/pages/referrer";
+import Referrer from "./components/pages/business/referrer";
 import RoleSelection from "./components/pages/roleSelection";
 import BusinessSetup from "./components/pages/business/businessSetup";
 import ReferrerSetup from "./components/pages/referrer/referrerSetup";
@@ -12,6 +12,7 @@ import PrivateRoute from "./modules/privateRoute";
 import BusinessDashboard from "./app/dashboard/businessDashboard";
 import ReferrerDashboard from "./app/dashboard/referrerDashboard";
 import ReferrerOverview from "./components/pages/referrer/referrerOverview";
+import Referee from "./components/pages/referrer/referee";
 
 
 export const appRoutes = createBrowserRouter([
@@ -66,8 +67,8 @@ export const appRoutes = createBrowserRouter([
                                 element: <ReferrerOverview/>
                             },
                             {
-                                path: 'referrer',
-                                element: <Referrer/>
+                                path: 'referee',
+                                element: <Referee/>
                             }
                         ]
                     },

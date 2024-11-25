@@ -17,8 +17,19 @@ const createReferrer = async (userData) => {
     return response.data;
 }
 
+const getReferrersByBusinessId = async (businessId) => {
+    const response = await axios.post(API_URL + "/getReferrersByBusinessId", { businessId }, {
+        headers : {
+            Authorization : `Bearer ${user?.token}`
+        }
+    })
+
+    return response.data;
+}
+
 const referrerApi = {
-    createReferrer
+    createReferrer,
+    getReferrersByBusinessId
 };
 
 export default referrerApi;

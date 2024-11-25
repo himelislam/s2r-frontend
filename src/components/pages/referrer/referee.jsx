@@ -67,7 +67,7 @@ import {
     },
   ]
   
-  export default function Referrer() {
+  export default function Referee() {
     return (
       <Table>
         {/* <TableCaption>A list of referrer.</TableCaption> */}

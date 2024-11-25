@@ -21,10 +21,14 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import { NavProjects } from "@/components/nav-projects"
+import { useQueries, useQuery } from "@tanstack/react-query"
+import referrerApi from "@/api/referrerApi"
 
 
 const user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")!) : null;
 const referrer = localStorage.getItem("referrer") ? JSON.parse(localStorage.getItem("referrer")!) : null;
+
 
 
 // This is sample referrer data.
@@ -54,7 +58,7 @@ const data = {
   navMain: [
     {
       title: "Overview",
-      url: "/dashboard",
+      url: "/r/dashboard",
       icon: SquareTerminal,
       isActive: true,
       items: [
@@ -74,7 +78,7 @@ const data = {
     },
     {
       title: "Referee",
-      url: "/dashboard/referrer",
+      url: "/r/dashboard/referee",
       icon: Bot,
       items: [
         {
