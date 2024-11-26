@@ -1,16 +1,3 @@
-import React from 'react'
-
-// export default function Referrer() {
-//   return (
-//     <div>
-//         <h1>
-//         Referreer
-//         </h1>
-//     </div>
-//   )
-// }
-
-
 import {
   Table,
   TableBody,
