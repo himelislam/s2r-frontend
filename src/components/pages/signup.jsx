@@ -7,6 +7,7 @@ import { Label } from '@radix-ui/react-dropdown-menu';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { Eye, EyeOff } from 'lucide-react';
+import { useUser } from '@/contexts/usercontext';
 
 export default function Signup() {
     const [name, setName] = useState('');
@@ -16,9 +17,11 @@ export default function Signup() {
     const [passwordError, setPasswordError] = useState('');
 
     const navigate = useNavigate()
+    const {dispatch} = useUser();
 
     const signupMutation = useMutation({
-        mutationFn: authApi.signup,
+        // mutationFn: authApi.signup,
+        mutationFn: ({name, email, password, dispatch}) => authApi.signup({name, email, password}, dispatch),
         onSuccess: (data) => {
             console.log('Signup successful:', data);
             navigate('/select-role')
@@ -52,7 +55,8 @@ export default function Signup() {
         signupMutation.mutate({
             name,
             email,
-            password
+            password,
+            dispatch
         })
     }
     return (
@@ -105,9 +109,9 @@ export default function Signup() {
                             <div className="grid gap-2">
                                 <div className="flex items-center">
                                     <Label htmlFor="password">Password</Label>
-                                    <Link to="/" className="ml-auto inline-block text-sm underline">
+                                    {/* <Link to="/" className="ml-auto inline-block text-sm underline">
                                         Forgot your password?
-                                    </Link>
+                                    </Link> */}
                                 </div>
                                 <div className="relative">
                                     {/* Password Input */}

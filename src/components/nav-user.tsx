@@ -32,6 +32,7 @@ import {
 import { useMutation } from "@tanstack/react-query"
 import authApi from "@/api/authApi"
 import { useNavigate } from "react-router-dom"
+import { useUser } from "@/contexts/usercontext"
 
 export function NavUser({
   user,
@@ -45,6 +46,7 @@ export function NavUser({
   const { isMobile } = useSidebar()
 
   const navigate = useNavigate();
+  const {dispatch} = useUser()
 
   const handleLogOutMutation = useMutation({
     mutationFn: authApi.logout,
@@ -58,7 +60,9 @@ export function NavUser({
   })
 
   const handleLogOut = () =>{
-    handleLogOutMutation.mutate()
+    handleLogOutMutation.mutate(
+      dispatch,
+    )
   }
 
   return (

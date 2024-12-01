@@ -7,6 +7,7 @@ import { Button } from "../../ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import businessApi from "@/api/businessApi";
+import { useUser } from "@/contexts/usercontext";
 
 export function BusinessSetup() {
   const [form, setForm] = useState({
@@ -33,6 +34,14 @@ export function BusinessSetup() {
       user.userType = 'owner'
       user.userId = data._id
       localStorage.setItem('user', JSON.stringify(user))
+
+      dispatch({
+        type: 'UPDATE_ROLE',
+        payload: {
+          userType: 'owner',
+          userId: data?._id
+        }
+      })
       navigate('/b/dashboard')
     },
     onError: (err) => {

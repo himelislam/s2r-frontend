@@ -2,9 +2,12 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
+import { useUser } from "@/contexts/usercontext";
 
 export function RoleSelection() {
   const navigate = useNavigate();
+
+  const {userState} = useUser()
 
   const handleRoleSelection = (role) => {
     if (role === "business") {
@@ -13,6 +16,8 @@ export function RoleSelection() {
       navigate("/referrer-setup"); // Adjust the route to your desired path for "Referrer"
     }
   };
+
+  console.log(userState, "from roleselection");
 
   return (
     <div className="flex h-screen w-full items-center justify-center px-4">

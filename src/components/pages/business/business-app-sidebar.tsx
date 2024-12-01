@@ -22,10 +22,11 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import { useUser } from "@/contexts/usercontext"
+
 
 const user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")!) : null;
 const business = localStorage.getItem("business") ? JSON.parse(localStorage.getItem("business")!) : null;
-
 
 // This is sample Business data.
 const data = {
@@ -74,7 +75,7 @@ const data = {
     },
     {
       title: "Referrers",
-      url: "/b/dashboard/referrer",
+      url: "/b/dashboard/referrers",
       icon: Bot,
       items: [
         {
@@ -92,8 +93,8 @@ const data = {
       ],
     },
     {
-      title: "Referrers Details",
-      url: "#",
+      title: "Payouts",
+      url: "/b/dashboard/payouts",
       icon: BookOpen,
       items: [
         {
@@ -116,7 +117,7 @@ const data = {
     },
     {
       title: "Campaign Portal",
-      url: "#",
+      url: "/b/dashboard/campaign-portal",
       icon: Settings2,
       items: [
         {
@@ -139,7 +140,7 @@ const data = {
     },
     {
       title: "Invite Referrer",
-      url: "#",
+      url: "/b/dashboard/invite-referrer",
       icon: Settings2,
       items: [
         {
@@ -161,8 +162,8 @@ const data = {
       ],
     },
     {
-      title: "Agency Settings",
-      url: "#",
+      title: "Account Settings",
+      url: "/b/dashboard/account-settings",
       icon: Settings2,
       items: [
         {
@@ -204,6 +205,9 @@ const data = {
 }
 
 export function BusinessAppSidebar({ ...props }) {
+  const {userState} = useUser();
+
+  console.log(userState, "from businness sidabr");
   return (
     <Sidebar collapsible="icon" variant="floating" {...props}>
       <SidebarHeader>
@@ -215,6 +219,7 @@ export function BusinessAppSidebar({ ...props }) {
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
+        {/* <NavUser user={userState} /> */}
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

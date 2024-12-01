@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export default function AuthLayout() {
     const navigate = useNavigate();
@@ -22,6 +23,9 @@ export default function AuthLayout() {
                 navigate('/b/dashboard');
             } else if (userType === 'referrer') {
                 navigate('/r/dashboard');
+            } else if(userType == 'user'){
+                navigate('/select-role')
+                toast.error('Please select a role to login')
             }
         } else {
             console.log('Redirecting to login...');

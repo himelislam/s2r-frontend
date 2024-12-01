@@ -62,7 +62,7 @@ const invoices = [
 
 
 
-export default function Referrer() {
+export default function Referrers() {
 
 
   const { data: businesses = [], isLoading, isError, error } = useQuery({

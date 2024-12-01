@@ -3,7 +3,7 @@ import App from "./App";
 import Login from "./components/pages/login";
 import Signup from "./components/pages/signup";
 import BusinessOverview from "./components/pages/business/businessOverview";
-import Referrer from "./components/pages/business/referrer";
+import Referrers from "./components/pages/business/referrers";
 import RoleSelection from "./components/pages/roleSelection";
 import BusinessSetup from "./components/pages/business/businessSetup";
 import ReferrerSetup from "./components/pages/referrer/referrerSetup";
@@ -13,6 +13,10 @@ import BusinessDashboard from "./app/dashboard/businessDashboard";
 import ReferrerDashboard from "./app/dashboard/referrerDashboard";
 import ReferrerOverview from "./components/pages/referrer/referrerOverview";
 import Referee from "./components/pages/referrer/referee";
+import Payouts from "./components/pages/business/payouts";
+import CampaignPortal from "./components/pages/business/campaign-portal";
+import InviteReferrer from "./components/pages/business/invite-referrer";
+import AccountSettings from "./components/pages/business/account-settings";
 
 
 export const appRoutes = createBrowserRouter([
@@ -47,8 +51,24 @@ export const appRoutes = createBrowserRouter([
                                 element: <BusinessOverview/>
                             },
                             {
-                                path: 'referrer',
-                                element: <Referrer/>
+                                path: 'referrers',
+                                element: <Referrers/>
+                            },
+                            {
+                                path: 'payouts',
+                                element: <Payouts/>
+                            },
+                            {
+                                path: 'campaign-portal',
+                                element: <CampaignPortal/>
+                            },
+                            {
+                                path: 'invite-referrer',
+                                element: <InviteReferrer/>
+                            },
+                            {
+                                path: 'account-settings',
+                                element: <AccountSettings/>
                             }
                         ]
                     },

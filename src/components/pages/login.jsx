@@ -7,6 +7,7 @@ import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import authApi from '@/api/authApi';
 import { Eye, EyeOff } from 'lucide-react';
+import { useUser } from '@/contexts/usercontext';
 
 
 export default function Login() {
@@ -15,15 +16,21 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate()
+  const { dispatch, userState } = useUser();
+
+  console.log(userState, "from Login page");
 
   const loginMutation = useMutation({
-    mutationFn: authApi.login,
+    // mutationFn: authApi.login,
+    mutationFn: ({ email, password, dispatch }) => authApi.login({ email, password }, dispatch), // Pass dispatch
     onSuccess: (data) => {
       console.log('Login successful:', data.userType);
       if (data.userType == 'owner') {
         navigate('/b/dashboard')
       } else if (data.userType == 'referrer') {
         navigate('/r/dashboard')
+      } else if(data.userType == 'user'){
+        navigate('/select-role')
       }
       // navigate('/dashboard')
     },
@@ -36,7 +43,8 @@ export default function Login() {
     e.preventDefault()
     loginMutation.mutate({
       email,
-      password
+      password,
+      dispatch
     })
     console.log(email, "hemail");
     console.log(password, "hpass");
