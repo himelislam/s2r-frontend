@@ -17,16 +17,19 @@ import Payouts from "./components/pages/business/payouts";
 import CampaignPortal from "./components/pages/business/campaign-portal";
 import InviteReferrer from "./components/pages/business/invite-referrer";
 import AccountSettings from "./components/pages/business/account-settings";
+import Errorpage from "./components/pages/errorpage";
 
 
 export const appRoutes = createBrowserRouter([
     {
         path: '/',
         element: <App />,
+        errorElement: <Errorpage/>,
         children: [
             {   
                 path: '/',
                 element: <AuthLayout/>,
+                errorElement: <Errorpage/>,
                 children: [
                     {
                         path: 'login',
@@ -41,6 +44,7 @@ export const appRoutes = createBrowserRouter([
             {
                 path: '/b/dashboard',
                 element: <PrivateRoute allowedRoles={['owner']} />,
+                errorElement: <Errorpage/>,
                 children: [
                     {
                         path: '',
@@ -77,6 +81,7 @@ export const appRoutes = createBrowserRouter([
             {
                 path: '/r/dashboard',
                 element: <PrivateRoute allowedRoles={['referrer']} />,
+                errorElement: <Errorpage/>,
                 children: [
                     {
                         path: '',
@@ -109,46 +114,3 @@ export const appRoutes = createBrowserRouter([
         element: <ReferrerSetup />
     }
 ]);
-
-
-
-// export const appRoutes = createBrowserRouter([
-//     {
-//       path: '/',
-//       element: <App />
-//     },
-//     {
-//       path: 'login',
-//       element: <Login />
-//     },
-//     {
-//       path: 'signup',
-//       element: <Signup />
-//     },
-//     {
-//       path: 'dashboard',
-//       element: <Dashboard />,
-//       children: [
-//         {
-//           index: true,
-//           element: <Home />
-//         },
-//         {
-//           path: 'referrer',
-//           element: <Referrer />
-//         }
-//       ]
-//     },
-//     {
-//       path: 'select-role',
-//       element: <RoleSelection/>,
-//     },
-//     {
-//       path: 'business-setup',
-//       element: <BusinessSetup/>
-//     },
-//     {
-//       path: 'referrer-setup',
-//       element: <ReferrerSetup/>
-//     }
-//   ])
