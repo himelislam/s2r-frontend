@@ -8,6 +8,7 @@ import { Button } from '../ui/button';
 import authApi from '@/api/authApi';
 import { Eye, EyeOff } from 'lucide-react';
 import { useUser } from '@/contexts/usercontext';
+import { toast } from 'react-toastify';
 
 
 export default function Login() {
@@ -36,6 +37,7 @@ export default function Login() {
     },
     onError: (error) => {
       console.error('Login failed:', error?.message);
+      toast.error(error?.response?.data?.message)
     },
   })
 
@@ -91,7 +93,7 @@ export default function Login() {
               <div className="grid gap-2">
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
-                  <Link to="/" className="ml-auto inline-block text-sm underline">
+                  <Link to="/forget-password" className="ml-auto inline-block text-sm underline">
                     Forgot your password?
                   </Link>
                 </div>

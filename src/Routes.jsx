@@ -18,6 +18,9 @@ import CampaignPortal from "./components/pages/business/campaign-portal";
 import InviteReferrer from "./components/pages/business/invite-referrer";
 import AccountSettings from "./components/pages/business/account-settings";
 import Errorpage from "./components/pages/errorpage";
+import ForgetPassword from "./components/pages/forget-password";
+import ResetPassword from "./components/pages/reset-password";
+
 
 
 export const appRoutes = createBrowserRouter([
@@ -38,8 +41,16 @@ export const appRoutes = createBrowserRouter([
                     {
                         path: 'signup',
                         element: <Signup />
+                    },
+                    {
+                        path: 'forget-password',
+                        element: <ForgetPassword/>
                     }
                 ]
+            },
+            {
+                path: 'reset-password/:token',
+                element: <ResetPassword/>
             },
             {
                 path: '/b/dashboard',

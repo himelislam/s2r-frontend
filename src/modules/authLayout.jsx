@@ -16,9 +16,6 @@ export default function AuthLayout() {
     useEffect(() => {
         if (isLoggedIn) {
             const userType = currentUser.userType;
-
-            console.log('Redirecting to dashboard...');
-
             if (userType === 'owner') {
                 navigate('/b/dashboard');
             } else if (userType === 'referrer') {

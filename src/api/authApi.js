@@ -57,10 +57,32 @@ const login = async (userData, dispatch) => {
   return response.data;
 };
 
+const forgetPassword = async (email) => {
+  const response = await axios.post(API_URL + '/forget-password', email);
+
+  if(response.data){
+    console.log(response, "forget password successfull");
+  }
+
+  return response.data;
+}
+
+const resetPassword = async (newPassWithToken) => {
+  const response = await axios.post(API_URL + '/reset-password', newPassWithToken);
+
+  if(response.data){
+    console.log(response.data, "reset password successfull");
+  }
+
+  return response.data;
+}
+
 const authApi = {
   signup,
   logout,
-  login
+  login,
+  forgetPassword,
+  resetPassword
 };
 
 export default authApi;

@@ -35,13 +35,13 @@ export function BusinessSetup() {
       user.userId = data._id
       localStorage.setItem('user', JSON.stringify(user))
 
-      dispatch({
-        type: 'UPDATE_ROLE',
-        payload: {
-          userType: 'owner',
-          userId: data?._id
-        }
-      })
+      // dispatch({
+      //   type: 'UPDATE_ROLE',
+      //   payload: {
+      //     userType: 'owner',
+      //     userId: data?._id
+      //   }
+      // })
       navigate('/b/dashboard')
     },
     onError: (err) => {
