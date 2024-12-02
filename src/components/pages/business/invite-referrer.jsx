@@ -1,14 +1,6 @@
-
+import React from "react"
 
 export default function InviteReferrer() {
-
-
-    // const { data: businesses = [], isLoading, isError, error } = useQuery({
-    //   queryKey: ['getReferrersByBusinessId', user?.userId],
-    //   queryFn: () => referrerApi.getReferrersByBusinessId(user?.userId),
-    //   enabled: !!user?.userId,
-    // })
-
     return (
         <>
             <h1>Invite Referrer</h1>

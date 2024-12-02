@@ -27,7 +27,12 @@
       "strict": true, /* Enable strict type checking */
       "esModuleInterop": true, /* Enable compatibility with ES modules */
       "skipLibCheck": true, /* Skip type checking of declaration files */
-      "forceConsistentCasingInFileNames": true /* Ensure consistent casing in imports */
+      "forceConsistentCasingInFileNames": true, /* Ensure consistent casing in imports */
+      "paths": {
+            "@/*": [
+                "./src/*"
+            ]
+        },
     },
     "include": ["src/**/*"], /* Include all files in the 'src' folder */
     "exclude": ["node_modules", "dist"] /* Exclude 'node_modules' and the output directory */
