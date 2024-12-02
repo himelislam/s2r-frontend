@@ -8,6 +8,7 @@ import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { Eye, EyeOff } from 'lucide-react';
 import { useUser } from '@/contexts/usercontext';
+import { toast } from 'react-toastify';
 
 export default function Signup() {
     const [name, setName] = useState('');
@@ -28,6 +29,7 @@ export default function Signup() {
         },
         onError: (error) => {
             console.error('Signup failed:', error?.message);
+            toast.error(error?.response?.data?.message)
         },
     })
 

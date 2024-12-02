@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:4000/api/referrer";
+const API_URL = `${import.meta.env.VITE_API_URL}/api/referrer`
 const user = JSON.parse(localStorage.getItem('user'))
 
 const createReferrer = async (userData) => {
