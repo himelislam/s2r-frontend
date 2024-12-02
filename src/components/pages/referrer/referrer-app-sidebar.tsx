@@ -77,7 +77,7 @@ const data = {
       ],
     },
     {
-      title: "Referee",
+      title: "Referees",
       url: "/r/dashboard/referee",
       icon: Bot,
       items: [
@@ -96,8 +96,8 @@ const data = {
       ],
     },
     {
-      title: "Referee Details",
-      url: "#",
+      title: "Rewards",
+      url: "/r/dashboard/rewards",
       icon: BookOpen,
       items: [
         {
@@ -119,8 +119,8 @@ const data = {
       ],
     },
     {
-      title: "Referee Emails",
-      url: "#",
+      title: "Campaigns",
+      url: "/r/dashboard/campaigns",
       icon: Settings2,
       items: [
         {
@@ -142,8 +142,8 @@ const data = {
       ],
     },
     {
-      title: "Profile Settings",
-      url: "#",
+      title: "Account Settings",
+      url: "/r/dashboard/account-settings",
       icon: Settings2,
       items: [
         {

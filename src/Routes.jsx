@@ -16,10 +16,13 @@ import Referee from "./components/pages/referrer/referee";
 import Payouts from "./components/pages/business/payouts";
 import CampaignPortal from "./components/pages/business/campaign-portal";
 import InviteReferrer from "./components/pages/business/invite-referrer";
-import AccountSettings from "./components/pages/business/account-settings";
+import BusinessAccountSettings from "./components/pages/business/business-account-settings";
 import Errorpage from "./components/pages/errorpage";
 import ForgetPassword from "./components/pages/forget-password";
 import ResetPassword from "./components/pages/reset-password";
+import Rewards from "./components/pages/referrer/rewards";
+import Campaigns from "./components/pages/referrer/campaigns";
+import ReferrerAccountSettings from "./components/pages/referrer/referrer-account-settings";
 
 
 
@@ -83,7 +86,7 @@ export const appRoutes = createBrowserRouter([
                             },
                             {
                                 path: 'account-settings',
-                                element: <AccountSettings/>
+                                element: <BusinessAccountSettings/>
                             }
                         ]
                     },
@@ -105,6 +108,18 @@ export const appRoutes = createBrowserRouter([
                             {
                                 path: 'referee',
                                 element: <Referee/>
+                            },
+                            {
+                                path: 'rewards',
+                                element: <Rewards/>
+                            },
+                            {
+                                path: 'campaigns',
+                                element: <Campaigns/>
+                            },
+                            {
+                                path: 'account-settings',
+                                element: <ReferrerAccountSettings/>
                             }
                         ]
                     },
