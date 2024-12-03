@@ -116,6 +116,29 @@ const data = {
       ],
     },
     {
+      title: "QR Codes",
+      url: "/b/dashboard/qr-codes",
+      icon: Settings2,
+      items: [
+        {
+          title: "General",
+          url: "#",
+        },
+        {
+          title: "Team",
+          url: "#",
+        },
+        {
+          title: "Billing",
+          url: "#",
+        },
+        {
+          title: "Limits",
+          url: "#",
+        },
+      ],
+    },
+    {
       title: "Campaign Portal",
       url: "/b/dashboard/campaign-portal",
       icon: Settings2,
@@ -205,7 +228,7 @@ const data = {
 }
 
 export function BusinessAppSidebar({ ...props }) {
-  const {userState} = useUser();
+  const { userState } = useUser();
 
   console.log(userState, "from businness sidabr");
   return (
