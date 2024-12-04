@@ -18,7 +18,7 @@ export default function BusinessQrCodes() {
 
             const link = document.createElement('a');
             link.href = url;
-            link.download = 'qr-codes.pdf'; // Set file name for the download
+            link.download = 'anh-qr-codes.pdf'; // Set file name for the download
             link.click();
 
             window.URL.revokeObjectURL(url);
@@ -35,7 +35,7 @@ export default function BusinessQrCodes() {
 
         generateQrCodeMutation.mutate({
             businessId: user?.userId,
-            numberOfCodes: 4
+            numberOfCodes: 1
         })
 
         // setQrCodes(codes);
