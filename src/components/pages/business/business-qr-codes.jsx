@@ -137,7 +137,7 @@ export default function BusinessQrCodes() {
     };
 
     return (
-        <div className="container py-10">
+        <div className="container">
             <div>
                 <Dialog open={openGenerateModal} onOpenChange={setOpenGenerateModal}>
                     <DialogTrigger asChild>
