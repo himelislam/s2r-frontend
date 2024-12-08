@@ -18,13 +18,14 @@ import {
 } from "@/components/ui/sidebar"
 
 export function TeamSwitcher({
-  teams,
+  teams,business
 }: {
   teams: {
     name: string
     logo: React.ElementType
     plan: string
-  }[]
+  }[],
+  business: any
 }) {
   const { isMobile } = useSidebar()
   const [activeTeam, setActiveTeam] = React.useState(teams[0])
@@ -43,7 +44,8 @@ export function TeamSwitcher({
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">
-                  {activeTeam.name}
+                  {/* {activeTeam.name} */}
+                  {business.businessName}
                 </span>
                 <span className="truncate text-xs">{activeTeam.plan}</span>
               </div>

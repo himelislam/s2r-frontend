@@ -27,9 +27,33 @@ const getAllBusiness = async () => {
 
     return response.data;
 }
+
+const generateQrCodes = async (data) => {
+    const response = await axios.post( API_URL + '/generateQrCodes', data, {
+        headers: {
+            Authorization: `Bearer ${user?.token}`
+        },
+        // responseType: 'blob',// Interpret response as a Blob
+    })
+
+    return response.data;
+}
+
+const getBusinessById = async (businessId) => {
+    const response = await axios.post(API_URL + '/getBusinessById', { businessId }, {
+        headers: {
+            Authorization: `Bearer ${user?.token}`
+        }
+    })
+
+    return response.data;
+}
+
 const businessApi = {
     createBusiness,
-    getAllBusiness
+    getAllBusiness,
+    generateQrCodes,
+    getBusinessById
 };
 
 export default businessApi;
