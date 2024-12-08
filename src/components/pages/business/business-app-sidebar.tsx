@@ -12,7 +12,6 @@ import {
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
-import { NavProjects } from "@/components/nav-projects"
 import { NavUser } from "@/components/nav-user"
 import { TeamSwitcher } from "@/components/team-switcher"
 import {
@@ -22,7 +21,8 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { useUser } from "@/contexts/usercontext"
+import { useQuery } from "@tanstack/react-query"
+import businessApi from "@/api/businessApi"
 
 
 const user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")!) : null;
@@ -228,13 +228,17 @@ const data = {
 }
 
 export function BusinessAppSidebar({ ...props }) {
-  const { userState } = useUser();
 
-  console.log(userState, "from businness sidabr");
+  const {data: business =[]} = useQuery({
+    queryKey: ['getBusinessById', user?.userId],
+    queryFn: () => businessApi.getBusinessById(user?.userId),
+    enabled: !!user?.userId
+  })
+  
   return (
     <Sidebar collapsible="icon" variant="floating" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <TeamSwitcher teams={data.teams} business={business} />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />

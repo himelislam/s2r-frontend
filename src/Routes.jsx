@@ -24,6 +24,7 @@ import Rewards from "./components/pages/referrer/rewards";
 import Campaigns from "./components/pages/referrer/campaigns";
 import ReferrerAccountSettings from "./components/pages/referrer/referrer-account-settings";
 import BusinessQrCodes from "./components/pages/business/business-qr-codes";
+import RefereeForm from "./components/pages/referee/referee-form";
 
 
 
@@ -143,5 +144,9 @@ export const appRoutes = createBrowserRouter([
     {
         path: 'referrer-setup',
         element: <ReferrerSetup />
+    },
+    {
+        path: 'qr/:businessId/:status',
+        element: <RefereeForm/>
     }
 ]);
