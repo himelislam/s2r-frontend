@@ -27,12 +27,6 @@ import referrerApi from "@/api/referrerApi"
 
 
 const user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")!) : null;
-const referrer = localStorage.getItem("referrer") ? JSON.parse(localStorage.getItem("referrer")!) : null;
-
-
-
-// This is sample referrer data.
-
 
 export function ReferrerAppSidebar({ ...props }) {
 
@@ -197,7 +191,7 @@ export function ReferrerAppSidebar({ ...props }) {
   return (
     <Sidebar collapsible="icon" variant="floating" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} business={[]} referrer={[]} />
+        <TeamSwitcher teams={data.teams} business={[]} referrer={referrer} />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
