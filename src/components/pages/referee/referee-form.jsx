@@ -12,31 +12,43 @@ import {
 } from "@/components/ui/popover"
 import { format } from "date-fns"
 import { CalendarIcon } from "lucide-react"
+import referrerApi from '@/api/referrerApi';
 
 export default function RefereeForm() {
     const [date, setDate] = useState(Date)
-    const { businessId, status } = useParams();
+    const { businessId, qrId } = useParams();
     const user = JSON.parse(localStorage.getItem('user'))
 
     const { data: business = [] } = useQuery({
-        queryKey: ['getBusinessById', user?.userId],
-        queryFn: () => businessApi.getBusinessById(user?.userId),
-        enabled: !!user?.userId
+        queryKey: ['getBusinessById', businessId],
+        queryFn: () => businessApi.getBusinessById(businessId),
+        enabled: !!businessId
     })
+
+    // const { data: referrer = [] } = useQuery({
+    //     queryKey: ['getReferrerById', referrerId],
+    //     queryFn: () => referrerApi.getReferrerById(referrerId),
+    //     enabled: !!referrerId
+    // })
 
     const handleSubmit = () => {
 
     }
+    const foundQrCode = business?.qrCodes?.find((qrCode) => qrCode.id == qrId);
     return (
         <div>
-
+2
             <div className="max-w-lg mx-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
                 <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">
                     Referral Form
                 </h1>
                 <h3>Business Name: {business?.businessName}</h3>
                 <h3>Business Email: {business?.email}</h3>
-                <h5>Status: {status}</h5>
+
+                <h2>Referrer Name: {foundQrCode?.referrerName}</h2>
+                <h2>Referrer ID: {foundQrCode?.referrerId}</h2>
+                <h2>Referrer Status: {foundQrCode?.status}</h2>
+                            
                 <form onSubmit={handleSubmit} className="space-y-4">
                     {/* First and Last Name */}
                     <div>

@@ -67,7 +67,7 @@ export function ReferrerSetup() {
 
 
   const { data: businesses = [], isLoading, isError, error } = useQuery({
-    queryKey: ['businesses'],
+    queryKey: ['getAllBusiness'],
     queryFn: businessApi.getAllBusiness
   })
 
