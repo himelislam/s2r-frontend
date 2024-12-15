@@ -82,7 +82,7 @@ export function ReferrerAppSidebar({ ...props }) {
       },
       {
         title: "Referees",
-        url: "/r/dashboard/referee",
+        url: "/r/dashboard/referees",
         icon: Bot,
         items: [
           {
