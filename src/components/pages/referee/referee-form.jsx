@@ -16,6 +16,7 @@ import refereeApi from '@/api/refereeApi';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
+import { toast } from 'react-toastify';
 
 export default function RefereeForm() {
     const [name, setName] = useState('');
@@ -30,6 +31,7 @@ export default function RefereeForm() {
         queryFn: () => businessApi.getBusinessById(businessId),
         enabled: !!businessId
     })
+    const foundQrCode = business?.qrCodes?.find((qrCode) => qrCode.id == qrId);
 
     // const { data: referrer = [] } = useQuery({
     //     queryKey: ['getReferrerById', referrerId],
@@ -41,9 +43,11 @@ export default function RefereeForm() {
         mutationFn: refereeApi.createReferee,
         onSuccess: (data) => {
             console.log(data, 'sucssess in create Referee');
+            toast.success('Form Submitted Successfully')
         },
         onError: (err) => {
             console.log(err, 'on create Referee');
+            toast.error('Internal Server Error')
         }
     })
 
@@ -56,12 +60,12 @@ export default function RefereeForm() {
             email,
             phone,
             date: formattedDate,
-            businessId
+            businessId,
+            referrerId: foundQrCode?.referrerId
         })
 
         console.log(name, email, phone, date, "form data");
     }
-    const foundQrCode = business?.qrCodes?.find((qrCode) => qrCode.id == qrId);
     return (
         <div>
             <div className="max-w-lg mx-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">

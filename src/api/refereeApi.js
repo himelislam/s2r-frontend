@@ -14,8 +14,29 @@ const createReferee = async (refereeData) => {
     return response.data;
 }
 
+const getRefereeByReferrerId = async (referrerId) => {
+    const response = await axios.post(API_URL + '/getRefereeByReferrerId', { referrerId }, {
+        headers: {
+            Authorization: `Bearer ${user?.token}`
+        }
+    })
+
+    return response.data;
+}
+
+const getRefereeBusinessById = async (businessId) => {
+    const response = await axios.post(API_URL + '/getRefereeByBusinessId', { businessId }, {
+        headers: {
+            Authorization: `Bearer ${user?.token}`
+        }
+    })
+
+    return response.data;
+}
 const refereeApi = {
-    createReferee
+    createReferee,
+    getRefereeBusinessById,
+    getRefereeByReferrerId
 };
 
 export default refereeApi;

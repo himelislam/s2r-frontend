@@ -12,7 +12,7 @@ import PrivateRoute from "./modules/privateRoute";
 import BusinessDashboard from "./app/dashboard/businessDashboard";
 import ReferrerDashboard from "./app/dashboard/referrerDashboard";
 import ReferrerOverview from "./components/pages/referrer/referrerOverview";
-import Referee from "./components/pages/referrer/referee";
+import ReferrerReferees from "./components/pages/referrer/referrer-referees";
 import Payouts from "./components/pages/business/payouts";
 import CampaignPortal from "./components/pages/business/campaign-portal";
 import InviteReferrer from "./components/pages/business/invite-referrer";
@@ -25,6 +25,7 @@ import Campaigns from "./components/pages/referrer/campaigns";
 import ReferrerAccountSettings from "./components/pages/referrer/referrer-account-settings";
 import BusinessQrCodes from "./components/pages/business/business-qr-codes";
 import RefereeForm from "./components/pages/referee/referee-form";
+import BusinessReferees from "./components/pages/business/business-referees";
 
 
 
@@ -75,6 +76,10 @@ export const appRoutes = createBrowserRouter([
                                 element: <Referrers/>
                             },
                             {
+                                path: 'referees',
+                                element: <BusinessReferees/>
+                            },
+                            {
                                 path: 'payouts',
                                 element: <Payouts/>
                             },
@@ -112,8 +117,8 @@ export const appRoutes = createBrowserRouter([
                                 element: <ReferrerOverview/>
                             },
                             {
-                                path: 'referee',
-                                element: <Referee/>
+                                path: 'referees',
+                                element: <ReferrerReferees/>
                             },
                             {
                                 path: 'rewards',

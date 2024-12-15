@@ -98,6 +98,25 @@ export function BusinessAppSidebar({ ...props }) {
         ],
       },
       {
+        title: "Referees",
+        url: "/b/dashboard/referees",
+        icon: Bot,
+        items: [
+          {
+            title: "Genesis",
+            url: "#",
+          },
+          {
+            title: "Explorer",
+            url: "#",
+          },
+          {
+            title: "Quantum",
+            url: "#",
+          },
+        ],
+      },
+      {
         title: "Payouts",
         url: "/b/dashboard/payouts",
         icon: BookOpen,
