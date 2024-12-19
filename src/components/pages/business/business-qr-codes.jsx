@@ -8,6 +8,9 @@ import { toast } from 'react-toastify';
 import { jsPDF } from 'jspdf';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
+import { Minus, Plus } from 'lucide-react';
+import { Label } from '@/components/ui/label';
 
 export default function BusinessQrCodes() {
     const [isAvailable, setisAvailable] = useState(false);
@@ -15,6 +18,8 @@ export default function BusinessQrCodes() {
     const [openGenerateModal, setOpenGenerateModal] = useState(false);
     const [isOpenDownloadModal, setOpenDownloadModal] = useState(false)
     const [numberOfCodes, setNumberOfCodes] = useState(1);
+    const [qrCodeHeight, setQrCodeHeight] = useState(50)
+    const [qrCodeWidth, setQrCodeWidth] = useState(50)
     const queryClient = useQueryClient();
     const user = JSON.parse(localStorage.getItem('user'));
 
@@ -93,7 +98,7 @@ export default function BusinessQrCodes() {
         qrCodes.forEach((card, index) => {
             // Add QR Code Image
             const imgData = card?.qrCodeBase64;
-            doc.addImage(imgData, 'PNG', 20, currentY, 50, 50); // Adjust size and position as needed
+            doc.addImage(imgData, 'PNG', 20, currentY, qrCodeWidth, qrCodeHeight); // Adjust size and position as needed
 
             // Add Business Name
             doc.setFont("helvetica", "bold");
@@ -165,29 +170,50 @@ export default function BusinessQrCodes() {
                         </DialogFooter>
                     </DialogContent>
                 </Dialog>
+                <Drawer>
+                    <DrawerTrigger asChild>
+                        {
+                            business?.qrCodes?.length > 0 &&
+                            <Button onClick={() => setOpenDownloadModal(true)}>Download All QR Codes</Button>
 
-                {
-                    business?.qrCodes?.length > 0 &&
-                    <Button onClick={() => setOpenDownloadModal(true)}>Download All QR Codes</Button>
-
-                }
-
-                <Dialog open={isOpenDownloadModal} onOpenChange={setOpenDownloadModal}>
-                    <DialogContent>
-                        <DialogHeader>
-                            <DialogTitle>Confirm Download</DialogTitle>
-                            <DialogDescription>
-                                Are you sure you want to download all QR codes as a PDF?
-                            </DialogDescription>
-                        </DialogHeader>
-                        <DialogFooter>
-                            <Button variant="outline" onClick={() => setOpenDownloadModal(false)}>
-                                Cancel
-                            </Button>
-                            <Button onClick={() => downloadAllQrCodesAsPdf(business)}>Yes, Download</Button>
-                        </DialogFooter>
-                    </DialogContent>
-                </Dialog>
+                        }
+                    </DrawerTrigger>
+                    <DrawerContent>
+                        <div className="mx-auto w-full max-w-sm">
+                            <DrawerHeader>
+                                <DrawerTitle>Select Template</DrawerTitle>
+                                <DrawerDescription>Set Height and Width of the Qr code</DrawerDescription>
+                            </DrawerHeader>
+                            <div className="p-4 pb-0">
+                                <div className="flex items-center justify-center space-x-2">
+                                    <Label>Height (mm)</Label>
+                                        <Input
+                                            type="number"
+                                            value={qrCodeHeight}
+                                            onChange={(e) => setQrCodeHeight(Number(e.target.value))}
+                                            min={30} // Ensure that the number is at least 1
+                                        />
+                                        <Label>Width (mm)</Label>
+                                        <Input
+                                            type="number"
+                                            value={qrCodeWidth}
+                                            onChange={(e) => setQrCodeWidth(Number(e.target.value))}
+                                            min={30} // Ensure that the number is at least 1
+                                        />
+                                    
+                                </div>
+                                <div className="mt-3 h-[120px]">
+                                </div>
+                            </div>
+                            <DrawerFooter>
+                                <Button onClick={() => downloadAllQrCodesAsPdf(business)}>Download</Button>
+                                <DrawerClose asChild>
+                                    <Button variant="outline">Cancel</Button>
+                                </DrawerClose>
+                            </DrawerFooter>
+                        </div>
+                    </DrawerContent>
+                </Drawer>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
                 {business?.qrCodes?.map((card) => <QrCard card={card} downloadSingleQrCodesAsPdf={downloadSingleQrCodesAsPdf} />)}
