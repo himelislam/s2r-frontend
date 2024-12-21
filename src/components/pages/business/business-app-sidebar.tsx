@@ -46,16 +46,6 @@ export function BusinessAppSidebar({ ...props }) {
         logo: GalleryVerticalEnd,
         plan: "Enterprise",
       },
-      {
-        name: "Acme Corp.",
-        logo: AudioWaveform,
-        plan: "Startup",
-      },
-      {
-        name: "Evil Corp.",
-        logo: Command,
-        plan: "Free",
-      },
     ],
     navMain: [
       {
@@ -117,7 +107,7 @@ export function BusinessAppSidebar({ ...props }) {
         ],
       },
       {
-        title: "Payouts",
+        title: "Awards",
         url: "/b/dashboard/payouts",
         icon: BookOpen,
         items: [
