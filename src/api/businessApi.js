@@ -49,11 +49,22 @@ const getBusinessById = async (businessId) => {
     return response.data;
 }
 
+const inviteReferrer = async (data) => {
+    const response = await axios.post(API_URL + '/inviteReferrer', data, {
+        headers: {
+            Authorization: `Bearer ${user?.token}`
+        }
+    })
+
+    return response.data;
+}
+
 const businessApi = {
     createBusiness,
     getAllBusiness,
     generateQrCodes,
-    getBusinessById
+    getBusinessById,
+    inviteReferrer
 };
 
 export default businessApi;
