@@ -1,17 +1,20 @@
 import businessApi from "@/api/businessApi";
+import memberApi from "@/api/memberApi";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react"
+import { toast } from "react-toastify";
 
 export default function InviteReferrer() {
     const referees = [];
-    const [openGenerateModal, setOpenGenerateModal] = useState(false);
+    const [openInvitationModal, setOpenInvitationModal] = useState(false);
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
+    const queryClient = useQueryClient();
 
     const user = JSON.parse(localStorage.getItem('user'))
 
@@ -19,10 +22,19 @@ export default function InviteReferrer() {
         mutationFn: businessApi.inviteReferrer,
         onSuccess: (data) => {
             console.log(data);
+            queryClient.invalidateQueries(['getMembersByBusinessId', user?.userId])
+            setOpenInvitationModal(false);
         },
         onError: (err) => {
             console.log(err);
+            toast.error(err?.response?.data?.message)
         }
+    })
+
+    const { data: members = [], isLoading, isError, error} = useQuery({
+        queryKey: ['getMembersByBusinessId', user?.userId],
+        queryFn: () => memberApi.getMembersByBusinessId(user?.userId),
+        enabled: !!user?.userId
     })
 
     const inviteReferrer = (e) => {
@@ -36,7 +48,7 @@ export default function InviteReferrer() {
     return (
         <>
             <div>
-            <Dialog open={openGenerateModal} onOpenChange={setOpenGenerateModal}>
+            <Dialog open={openInvitationModal} onOpenChange={setOpenInvitationModal}>
                     <DialogTrigger asChild>
                         <Button className="me-5">
                             Invite Referrer
@@ -80,18 +92,13 @@ export default function InviteReferrer() {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {referees?.map((referee, index) => (
+                    {members?.map((member, index) => (
                         <TableRow key={index}>
                             <TableCell className="font-medium">{index + 1}</TableCell>
-                            <TableCell>{referee?.name}</TableCell>
-                            <TableCell>{referee?.email}</TableCell>
-                            <TableCell >{referee?.phone}</TableCell>
-                            <TableCell >{referee?.referrerName}</TableCell>
-                            {/* <TableCell >{new Date(referee?.date)}</TableCell> */}
-                            <TableCell >{referee?.date
-                                ? new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' }).format(new Date(referee.date))
-                                : 'N/A'}</TableCell>
-                            <TableCell >{referee?.status}</TableCell>
+                            <TableCell>{member?.name}</TableCell>
+                            <TableCell>{member?.email}</TableCell>
+                            {/* <TableCell >{member?.phone}</TableCell> */}
+                            <TableCell >{member?.status}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

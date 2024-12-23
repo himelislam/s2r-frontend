@@ -26,6 +26,8 @@ import ReferrerAccountSettings from "./components/pages/referrer/referrer-accoun
 import BusinessQrCodes from "./components/pages/business/business-qr-codes";
 import RefereeForm from "./components/pages/referee/referee-form";
 import BusinessReferees from "./components/pages/business/business-referees";
+import ReferrerSignup from "./components/pages/referrer/referrer-signup";
+import { ReferrerInvitationSetup } from "./components/pages/referrer/referrer-invitation-setup";
 
 
 
@@ -153,5 +155,13 @@ export const appRoutes = createBrowserRouter([
     {
         path: 'qr/:businessId/:qrId',
         element: <RefereeForm/>
+    },
+    {
+        path: 'referrer-signup/:businessId/:email/:name',
+        element: <ReferrerSignup/>
+    },
+    {
+        path: 'referrer-invitation-setup/:businessId/:email/:name',
+        element: <ReferrerInvitationSetup/>
     }
 ]);

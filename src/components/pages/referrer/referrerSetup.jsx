@@ -60,7 +60,8 @@ export function ReferrerSetup() {
       phone: form.phone,
       signature: form.signature,
       userType: 'referrer',
-      businessId: form.selectedBusiness
+      businessId: form.selectedBusiness,
+      invited: false // sending flag from referrer setup without invitation
     })
     console.log("Referrer setup data:", form);
   };
@@ -115,7 +116,7 @@ export function ReferrerSetup() {
               !isLoading && <p>No businesses available</p>
             )}
           </ul> */}
-           <div className="space-y-2">
+          <div className="space-y-2">
             <Label htmlFor="business">Select a Business</Label>
             {isLoading ? (
               <p>Loading businesses...</p>
@@ -135,7 +136,7 @@ export function ReferrerSetup() {
                 </option>
                 {businesses.map((business) => (
                   <option key={business._id} value={business._id}>
-                    {business.name} - {business.location}
+                    {business.businessName} - {business.location}
                   </option>
                 ))}
               </select>
