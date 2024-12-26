@@ -31,11 +31,12 @@ import { ReferrerInvitationSetup } from "./components/pages/referrer/referrer-in
 
 
 
+
 export const appRoutes = createBrowserRouter([
     {
         path: '/',
         element: <App />,
-        errorElement: <Errorpage/>,
+        errorElement: <Errorpage/>, // Error page
         children: [
             {   
                 path: '/',

@@ -23,12 +23,13 @@ import {
 } from "@/components/ui/sidebar"
 import { useQuery } from "@tanstack/react-query"
 import businessApi from "@/api/businessApi"
+import { DotLoader } from "react-spinners"
 
 
 export function BusinessAppSidebar({ ...props }) {
   
   const user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")!) : null;
-  const {data: business =[]} = useQuery({
+  const {data: business =[], isPending} = useQuery({
     queryKey: ['getBusinessById', user?.userId],
     queryFn: () => businessApi.getBusinessById(user?.userId),
     enabled: !!user?.userId
@@ -240,6 +241,12 @@ export function BusinessAppSidebar({ ...props }) {
       },
     ],
   }
+
+  // if (isPending) {
+  //   return <div style={{textAlign: 'center', justifyContent: 'center', alignItems: 'center', display: 'flex', height: '100vh', width: '100vw'}}>
+  //     <DotLoader cssOverride={{marginTop: '50px'}}/>
+  //   </div>
+  // }
   
   return (
     <Sidebar collapsible="icon" variant="floating" {...props}>

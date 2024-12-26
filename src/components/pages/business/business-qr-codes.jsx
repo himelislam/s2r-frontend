@@ -215,8 +215,8 @@ export default function BusinessQrCodes() {
                             min={1} // Ensure that the number is at least 1
                         />
                         <DialogFooter>
-                            <Button onClick={generateQrCodes} disabled={generateQrCodeMutation.isLoading} className='mb-6 me-5'>
-                                {generateQrCodeMutation.isLoading ? "Generating..." : "Generate QR Codes"}
+                            <Button onClick={generateQrCodes} disabled={generateQrCodeMutation.isPending} className='mb-6 me-5'>
+                                {generateQrCodeMutation.isPending ? "Generating..." : "Generate QR Codes"}
                             </Button>
                             <DialogClose asChild>
                                 <Button variant="outline">Cancel</Button>

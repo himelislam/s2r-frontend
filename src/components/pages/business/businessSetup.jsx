@@ -8,6 +8,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import businessApi from "@/api/businessApi";
 import { useUser } from "@/contexts/usercontext";
+import Spinner from "@/components/spinner";
 
 export function BusinessSetup() {
   const [form, setForm] = useState({
@@ -115,8 +116,14 @@ export function BusinessSetup() {
               required
             />
           </div>
-          <Button type="submit" className="w-full">
-            Submit
+          <Button type="submit" className="w-full" disabled={createBusinessMutation.isPending}>
+            {createBusinessMutation.isPending
+              ? (
+                <>
+                  Submit <Spinner />
+                </>
+              )
+              : 'Submit'}
           </Button>
         </form>
       </CardContent>
