@@ -32,6 +32,7 @@
     "react-day-picker": "^8.10.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.28.0",
+    "react-share-social": "^0.1.60",
     "react-spinners": "^0.15.0",
     "react-toastify": "^10.0.6",
     "tailwind-merge": "^2.5.4",

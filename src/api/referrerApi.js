@@ -34,13 +34,27 @@ const getReferrerById = async (referrerId) => {
         }
     })
 
+    user.businessId = response.data.businessId; 
+    localStorage.setItem('user', JSON.stringify(user));
+
     return response.data;
 }
 
+const getQrCodeByReferrerId = async ({referrerId, businessId}) => {
+    console.log(referrerId, businessId, 'from api');
+    const response = await axios.post(API_URL + '/getQrCodeByReferrerId', { referrerId, businessId }, {
+        headers: {
+            Authorization: `Bearer ${user?.token}`
+        }
+    })
+
+    return response.data;
+}
 const referrerApi = {
     createReferrer,
     getReferrersByBusinessId,
-    getReferrerById
+    getReferrerById,
+    getQrCodeByReferrerId
 };
 
 export default referrerApi;
