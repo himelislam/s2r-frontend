@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import authApi from '@/api/authApi';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../ui/card';
 import { Label } from '@radix-ui/react-dropdown-menu';
@@ -9,11 +9,12 @@ import { Button } from '../../ui/button';
 import { Eye, EyeOff } from 'lucide-react';
 import { useUser } from '@/contexts/usercontext';
 import { toast } from 'react-toastify';
+import businessApi from '@/api/businessApi';
 
 export default function ReferrerSignup() {
     const { businessId, email: paramEmail, name: paramName } = useParams();
-    const [name, setName] = useState(paramName);
-    const [email, setEmail] = useState(paramEmail);
+    const [name, setName] = useState(paramName || '');
+    const [email, setEmail] = useState(paramEmail || '');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [passwordError, setPasswordError] = useState('');
@@ -64,12 +65,20 @@ export default function ReferrerSignup() {
             dispatch
         })
     }
+
+    const { data: busienss = [] } = useQuery({
+        queryKey: ['getBusinessById', businessId],
+        queryFn: () => businessApi.getBusinessById(businessId),
+        enabled: !!businessId,
+      })
+
+      console.log(busienss, "bs");
     return (
         <div className="flex h-screen w-full items-center justify-center px-4">
             {/* <SignupForm/> */}
             <Card className="mx-auto max-w-sm">
                 <CardHeader>
-                    <CardTitle className="text-2xl">Sign Up as a Referrer</CardTitle>
+                    <CardTitle className="text-2xl">Sign Up as a Referrer under: {busienss?.name}</CardTitle>
                     <CardDescription>
                         Enter your email below to signup to your account
                     </CardDescription>
@@ -83,7 +92,7 @@ export default function ReferrerSignup() {
                                     id="name"
                                     type="text"
                                     placeholder={paramName}
-                                    value={paramName}
+                                    value={name}
                                     required
                                     onChange={(e) => setName(e.target.value)}
                                 />
@@ -94,7 +103,7 @@ export default function ReferrerSignup() {
                                     id="email"
                                     type="email"
                                     placeholder={paramEmail}
-                                    value={paramEmail}
+                                    value={email}
                                     required
                                     onChange={(e) => setEmail(e.target.value)}
                                 />

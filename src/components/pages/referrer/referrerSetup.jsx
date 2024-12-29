@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import referrerApi from "@/api/referrerApi";
 import businessApi from "@/api/businessApi";
+import Spinner from "@/components/spinner";
 
 export function ReferrerSetup() {
   const [form, setForm] = useState({
@@ -164,8 +165,14 @@ export function ReferrerSetup() {
               onChange={handleFileChange}
             />
           </div>
-          <Button type="submit" className="w-full">
-            Submit
+          <Button type="submit" className="w-full" disabled={createReferrerMutation.isPending}>
+            {createReferrerMutation.isPending
+              ? (
+                <>
+                  Submit <Spinner />
+                </>
+              )
+              : 'Submit'}
           </Button>
         </form>
       </CardContent>

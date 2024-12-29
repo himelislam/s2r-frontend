@@ -31,11 +31,12 @@ import { ReferrerInvitationSetup } from "./components/pages/referrer/referrer-in
 
 
 
+
 export const appRoutes = createBrowserRouter([
     {
         path: '/',
         element: <App />,
-        errorElement: <Errorpage/>,
+        errorElement: <Errorpage/>, // Error page
         children: [
             {   
                 path: '/',
@@ -157,7 +158,7 @@ export const appRoutes = createBrowserRouter([
         element: <RefereeForm/>
     },
     {
-        path: 'referrer-signup/:businessId/:email/:name',
+        path: 'referrer-signup/:businessId/:email?/:name?',
         element: <ReferrerSignup/>
     },
     {

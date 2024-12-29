@@ -1,5 +1,6 @@
 import businessApi from "@/api/businessApi";
 import memberApi from "@/api/memberApi";
+import Spinner from "@/components/spinner";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -31,6 +32,19 @@ export default function InviteReferrer() {
         }
     })
 
+    const invitationUrl = `${import.meta.env.VITE_CLIENT_URL}/referrer-signup/${user?.userId}`;
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(invitationUrl)
+      .then(() => {
+        toast.success("Invitation link copied to clipboard!");
+      })
+      .catch((err) => {
+        console.error("Failed to copy: ", err);
+        toast.error("Failed to copy the link.");
+      });
+  };
+
     const { data: members = [], isLoading, isError, error} = useQuery({
         queryKey: ['getMembersByBusinessId', user?.userId],
         queryFn: () => memberApi.getMembersByBusinessId(user?.userId),
@@ -55,6 +69,8 @@ export default function InviteReferrer() {
                         </Button>
                     </DialogTrigger>
 
+                    <Button onClick={handleCopy}>Invitation Link</Button>
+
                     <DialogContent>
                         <DialogTitle>Invite Referrer</DialogTitle>
                         <DialogDescription>Please input the email and name of the referrer.</DialogDescription>
@@ -72,7 +88,13 @@ export default function InviteReferrer() {
                         />
                         <DialogFooter>
                             <Button onClick={inviteReferrer}  className='mb-6 me-5'>
-                                Invite
+                                {inviteReferrerMutation.isPending
+                                              ? (
+                                                <>
+                                                  Invite <Spinner />
+                                                </>
+                                              )
+                                              : 'Invite'}
                             </Button>
                             <DialogClose asChild>
                                 <Button variant="outline">Cancel</Button>

@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react'
-import QrCard from './qr-card';
+import BusinessQrCard from './business-qr-card';
 import { toast } from 'react-toastify';
 import { jsPDF } from 'jspdf';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -215,8 +215,8 @@ export default function BusinessQrCodes() {
                             min={1} // Ensure that the number is at least 1
                         />
                         <DialogFooter>
-                            <Button onClick={generateQrCodes} disabled={generateQrCodeMutation.isLoading} className='mb-6 me-5'>
-                                {generateQrCodeMutation.isLoading ? "Generating..." : "Generate QR Codes"}
+                            <Button onClick={generateQrCodes} disabled={generateQrCodeMutation.isPending} className='mb-6 me-5'>
+                                {generateQrCodeMutation.isPending ? "Generating..." : "Generate QR Codes"}
                             </Button>
                             <DialogClose asChild>
                                 <Button variant="outline">Cancel</Button>
@@ -286,8 +286,9 @@ export default function BusinessQrCodes() {
                     </DrawerContent>
                 </Drawer>
             </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-                {business?.qrCodes?.map((card) => <QrCard card={card} downloadSingleQrCodesAsPdf={downloadSingleQrCodesAsPdf} />)}
+                {business?.qrCodes?.map((card) => <BusinessQrCard card={card} downloadSingleQrCodesAsPdf={downloadSingleQrCodesAsPdf} />)}
             </div>
         </div>
     )

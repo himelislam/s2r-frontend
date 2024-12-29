@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react'
 
-export default function QrCard({ card, downloadSingleQrCodesAsPdf }) {
+export default function BusinessQrCard({ card, downloadSingleQrCodesAsPdf }) {
 
   const user = JSON.parse(localStorage.getItem("user"))
 

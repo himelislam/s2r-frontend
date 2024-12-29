@@ -9,6 +9,7 @@ import { Button } from '../ui/button';
 import { Eye, EyeOff } from 'lucide-react';
 import { useUser } from '@/contexts/usercontext';
 import { toast } from 'react-toastify';
+import Spinner from '../spinner';
 
 export default function Signup() {
     const [name, setName] = useState('');
@@ -18,11 +19,11 @@ export default function Signup() {
     const [passwordError, setPasswordError] = useState('');
 
     const navigate = useNavigate()
-    const {dispatch} = useUser();
+    const { dispatch } = useUser();
 
     const signupMutation = useMutation({
         // mutationFn: authApi.signup,
-        mutationFn: ({name, email, password, dispatch}) => authApi.signup({name, email, password}, dispatch),
+        mutationFn: ({ name, email, password, dispatch }) => authApi.signup({ name, email, password }, dispatch),
         onSuccess: (data) => {
             console.log('Signup successful:', data);
             navigate('/select-role')
@@ -142,8 +143,14 @@ export default function Signup() {
                                     <p className="text-red-500 text-xs mt-1 text-">{passwordError}</p>
                                 )}
                             </div>
-                            <Button type="submit" className="w-full">
-                                Sign up
+                            <Button type="submit" className="w-full" disabled={signupMutation.isPending}>
+                                {signupMutation.isPending
+                                    ? (
+                                        <>
+                                            Sign up <Spinner />
+                                        </>
+                                    )
+                                    : 'Sign up'}
                             </Button>
                             <Button variant="outline" className="w-full">
                                 Signup with Google

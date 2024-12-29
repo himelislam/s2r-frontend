@@ -17,6 +17,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../..
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { toast } from 'react-toastify';
+import Spinner from '@/components/spinner';
 
 export default function RefereeForm() {
     const [name, setName] = useState('');
@@ -70,10 +71,10 @@ export default function RefereeForm() {
         <div>
             <div className="max-w-lg mx-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
                 <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-4 text-center">
-                Unlock Exclusive Discounts!
+                    Unlock Exclusive Discounts!
                 </h1>
                 <p className='text-md text-gray-800 dark:text-gray-200 mb-4 text-center'>Welcome! We’re excited to share an exclusive opportunity for you to grab amazing deals at {business?.businessName}. Thanks to your referrer, you now have access to our special discounts</p>
-                
+
 
                 <h2 className='text-center'>Referrer Name: {foundQrCode?.referrerName}</h2>
 
@@ -81,7 +82,7 @@ export default function RefereeForm() {
                     <CardHeader>
                         <CardTitle className="text-2xl text-center">Grab Your Discount Now</CardTitle>
                         <CardDescription>
-                        Fill out the form below to register and secure your discount. Our team will reach out to finalize your access to these exclusive deals.
+                            Fill out the form below to register and secure your discount. Our team will reach out to finalize your access to these exclusive deals.
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -143,8 +144,14 @@ export default function RefereeForm() {
                                     </PopoverContent>
                                 </Popover>
 
-                                <Button type="submit" className="w-full">
-                                    Sumbit
+                                <Button type="submit" className="w-full" disabled={createRefereeMutation.isPending}>
+                                    {createRefereeMutation.isPending
+                                        ? (
+                                            <>
+                                                Submit <Spinner />
+                                            </>
+                                        )
+                                        : 'Submit'}
                                 </Button>
                             </div>
                         </form>

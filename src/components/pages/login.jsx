@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import { useMutation,  } from '@tanstack/react-query';
+import { useMutation, } from '@tanstack/react-query';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Label } from '@radix-ui/react-dropdown-menu';
 import { Input } from '../ui/input';
@@ -9,6 +9,7 @@ import authApi from '@/api/authApi';
 import { Eye, EyeOff } from 'lucide-react';
 import { useUser } from '@/contexts/usercontext';
 import { toast } from 'react-toastify';
+import Spinner from '../spinner';
 
 
 export default function Login() {
@@ -30,7 +31,7 @@ export default function Login() {
         navigate('/b/dashboard')
       } else if (data.userType == 'referrer') {
         navigate('/r/dashboard')
-      } else if(data.userType == 'user'){
+      } else if (data.userType == 'user') {
         navigate('/select-role')
       }
       // navigate('/dashboard')
@@ -75,6 +76,7 @@ export default function Login() {
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
+
               {/* <div className="grid gap-2">
               <div className="flex items-center">
                 <Label htmlFor="password">Password</Label>
@@ -119,8 +121,14 @@ export default function Login() {
                   </Button>
                 </div>
               </div>
-              <Button type="submit" className="w-full">
-                Login
+              <Button type="submit" className="w-full" disabled={loginMutation.isPending}>
+                {loginMutation.isPending
+                  ? (
+                    <>
+                      Login <Spinner />
+                    </>
+                  )
+                  : 'Login'}
               </Button>
               <Button variant="outline" className="w-full">
                 Login with Google
