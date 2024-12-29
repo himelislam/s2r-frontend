@@ -56,8 +56,8 @@ export function ReferrerInvitationSetup() {
         e.preventDefault();
 
         createReferrerMutation.mutate({
-            name: user?.name,
-            email: user?.email,
+            name: name,
+            email: email,
             phone: form.phone,
             signature: form.signature,
             userType: 'referrer',

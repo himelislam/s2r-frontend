@@ -158,7 +158,7 @@ export const appRoutes = createBrowserRouter([
         element: <RefereeForm/>
     },
     {
-        path: 'referrer-signup/:businessId/:email/:name',
+        path: 'referrer-signup/:businessId/:email?/:name?',
         element: <ReferrerSignup/>
     },
     {
