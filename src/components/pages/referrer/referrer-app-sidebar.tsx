@@ -21,19 +21,18 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { NavProjects } from "@/components/nav-projects"
-import { useQueries, useQuery } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import referrerApi from "@/api/referrerApi"
 
 
-const user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")!) : null;
 
 export function ReferrerAppSidebar({ ...props }) {
+  const user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")!) : null;
 
-  const { data: referrer = [] } = useQuery({
+  const { data: referrer = [], isSuccess } = useQuery({
     queryKey: ['getReferrerById', user?.userId],
     queryFn: () => referrerApi.getReferrerById(user?.userId),
-    enabled: !!user?.userId
+    enabled: !!user?.userId,
   })
 
   const data = {

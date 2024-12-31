@@ -26,7 +26,7 @@ export default function Login() {
     // mutationFn: authApi.login,
     mutationFn: ({ email, password, dispatch }) => authApi.login({ email, password }, dispatch), // Pass dispatch
     onSuccess: (data) => {
-      console.log('Login successful:', data.userType);
+      console.log('Login successful:', data);
       if (data.userType == 'owner') {
         navigate('/b/dashboard')
       } else if (data.userType == 'referrer') {
