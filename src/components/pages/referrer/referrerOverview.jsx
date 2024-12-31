@@ -5,18 +5,20 @@ import ReferrerQrCard from './referrer-qr-card';
 
 export default function ReferrerOverview() {
 
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null;
 
-  const { data } = useQuery({
+  const { data, isError } = useQuery({
     queryKey: ['getQrCodeByReferrerId', user?.userId, user?.businessId],
     queryFn: ({ queryKey }) => {
-      const [, referrerId, businessId] = queryKey; // Destructure arguments from the key
+      const [,referrerId, businessId] = queryKey; // Destructure arguments from the key
       return referrerApi.getQrCodeByReferrerId({
         referrerId,
         businessId
       });
     },
-    enabled: !!user?.userId,
+    retry: 1,
+    retryDelay: 100,
+    enabled: !!user?.userId 
   })
 
   return (

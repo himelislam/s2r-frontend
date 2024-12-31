@@ -5,6 +5,7 @@ const user = JSON.parse(localStorage.getItem('user'))
 
 
 const getMembersByBusinessId = async ( businessId ) => {
+    const user = JSON.parse(localStorage.getItem('user'))
     const response = await axios.post(API_URL + "/getMembersByBusinessId", { businessId }, {
         headers : {
             Authorization : `Bearer ${user?.token}`
