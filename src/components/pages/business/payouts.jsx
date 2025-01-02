@@ -65,12 +65,13 @@ import {
   export default function Payouts() {
   
   
-    const { data: businesses = [], isLoading, isError, error } = useQuery({
-      queryKey: ['getReferrersByBusinessId', user?.userId],
-      queryFn: () => referrerApi.getReferrersByBusinessId(user?.userId),
-      enabled: !!user?.userId,
-    })
+    // const { data: businesses = [], isLoading, isError, error } = useQuery({
+    //   queryKey: ['getReferrersByBusinessId', user?.userId],
+    //   queryFn: () => referrerApi.getReferrersByBusinessId(user?.userId),
+    //   enabled: !!user?.userId,
+    // })
   
+    const businesses = [];
     console.log(businesses);
     return (
       <Table>

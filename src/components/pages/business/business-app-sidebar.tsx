@@ -70,6 +70,29 @@ export function BusinessAppSidebar({ ...props }) {
         ],
       },
       {
+        title: "Campaigns",
+        url: "/b/dashboard/campaign-portal",
+        icon: Settings2,
+        items: [
+          {
+            title: "General",
+            url: "#",
+          },
+          {
+            title: "Team",
+            url: "#",
+          },
+          {
+            title: "Billing",
+            url: "#",
+          },
+          {
+            title: "Limits",
+            url: "#",
+          },
+        ],
+      },
+      {
         title: "Referrers",
         url: "/b/dashboard/referrers",
         icon: Bot,
@@ -133,29 +156,6 @@ export function BusinessAppSidebar({ ...props }) {
       {
         title: "QR Codes",
         url: "/b/dashboard/qr-codes",
-        icon: Settings2,
-        items: [
-          {
-            title: "General",
-            url: "#",
-          },
-          {
-            title: "Team",
-            url: "#",
-          },
-          {
-            title: "Billing",
-            url: "#",
-          },
-          {
-            title: "Limits",
-            url: "#",
-          },
-        ],
-      },
-      {
-        title: "Campaign Portal",
-        url: "/b/dashboard/campaign-portal",
         icon: Settings2,
         items: [
           {
