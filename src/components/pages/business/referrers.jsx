@@ -80,6 +80,7 @@ export default function Referrers() {
           <TableHead className="w-[100px]">ID</TableHead>
           <TableHead>Name</TableHead>
           <TableHead>Email</TableHead>
+          <TableHead>Phone</TableHead>
           <TableHead className="text-right">Status</TableHead>
         </TableRow>
       </TableHeader>
@@ -89,6 +90,7 @@ export default function Referrers() {
             <TableCell className="font-medium">{index + 1}</TableCell>
             <TableCell>{business?.name}</TableCell>
             <TableCell>{business?.email}</TableCell>
+            <TableCell>{business?.phone}</TableCell>
             <TableCell className="text-right">{business?.totalAmount}</TableCell>
           </TableRow>
         ))}
