@@ -9,6 +9,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { Plus, Search } from "lucide-react"
 import React, { useState } from "react"
 import CampaignItem from "./campaign-item"
+import { Outlet, useNavigate } from "react-router-dom"
+import Spinner from "@/components/spinner"
+import { toast } from "react-toastify"
 
 export default function CampaignPortal() {
     const [open, setOpen] = useState(false)
@@ -18,14 +21,16 @@ export default function CampaignPortal() {
     const [searchTerm, setSearchTerm] = useState("");
     const [filter, setFilter] = useState("all");
     const queryClient = useQueryClient();
+    const navigate = useNavigate()
 
 
     const createCampaignMutation = useMutation({
         mutationFn: campaignApi.createCampaign,
         onSuccess: () => {
-            console.log("Campaign created successfully")
+            toast.success("Campaign created successfully")
             setOpen(false)
             queryClient.invalidateQueries('getCampaignsByBusinessId')
+            navigate('/b/dashboard/campaign-portal/builder')
         },
         onError: (error) => {
             console.error("An error occurred:", error)
@@ -59,7 +64,7 @@ export default function CampaignPortal() {
 
     return (
         <div>
-            <div className="container mx-auto p-6">
+            <div className="container mx-auto">
                 <div className="flex items-center justify-between mb-8">
                     <div className="flex items-center gap-4 flex-1">
                         <div className="relative w-[240px]">
@@ -114,12 +119,13 @@ export default function CampaignPortal() {
                                         <Select
                                             value={campaignLanguage}
                                             onValueChange={(value) => setCampaignLanguage(value)}
+                                            defaultValue="en"
                                         >
                                             <SelectTrigger className="col-span-3">
                                                 <SelectValue placeholder="Select a language" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="en">English</SelectItem>
+                                                <SelectItem value="en" selected>English</SelectItem>
                                                 <SelectItem value="es">Spanish</SelectItem>
                                                 <SelectItem value="fr">French</SelectItem>
                                                 <SelectItem value="de">German</SelectItem>
@@ -128,7 +134,15 @@ export default function CampaignPortal() {
                                     </div>
                                 </div>
                                 <DialogFooter>
-                                    <Button onClick={handleStartCampaign}>Start Campaign</Button>
+                                    <Button onClick={handleStartCampaign} disabled={createCampaignMutation.isPending}>
+                                        {createCampaignMutation.isPending
+                                            ? (
+                                                <>
+                                                    Start Campaign <Spinner />
+                                                </>
+                                            )
+                                            : 'Start Campaign'}
+                                    </Button>
                                 </DialogFooter>
                             </DialogContent>
                         </Dialog>
