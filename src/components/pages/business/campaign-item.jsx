@@ -7,10 +7,12 @@ import { Switch } from '@/components/ui/switch'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { BarChart2, Eye, Gift, Megaphone, MoreVertical, PenSquare, Share2, UserCheck, UserPlus, Users, Link } from 'lucide-react'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 export default function CampaignItem({ campaign }) {
     const queryClient = useQueryClient();
+    const navigate = useNavigate()
 
 
     const updateCampaignActiveStatusMutation = useMutation({
@@ -31,18 +33,26 @@ export default function CampaignItem({ campaign }) {
         updateCampaignActiveStatusMutation.mutate(newStatus);
     }
 
-    console.log(campaign, "campaign");
+    const handleEditCampaign = (id) => {
+        // Navigate to edit campaign page
+        navigate(`/b/dashboard/campaign-portal/builder`, { state: { campaign } });
+    }
 
     return (
         <>
-            <Collapsible key={campaign.id} className="bg-white rounded-lg border">
+            <Collapsible key={campaign._id} className="bg-white rounded-lg border">
                 <CollapsibleTrigger className="flex items-center justify-between w-full p-4">
                     <div className="flex items-center gap-4">
                         <Switch checked={campaign.active} onClick={(e)=> {handleCampaignActive(), e.stopPropagation()}} />
                         <span className="font-medium">{campaign.campaignName}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                        <Button variant="outline" size="sm" className="gap-2" onClick={(e)=> {e.stopPropagation()}}>
+                        <Button variant="outline" size="sm" className="gap-2" onClick={
+                            (e)=> {
+                            e.stopPropagation();
+                            handleEditCampaign() 
+                            }
+                            }>
                             <PenSquare className="h-4 w-4" />
                             Edit Campaign
                         </Button>

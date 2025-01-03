@@ -21,7 +21,6 @@ export default function PrivateRoute({ allowedRoles }) {
 
     const token = localCurrentUser.token;
     const tokenExpiration = JSON.parse(atob(token.split('.')[1])).exp * 1000;
-    console.log(tokenExpiration, "token exp");
     const currentTime = new Date().getTime();
 
     if (currentTime >= tokenExpiration) {

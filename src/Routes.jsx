@@ -28,6 +28,8 @@ import RefereeForm from "./components/pages/referee/referee-form";
 import BusinessReferees from "./components/pages/business/business-referees";
 import ReferrerSignup from "./components/pages/referrer/referrer-signup";
 import { ReferrerInvitationSetup } from "./components/pages/referrer/referrer-invitation-setup";
+import CampaignBuilder from "./components/pages/business/campaign-builder";
+import BusinessCampaigns from "./components/pages/business/business-campaigns";
 
 
 
@@ -92,7 +94,17 @@ export const appRoutes = createBrowserRouter([
                             },
                             {
                                 path: 'campaign-portal',
-                                element: <CampaignPortal/>
+                                element: <BusinessCampaigns/>,
+                                children:[
+                                    {
+                                        index: true,
+                                        element: <CampaignPortal/>
+                                    },
+                                    {
+                                        path: 'builder',
+                                        element: <CampaignBuilder/>
+                                    }
+                                ]
                             },
                             {
                                 path: 'invite-referrer',
