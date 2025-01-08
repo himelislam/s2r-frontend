@@ -26,11 +26,11 @@ export default function CampaignPortal() {
 
     const createCampaignMutation = useMutation({
         mutationFn: campaignApi.createCampaign,
-        onSuccess: () => {
+        onSuccess: (data) => {
             toast.success("Campaign created successfully")
             setOpen(false)
             queryClient.invalidateQueries('getCampaignsByBusinessId')
-            navigate('/b/dashboard/campaign-portal/builder')
+            navigate('/b/dashboard/campaign-portal/builder', { state: { campaign: data} })
         },
         onError: (error) => {
             console.error("An error occurred:", error)
