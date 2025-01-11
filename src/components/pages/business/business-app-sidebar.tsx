@@ -21,29 +21,20 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { useQuery } from "@tanstack/react-query"
-import businessApi from "@/api/businessApi"
-import { DotLoader } from "react-spinners"
 
 
 export function BusinessAppSidebar({ ...props }) {
   
-  const user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")!) : null;
-  const {data: business =[], isPending} = useQuery({
-    queryKey: ['getBusinessById', user?.userId],
-    queryFn: () => businessApi.getBusinessById(user?.userId),
-    enabled: !!user?.userId
-  })
-
+  
   const data = {
     user: {
-      name: business?.name,
-      email: business?.email,
+      name: props.business?.name,
+      email: props.business?.email,
       avatar: "/avatars/shadcn.jpg",
     },
     teams: [
       {
-        name: business?.businessName ? business?.businessName : "Business Dashboard",
+        name: props.business?.businessName ? props.business?.businessName : "Business Dashboard",
         logo: GalleryVerticalEnd,
         plan: "Enterprise",
       },
@@ -241,17 +232,11 @@ export function BusinessAppSidebar({ ...props }) {
       },
     ],
   }
-
-  // if (isPending) {
-  //   return <div style={{textAlign: 'center', justifyContent: 'center', alignItems: 'center', display: 'flex', height: '100vh', width: '100vw'}}>
-  //     <DotLoader cssOverride={{marginTop: '50px'}}/>
-  //   </div>
-  // }
   
   return (
     <Sidebar collapsible="icon" variant="floating" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} business={business} referrer={[]} />
+        <TeamSwitcher teams={data.teams} business={props.business} referrer={[]} />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
