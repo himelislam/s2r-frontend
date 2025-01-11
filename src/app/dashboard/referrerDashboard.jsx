@@ -1,3 +1,5 @@
+import referrerApi from "@/api/referrerApi";
+import { Loader } from "@/components/pages/loader";
 import { ReferrerAppSidebar } from "@/components/pages/referrer/referrer-app-sidebar"
 import { Separator } from "@/components/ui/separator"
 import {
@@ -5,12 +7,27 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+import { useIsFetching, useQuery } from "@tanstack/react-query";
 import { Outlet } from "react-router-dom"
 
 export default function ReferrerDashboard() {
+  const user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null;
+
+  const { data: referrer = [], isLoading} = useQuery({
+    queryKey: ['getReferrerById', user?.userId],
+    queryFn: () => referrerApi.getReferrerById(user?.userId),
+    enabled: !!user?.userId,
+  })
+
+  if(isLoading){
+    return <Loader/>
+  }
+
+
+
   return (
     <SidebarProvider>
-      <ReferrerAppSidebar />
+      <ReferrerAppSidebar referrer={referrer} />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2 px-4">

@@ -21,29 +21,20 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { useQuery } from "@tanstack/react-query"
-import referrerApi from "@/api/referrerApi"
 
 
 
 export function ReferrerAppSidebar({ ...props }) {
-  const user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")!) : null;
-
-  const { data: referrer = [], isSuccess } = useQuery({
-    queryKey: ['getReferrerById', user?.userId],
-    queryFn: () => referrerApi.getReferrerById(user?.userId),
-    enabled: !!user?.userId,
-  })
 
   const data = {
     user: {
-      name: referrer?.name,
-      email: referrer?.email,
+      name: props.referrer?.name,
+      email: props.referrer?.email,
       avatar: "/avatars/shadcn.jpg",
     },
     teams: [
       {
-        name: referrer?.name ? referrer?.name : "Referrer Dashboard",
+        name: props.referrer?.name ? props.referrer?.name : "Referrer Dashboard",
         logo: GalleryVerticalEnd,
         plan: "Enterprise",
       },
@@ -180,7 +171,7 @@ export function ReferrerAppSidebar({ ...props }) {
   return (
     <Sidebar collapsible="icon" variant="floating" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} business={[]} referrer={referrer} />
+        <TeamSwitcher teams={data.teams} business={[]} referrer={props.referrer} />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />

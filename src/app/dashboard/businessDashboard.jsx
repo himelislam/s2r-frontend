@@ -1,16 +1,31 @@
+import businessApi from "@/api/businessApi";
 import { BusinessAppSidebar } from "@/components/pages/business/business-app-sidebar"
+import { Loader } from "@/components/pages/loader";
 import { Separator } from "@/components/ui/separator"
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+import { useQuery } from "@tanstack/react-query";
 import { Outlet } from "react-router-dom"
 
 export default function BusinessDashboard() {
+  const user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null;
+
+  const {data: business =[], isLoading} = useQuery({
+    queryKey: ['getBusinessById', user?.userId],
+    queryFn: () => businessApi.getBusinessById(user?.userId),
+    enabled: !!user?.userId
+  })
+
+if(isLoading){
+  return <Loader/>
+}
+
   return (
     <SidebarProvider>
-      <BusinessAppSidebar />
+      <BusinessAppSidebar business={business} />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2 px-4">

@@ -33,6 +33,8 @@ import { useMutation } from "@tanstack/react-query"
 import authApi from "@/api/authApi"
 import { useNavigate } from "react-router-dom"
 import { useUser } from "@/contexts/usercontext"
+import { Loader } from "./pages/loader"
+import Spinner from "./spinner"
 
 export function NavUser({
   user,
@@ -46,7 +48,7 @@ export function NavUser({
   const { isMobile } = useSidebar()
 
   const navigate = useNavigate();
-  const {dispatch} = useUser()
+  const { dispatch } = useUser()
 
   const handleLogOutMutation = useMutation({
     mutationFn: authApi.logout,
@@ -54,12 +56,12 @@ export function NavUser({
       console.log('loged out', data);
       navigate('/login')
     },
-    onError: (err)=>{
+    onError: (err) => {
       console.log('unable to signout', err);
     }
   })
 
-  const handleLogOut = () =>{
+  const handleLogOut = () => {
     handleLogOutMutation.mutate(
       dispatch,
     )
@@ -128,7 +130,13 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogOut}>
               <LogOut />
-              Log out
+              {handleLogOutMutation.isPending
+                ? (
+                  <>
+                    Log out <Spinner />
+                  </>
+                )
+                : 'Log out'}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
