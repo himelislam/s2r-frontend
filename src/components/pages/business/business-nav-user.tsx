@@ -5,6 +5,7 @@ import {
   Bell,
   ChevronsUpDown,
   CreditCard,
+  Globe,
   LogOut,
   Sparkles,
 } from "lucide-react"
@@ -125,6 +126,10 @@ export function BusinessNavUser({
               <DropdownMenuItem className="cursor-pointer" onClick={()=>handleNavigate('notifications')}>
                 <Bell />
                 Notifications
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer" onClick={()=>handleNavigate('display')}>
+                <Globe/>
+                Display
               </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer" onClick={()=>handleNavigate('billing')}>
                 <CreditCard />
