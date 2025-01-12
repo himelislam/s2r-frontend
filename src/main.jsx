@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { UserProvider } from './context/usercontext'
 import { BusinessProvider } from './context/business/BusinessContext'
 import { ReferrerProvider } from './context/referrer/ReferrerContext'
+import { ThemeProvider } from './components/theme-provider'
 
 
 const queryClient = new QueryClient()
@@ -17,6 +18,7 @@ const queryClient = new QueryClient()
 createRoot(document.getElementById('root')).render(
   <QueryClientProvider client={queryClient}>
     <StrictMode>
+      <ThemeProvider>
       <UserProvider>
         <BusinessProvider>
           <ReferrerProvider>
@@ -25,6 +27,7 @@ createRoot(document.getElementById('root')).render(
           </ReferrerProvider>
         </BusinessProvider>
       </UserProvider>
+      </ThemeProvider>
     </StrictMode>
   </QueryClientProvider>,
 )
