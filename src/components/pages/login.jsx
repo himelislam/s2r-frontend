@@ -7,7 +7,7 @@ import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import authApi from '@/api/authApi';
 import { Eye, EyeOff } from 'lucide-react';
-import { useUser } from '@/contexts/usercontext';
+import { useUser } from '@/context/usercontext';
 import { toast } from 'react-toastify';
 import Spinner from '../spinner';
 

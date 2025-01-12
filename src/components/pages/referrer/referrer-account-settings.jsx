@@ -29,30 +29,19 @@ import {
 import { Switch } from "@/components/ui/switch"
 import { Separator } from "@/components/ui/separator"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { useSearchParams } from "react-router-dom"
+import useReferrer from "@/hooks/useReferrer"
 
-// const profileFormSchema = z.object({
-//   username: z.string().min(2, {
-//     message: "Username must be at least 2 characters.",
-//   }),
-//   email: z.string().email({
-//     message: "Please enter a valid email address.",
-//   }),
-//   name: z.string().min(2, {
-//     message: "Name must be at least 2 characters.",
-//   }),
-// })
 
 export default function ReferrerAccountSettings() {
-    const [isPending, startTransition] = React.useTransition()
+    const {referrerState} = useReferrer();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const currentTab = searchParams.get("tab") || "profile";
 
-    const form = {}
+    const handleTabChange = (tabValue) => {
+        setSearchParams({ tab: tabValue });
+    };
 
-    function onSubmit(data) {
-        startTransition(() => {
-            // Handle form submission
-            console.log(data)
-        })
-    }
     return (
         <div className="container max-w-6xl space-y-6">
             <div className="space-y-0.5">
@@ -63,7 +52,7 @@ export default function ReferrerAccountSettings() {
             </div>
             <Separator className="my-6" />
             <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-                <Tabs defaultValue="profile" className="flex-1">
+                <Tabs value={currentTab} onValueChange={handleTabChange} className="flex-1">
                     <div className="flex flex-col lg:flex-row lg:space-x-12">
                         <aside className="lg:w-1/6">
                             <TabsList className="grid w-full grid-cols-1 gap-2">
@@ -87,13 +76,6 @@ export default function ReferrerAccountSettings() {
                         </aside>
                         <div className="flex-1">
                             <TabsContent value="profile" className="space-y-6">
-                                {/* <Alert>
-                                    <AlertCircle className="h-4 w-4" />
-                                    <AlertTitle>Heads up!</AlertTitle>
-                                    <AlertDescription>
-                                        Your trial period ends in 7 days. Upgrade to continue using all features.
-                                    </AlertDescription>
-                                </Alert> */}
                                 <Card>
                                     <CardHeader>
                                         <CardTitle>Profile</CardTitle>
@@ -119,19 +101,15 @@ export default function ReferrerAccountSettings() {
                                         <div className="space-y-4">
                                             <div className="grid gap-2">
                                                 <Label htmlFor="name">Name</Label>
-                                                <Input id="name" defaultValue="John Doe" />
-                                            </div>
-                                            <div className="grid gap-2">
-                                                <Label htmlFor="username">Username</Label>
-                                                <Input id="username" defaultValue="@johndoe" />
+                                                <Input id="name" placeholder={referrerState?.name} />
                                             </div>
                                             <div className="grid gap-2">
                                                 <Label htmlFor="email">Email</Label>
-                                                <Input id="email" defaultValue="john@example.com" type="email" />
+                                                <Input id="email" placeholder={referrerState?.email} type="email" />
                                             </div>
                                             <div className="grid gap-2">
-                                                <Label htmlFor="bio">Bio</Label>
-                                                <Input id="bio" defaultValue="I'm a software developer based in New York." />
+                                                <Label htmlFor="username">Phone</Label>
+                                                <Input id="phone" placeholder={referrerState?.phone} />
                                             </div>
                                         </div>
                                     </CardContent>

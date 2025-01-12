@@ -1,4 +1,4 @@
-import { useUser } from "@/contexts/usercontext";
+import { useUser } from "@/context/usercontext";
 import axios from "axios";
 
 const API_URL = `${import.meta.env.VITE_API_URL}/api/auth`;

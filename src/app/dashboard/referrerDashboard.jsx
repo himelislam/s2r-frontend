@@ -7,17 +7,26 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+import useReferrer from "@/hooks/useReferrer";
 import { useIsFetching, useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { Outlet } from "react-router-dom"
 
 export default function ReferrerDashboard() {
   const user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null;
+  const {dispatch} = useReferrer();
 
-  const { data: referrer = [], isLoading} = useQuery({
+  const { data: referrer = [], isLoading, isSuccess} = useQuery({
     queryKey: ['getReferrerById', user?.userId],
     queryFn: () => referrerApi.getReferrerById(user?.userId),
     enabled: !!user?.userId,
   })
+
+  useEffect(() => {
+      if (isSuccess) {
+        dispatch({ type: "SET_REFERRER", payload: referrer });
+      }
+    }, [isSuccess, referrer]);
 
   if(isLoading){
     return <Loader/>

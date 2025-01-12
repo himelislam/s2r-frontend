@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
-import { useUser } from "@/contexts/usercontext";
+import { useUser } from "@/context/usercontext";
 
 export function RoleSelection() {
   const navigate = useNavigate();

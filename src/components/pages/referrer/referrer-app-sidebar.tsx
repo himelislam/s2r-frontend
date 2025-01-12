@@ -12,7 +12,6 @@ import {
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
-import { NavUser } from "@/components/nav-user"
 import { TeamSwitcher } from "@/components/team-switcher"
 import {
   Sidebar,
@@ -21,6 +20,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import { ReferrerNavUser } from "./referrer-nav-user"
 
 
 
@@ -178,7 +178,8 @@ export function ReferrerAppSidebar({ ...props }) {
         {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        {/* <NavUser user={data.user} /> */}
+        <ReferrerNavUser user={data.user}/>
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

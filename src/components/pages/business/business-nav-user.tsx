@@ -32,11 +32,11 @@ import {
 import { useMutation } from "@tanstack/react-query"
 import authApi from "@/api/authApi"
 import { useNavigate } from "react-router-dom"
-import { useUser } from "@/contexts/usercontext"
-import { Loader } from "./pages/loader"
-import Spinner from "./spinner"
+import { useUser } from "@/context/usercontext"
+import { Loader } from "../loader"
+import Spinner from "../../spinner"
 
-export function NavUser({
+export function BusinessNavUser({
   user,
 }: {
   user: {
@@ -66,6 +66,10 @@ export function NavUser({
       dispatch,
     )
   }
+
+  const handleNavigate = (tab:string) => {
+    navigate(`/b/dashboard/account-settings?tab=${tab}`);
+  };
 
   return (
     <SidebarMenu>
@@ -107,24 +111,24 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer" onClick={()=>handleNavigate('business')}>
                 <Sparkles />
-                Upgrade to Pro
+                Business
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer" onClick={()=>handleNavigate('account')}>
                 <BadgeCheck />
                 Account
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCard />
-                Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer" onClick={()=>handleNavigate('notifications')}>
                 <Bell />
                 Notifications
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer" onClick={()=>handleNavigate('billing')}>
+                <CreditCard />
+                Billing
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
