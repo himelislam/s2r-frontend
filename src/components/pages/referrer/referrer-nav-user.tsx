@@ -33,7 +33,6 @@ import { useMutation } from "@tanstack/react-query"
 import authApi from "@/api/authApi"
 import { useNavigate } from "react-router-dom"
 import { useUser } from "@/context/usercontext"
-import { Loader } from "../loader"
 import Spinner from "../../spinner"
 
 export function ReferrerNavUser({
@@ -111,24 +110,24 @@ export function ReferrerNavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={()=>handleNavigate('profile')}>
                 <Sparkles />
-                Upgrade to Pro
+                Profile
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={()=>handleNavigate('account')}>
                 <BadgeCheck />
                 Account
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCard />
-                Billing
               </DropdownMenuItem>
               <DropdownMenuItem onClick={()=>handleNavigate('notifications')}>
                 <Bell />
                 Notifications
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={()=>handleNavigate('display')}>
+                <CreditCard />
+                Display
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
