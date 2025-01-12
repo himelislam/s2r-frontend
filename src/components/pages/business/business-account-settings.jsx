@@ -1,5 +1,5 @@
 import React from "react"
-import { User, Mail, Lock, Bell, Smartphone, Globe, CreditCard, LogOut, Check, AlertCircle } from 'lucide-react'
+import { User, Mail, Lock, Bell, Smartphone, Globe, CreditCard, LogOut, Check, AlertCircle, Sun, Moon } from 'lucide-react'
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -31,8 +31,16 @@ import { Separator } from "@/components/ui/separator"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import useBusiness from "@/hooks/useBusiness"
 import { useSearchParams } from "react-router-dom"
+import { useTheme } from "@/components/theme-provider"
+import { DropdownMenu } from "@radix-ui/react-dropdown-menu"
+import { DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
 export default function BusinessAccountSettings() {
+    const { theme, setTheme } = useTheme()
+
+    // const toggleTheme = () => {
+    //     setTheme(theme === "dark" ? "light" : "dark");
+    // };
     const user = JSON.parse(localStorage.getItem('user'))
     const { businessState } = useBusiness();
 
@@ -300,7 +308,26 @@ export default function BusinessAccountSettings() {
                                                     Switch between light and dark mode.
                                                 </p>
                                             </div>
-                                            <Switch />
+                                            <DropdownMenu>
+                                                <DropdownMenuTrigger asChild>
+                                                    <Button variant="outline" size="icon">
+                                                        <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                                                        <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                                                        <span className="sr-only">Toggle theme</span>
+                                                    </Button>
+                                                </DropdownMenuTrigger>
+                                                <DropdownMenuContent align="end">
+                                                    <DropdownMenuItem onClick={() => setTheme("light")}>
+                                                        Light
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem onClick={() => setTheme("dark")}>
+                                                        Dark
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem onClick={() => setTheme("system")}>
+                                                        System
+                                                    </DropdownMenuItem>
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
                                         </div>
                                     </CardContent>
                                 </Card>
