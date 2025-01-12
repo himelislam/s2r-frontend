@@ -7,7 +7,7 @@ import { Button } from "../../ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import businessApi from "@/api/businessApi";
-import { useUser } from "@/contexts/usercontext";
+import { useUser } from "@/context/usercontext";
 import Spinner from "@/components/spinner";
 
 export function BusinessSetup() {

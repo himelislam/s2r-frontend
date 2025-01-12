@@ -7,17 +7,27 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+import useBusiness from "@/hooks/useBusiness";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { Outlet } from "react-router-dom"
 
 export default function BusinessDashboard() {
   const user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null;
+  const { businessState, dispatch } = useBusiness();
 
-  const {data: business =[], isLoading} = useQuery({
+  const {data: business =[], isLoading, isSuccess} = useQuery({
     queryKey: ['getBusinessById', user?.userId],
     queryFn: () => businessApi.getBusinessById(user?.userId),
     enabled: !!user?.userId
   })
+
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch({ type: "SET_BUSINESS", payload: business });
+      console.log('dispatched business', business);
+    }
+  }, [isSuccess, business]);
 
 if(isLoading){
   return <Loader/>

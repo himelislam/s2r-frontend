@@ -29,30 +29,14 @@ import {
 import { Switch } from "@/components/ui/switch"
 import { Separator } from "@/components/ui/separator"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-
-// const profileFormSchema = z.object({
-//   username: z.string().min(2, {
-//     message: "Username must be at least 2 characters.",
-//   }),
-//   email: z.string().email({
-//     message: "Please enter a valid email address.",
-//   }),
-//   name: z.string().min(2, {
-//     message: "Name must be at least 2 characters.",
-//   }),
-// })
+import useBusiness from "@/hooks/useBusiness"
 
 export default function BusinessAccountSettings() {
-    const [isPending, startTransition] = React.useTransition()
+    const user = JSON.parse(localStorage.getItem('user'))
 
-    const form = {}
+    const { businessState } = useBusiness();
 
-    function onSubmit(data) {
-        startTransition(() => {
-            // Handle form submission
-            console.log(data)
-        })
-    }
+    console.log(businessState, "from settings");
     return (
         <div className="container max-w-6xl space-y-6">
             <div className="space-y-0.5">
@@ -70,6 +54,10 @@ export default function BusinessAccountSettings() {
                                 <TabsTrigger value="profile" className="justify-start gap-2">
                                     <User className="h-4 w-4" />
                                     Profile
+                                </TabsTrigger>
+                                <TabsTrigger value="business" className="justify-start gap-2">
+                                    <User className="h-4 w-4" />
+                                    Business
                                 </TabsTrigger>
                                 <TabsTrigger value="account" className="justify-start gap-2">
                                     <Lock className="h-4 w-4" />
@@ -89,15 +77,9 @@ export default function BusinessAccountSettings() {
                                 </TabsTrigger>
                             </TabsList>
                         </aside>
+
                         <div className="flex-1">
                             <TabsContent value="profile" className="space-y-6">
-                                {/* <Alert>
-                                    <AlertCircle className="h-4 w-4" />
-                                    <AlertTitle>Heads up!</AlertTitle>
-                                    <AlertDescription>
-                                        Your trial period ends in 7 days. Upgrade to continue using all features.
-                                    </AlertDescription>
-                                </Alert> */}
                                 <Card>
                                     <CardHeader>
                                         <CardTitle>Profile</CardTitle>
@@ -123,19 +105,61 @@ export default function BusinessAccountSettings() {
                                         <div className="space-y-4">
                                             <div className="grid gap-2">
                                                 <Label htmlFor="name">Name</Label>
-                                                <Input id="name" defaultValue="John Doe" />
-                                            </div>
-                                            <div className="grid gap-2">
-                                                <Label htmlFor="username">Username</Label>
-                                                <Input id="username" defaultValue="@johndoe" />
+                                                <Input id="name" placeholder={user?.name} />
                                             </div>
                                             <div className="grid gap-2">
                                                 <Label htmlFor="email">Email</Label>
-                                                <Input id="email" defaultValue="john@example.com" type="email" />
+                                                <Input id="email" placeholder={user?.email} type="email" />
+                                            </div>
+                                        </div>
+                                    </CardContent>
+                                    <CardFooter>
+                                        <Button className="gap-2">
+                                            <Check className="h-4 w-4" /> Save changes
+                                        </Button>
+                                    </CardFooter>
+                                </Card>
+                            </TabsContent>
+
+                            <TabsContent value="business" className="space-y-6">
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle>Business</CardTitle>
+                                        <CardDescription>
+                                            Update your business profile information and avatar.
+                                        </CardDescription>
+                                    </CardHeader>
+                                    <CardContent className="space-y-6">
+                                        <div className="flex items-center space-x-4">
+                                            <Avatar className="h-24 w-24">
+                                                <AvatarImage src="/placeholder.svg" alt="Avatar" />
+                                                <AvatarFallback>JD</AvatarFallback>
+                                            </Avatar>
+                                            <div className="space-y-2">
+                                                <h3 className="text-lg font-medium">Business profile</h3>
+                                                <div className="flex space-x-2">
+                                                    <Button variant="outline" size="sm">Change</Button>
+                                                    <Button variant="outline" size="sm">Remove</Button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <Separator />
+                                        <div className="space-y-4">
+                                            <div className="grid gap-2">
+                                                <Label htmlFor="name">Name</Label>
+                                                <Input id="name" placeholder={businessState?.businessName} />
                                             </div>
                                             <div className="grid gap-2">
-                                                <Label htmlFor="bio">Bio</Label>
-                                                <Input id="bio" defaultValue="I'm a software developer based in New York." />
+                                                <Label htmlFor="email">Email</Label>
+                                                <Input id="email" placeholder={businessState?.businessEmail} type="email" />
+                                            </div>
+                                            <div className="grid gap-2">
+                                                <Label htmlFor="address">Address</Label>
+                                                <Input id="address" placeholder={businessState?.address} type="text" />
+                                            </div>
+                                            <div className="grid gap-2">
+                                                <Label htmlFor="phone">Phone</Label>
+                                                <Input id="phone" placeholder={businessState?.phone} type="number" />
                                             </div>
                                         </div>
                                     </CardContent>

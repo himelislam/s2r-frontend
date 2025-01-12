@@ -32,7 +32,7 @@ import {
 import { useMutation } from "@tanstack/react-query"
 import authApi from "@/api/authApi"
 import { useNavigate } from "react-router-dom"
-import { useUser } from "@/contexts/usercontext"
+import { useUser } from "@/context/usercontext"
 import { Loader } from "./pages/loader"
 import Spinner from "./spinner"
 
