@@ -30,13 +30,19 @@ import { Switch } from "@/components/ui/switch"
 import { Separator } from "@/components/ui/separator"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import useBusiness from "@/hooks/useBusiness"
+import { useSearchParams } from "react-router-dom"
 
 export default function BusinessAccountSettings() {
     const user = JSON.parse(localStorage.getItem('user'))
-
     const { businessState } = useBusiness();
 
-    console.log(businessState, "from settings");
+    const [searchParams, setSearchParams] = useSearchParams();
+    const currentTab = searchParams.get("tab") || "profile";
+
+    const handleTabChange = (tabValue) => {
+        setSearchParams({ tab: tabValue });
+    };
+
     return (
         <div className="container max-w-6xl space-y-6">
             <div className="space-y-0.5">
@@ -47,7 +53,7 @@ export default function BusinessAccountSettings() {
             </div>
             <Separator className="my-6" />
             <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-                <Tabs defaultValue="profile" className="flex-1">
+                <Tabs value={currentTab} onValueChange={handleTabChange} className="flex-1">
                     <div className="flex flex-col lg:flex-row lg:space-x-12">
                         <aside className="lg:w-1/6">
                             <TabsList className="grid w-full grid-cols-1 gap-2">

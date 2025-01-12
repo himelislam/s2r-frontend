@@ -33,10 +33,10 @@ import { useMutation } from "@tanstack/react-query"
 import authApi from "@/api/authApi"
 import { useNavigate } from "react-router-dom"
 import { useUser } from "@/context/usercontext"
-import { Loader } from "./pages/loader"
-import Spinner from "./spinner"
+import { Loader } from "../loader"
+import Spinner from "../../spinner"
 
-export function NavUser({
+export function ReferrerNavUser({
   user,
 }: {
   user: {
@@ -66,6 +66,10 @@ export function NavUser({
       dispatch,
     )
   }
+
+  const handleNavigate = (tab:string) => {
+    navigate(`/r/dashboard/account-settings?tab=${tab}`);
+  };
 
   return (
     <SidebarMenu>
@@ -122,7 +126,7 @@ export function NavUser({
                 <CreditCard />
                 Billing
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={()=>handleNavigate('notifications')}>
                 <Bell />
                 Notifications
               </DropdownMenuItem>

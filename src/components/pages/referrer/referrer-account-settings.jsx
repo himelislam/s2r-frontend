@@ -29,6 +29,7 @@ import {
 import { Switch } from "@/components/ui/switch"
 import { Separator } from "@/components/ui/separator"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { useSearchParams } from "react-router-dom"
 
 // const profileFormSchema = z.object({
 //   username: z.string().min(2, {
@@ -43,16 +44,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 // })
 
 export default function ReferrerAccountSettings() {
-    const [isPending, startTransition] = React.useTransition()
-
-    const form = {}
-
-    function onSubmit(data) {
-        startTransition(() => {
-            // Handle form submission
-            console.log(data)
-        })
-    }
+    const [searchParams] = useSearchParams();
+    const defaultTab = searchParams.get("tab") || "profile";
+    
     return (
         <div className="container max-w-6xl space-y-6">
             <div className="space-y-0.5">
@@ -63,7 +57,7 @@ export default function ReferrerAccountSettings() {
             </div>
             <Separator className="my-6" />
             <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-                <Tabs defaultValue="profile" className="flex-1">
+                <Tabs defaultValue={defaultTab} className="flex-1">
                     <div className="flex flex-col lg:flex-row lg:space-x-12">
                         <aside className="lg:w-1/6">
                             <TabsList className="grid w-full grid-cols-1 gap-2">

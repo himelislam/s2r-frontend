@@ -12,7 +12,7 @@ import {
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
-import { NavUser } from "@/components/nav-user"
+import { BusinessNavUser } from "@/components/pages/business/business-nav-user"
 import { TeamSwitcher } from "@/components/team-switcher"
 import {
   Sidebar,
@@ -243,7 +243,7 @@ export function BusinessAppSidebar({ ...props }) {
         {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <BusinessNavUser user={data.user} />
         {/* <NavUser user={userState} /> */}
       </SidebarFooter>
       <SidebarRail />
