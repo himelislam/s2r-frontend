@@ -1,4 +1,5 @@
 import businessApi from '@/api/businessApi';
+import Spinner from '@/components/spinner';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -25,7 +26,7 @@ export default function BusinessSettingsProfile() {
             [id]: value,
         });
     };
-    
+
     const updateProfileMutation = useMutation({
         mutationFn: businessApi.updateProfile,
         onSuccess: (data) => {
@@ -89,7 +90,14 @@ export default function BusinessSettingsProfile() {
                 </CardContent>
                 <CardFooter>
                     <Button className="gap-2" type="submit" onClick={handleUpdateProfile}>
-                        <Check className="h-4 w-4" /> Save changes
+                        <Check className="h-4 w-4" />
+                        {updateProfileMutation.isPending
+                            ? (
+                                <>
+                                    Save Changes <Spinner />
+                                </>
+                            )
+                            : 'Save Changes'}
                     </Button>
                 </CardFooter>
             </Card>

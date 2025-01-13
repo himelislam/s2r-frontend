@@ -9,7 +9,7 @@ const createBusiness = async (userData) => {
             Authorization: `Bearer ${user?.token}`
         }
     });
-    
+
     if (response.data) {
         sessionStorage.setItem("business", JSON.stringify(response?.data));
         localStorage.setItem("business", JSON.stringify(response?.data));
@@ -19,24 +19,24 @@ const createBusiness = async (userData) => {
 
 const getAllBusiness = async () => {
     const user = JSON.parse(localStorage.getItem('user'))
-    const response =  await axios.get(API_URL + "/getAllBusiness", {
+    const response = await axios.get(API_URL + "/getAllBusiness", {
         headers: {
             Authorization: `Bearer ${user?.token}`
         }
     })
-    
+
     return response.data;
 }
 
 const generateQrCodes = async (data) => {
     const user = JSON.parse(localStorage.getItem('user'))
-    const response = await axios.post( API_URL + '/generateQrCodes', data, {
+    const response = await axios.post(API_URL + '/generateQrCodes', data, {
         headers: {
             Authorization: `Bearer ${user?.token}`
         },
         // responseType: 'blob',// Interpret response as a Blob
     })
-    
+
     return response.data;
 }
 
@@ -62,7 +62,7 @@ const inviteReferrer = async (data) => {
     return response.data;
 }
 
-const updateProfile = async(data) => {
+const updateProfile = async (data) => {
     const user = JSON.parse(localStorage.getItem('user'));
 
     const response = await axios.post(API_URL + '/updateProfile', data, {
@@ -71,12 +71,23 @@ const updateProfile = async(data) => {
         }
     })
 
-    if(response){
+    if (response) {
         user.name = response.data.name,
         user.email = response.data.email,
-
         localStorage.setItem('user', JSON.stringify(user));
     }
+
+    return response.data;
+}
+
+const updateBusinessProfile = async(data) => {
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    const response = await axios.post(API_URL + '/updateBusinessProfile', data, {
+        headers: {
+            Authorization: `Bearer ${user?.token}`
+        }
+    });
 
     return response.data;
 }
@@ -87,7 +98,8 @@ const businessApi = {
     generateQrCodes,
     getBusinessById,
     inviteReferrer,
-    updateProfile
+    updateProfile,
+    updateBusinessProfile
 };
 
 export default businessApi;
