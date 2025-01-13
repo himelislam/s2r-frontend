@@ -62,12 +62,32 @@ const inviteReferrer = async (data) => {
     return response.data;
 }
 
+const updateProfile = async(data) => {
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    const response = await axios.post(API_URL + '/updateProfile', data, {
+        headers: {
+            Authorization: `Bearer ${user?.token}`
+        }
+    })
+
+    if(response){
+        user.name = response.data.name,
+        user.email = response.data.email,
+
+        localStorage.setItem('user', JSON.stringify(user));
+    }
+
+    return response.data;
+}
+
 const businessApi = {
     createBusiness,
     getAllBusiness,
     generateQrCodes,
     getBusinessById,
-    inviteReferrer
+    inviteReferrer,
+    updateProfile
 };
 
 export default businessApi;

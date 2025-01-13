@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { User, Mail, Lock, Bell, Smartphone, Globe, CreditCard, LogOut, Check, AlertCircle, Sun, Moon } from 'lucide-react'
 
 import { cn } from "@/lib/utils"
@@ -34,22 +34,51 @@ import { useSearchParams } from "react-router-dom"
 import { useTheme } from "@/components/theme-provider"
 import { DropdownMenu } from "@radix-ui/react-dropdown-menu"
 import { DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { useMutation } from "@tanstack/react-query"
+import businessApi from "@/api/businessApi"
+import { toast } from "react-toastify"
 
 export default function BusinessAccountSettings() {
     const { theme, setTheme } = useTheme()
-
-    // const toggleTheme = () => {
-    //     setTheme(theme === "dark" ? "light" : "dark");
-    // };
-    const user = JSON.parse(localStorage.getItem('user'))
     const { businessState } = useBusiness();
-
     const [searchParams, setSearchParams] = useSearchParams();
+    const user = JSON.parse(localStorage.getItem('user'))
     const currentTab = searchParams.get("tab") || "profile";
-
     const handleTabChange = (tabValue) => {
         setSearchParams({ tab: tabValue });
     };
+
+    const [formData, setFormData] = useState({
+        name: user?.name || '',
+        email: user?.email || '',
+    });
+
+    const handleChange = (e) => {
+        const { id, value } = e.target;
+        setFormData({
+            ...formData,
+            [id]: value,
+        });
+    };
+
+    const updateProfileMutation = useMutation({
+        mutationFn: businessApi.updateProfile,
+        onSuccess: (data) => {
+            toast.success('User updated successfully')
+        },
+        onError: (err) => {
+            toast.error(err.response.data.message)
+        }
+    })
+
+    const handleUpdateProfile = () => {
+        updateProfileMutation.mutate({
+            name: formData.name,
+            email: formData.email,
+            businessId: user?.userId,
+            userId: user?._id
+        })
+    }
 
     return (
         <div className="container max-w-6xl space-y-6">
@@ -119,16 +148,24 @@ export default function BusinessAccountSettings() {
                                         <div className="space-y-4">
                                             <div className="grid gap-2">
                                                 <Label htmlFor="name">Name</Label>
-                                                <Input id="name" placeholder={user?.name} />
+                                                <Input id="name"
+                                                    value={formData.name}
+                                                    onChange={handleChange}
+                                                    placeholder={user?.name}
+                                                />
                                             </div>
                                             <div className="grid gap-2">
                                                 <Label htmlFor="email">Email</Label>
-                                                <Input id="email" placeholder={user?.email} type="email" />
+                                                <Input id="email"
+                                                    type="email"
+                                                    value={formData.email}
+                                                    onChange={handleChange}
+                                                    placeholder={user?.email} />
                                             </div>
                                         </div>
                                     </CardContent>
                                     <CardFooter>
-                                        <Button className="gap-2">
+                                        <Button className="gap-2" type="submit" onClick={handleUpdateProfile}>
                                             <Check className="h-4 w-4" /> Save changes
                                         </Button>
                                     </CardFooter>
