@@ -65,6 +65,13 @@ const updateReferrerProfile = async(data) => {
         }
     })
 
+    if (response) {
+        user.name = response.data.name,
+        user.email = response.data.email,
+        user.phone = response.data.phone,
+        localStorage.setItem('user', JSON.stringify(user));
+    }
+
     return response.data;
 }
 const referrerApi = {

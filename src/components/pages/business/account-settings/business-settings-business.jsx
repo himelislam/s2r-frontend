@@ -77,7 +77,7 @@ export default function BusinessSettingsBusiness() {
                     <Separator />
                     <div className="space-y-4">
                         <div className="grid gap-2">
-                            <Label htmlFor="name">Name</Label>
+                            <Label htmlFor="name">Business Name</Label>
                             <Input
                                 id="name"
                                 placeholder={businessState?.businessName}
@@ -85,7 +85,7 @@ export default function BusinessSettingsBusiness() {
                             />
                         </div>
                         <div className="grid gap-2">
-                            <Label htmlFor="email">Email</Label>
+                            <Label htmlFor="email">Business Email</Label>
                             <Input id="email" placeholder={businessState?.businessEmail} type="email" onChange={handleChange} />
                         </div>
                         <div className="grid gap-2">

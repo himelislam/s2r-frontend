@@ -60,7 +60,7 @@ const login = async (userData, dispatch) => {
 const forgetPassword = async (email) => {
   const response = await axios.post(API_URL + '/forget-password', email);
 
-  if(response.data){
+  if (response.data) {
     console.log(response, "forget password successfull");
   }
 
@@ -70,9 +70,21 @@ const forgetPassword = async (email) => {
 const resetPassword = async (newPassWithToken) => {
   const response = await axios.post(API_URL + '/reset-password', newPassWithToken);
 
-  if(response.data){
+  if (response.data) {
     console.log(response.data, "reset password successfull");
   }
+
+  return response.data;
+}
+
+const changePassword = async (data) => {
+  const user = JSON.parse(localStorage.getItem('user'));
+
+  const response = await axios.post(API_URL + '/changePassword', data, {
+    headers: {
+      Authorization: `Bearer ${user?.token}`
+    }
+  });
 
   return response.data;
 }
@@ -82,7 +94,8 @@ const authApi = {
   logout,
   login,
   forgetPassword,
-  resetPassword
+  resetPassword,
+  changePassword
 };
 
 export default authApi;
