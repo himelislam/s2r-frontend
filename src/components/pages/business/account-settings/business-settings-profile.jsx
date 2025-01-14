@@ -73,7 +73,6 @@ export default function BusinessSettingsProfile() {
                         <div className="grid gap-2">
                             <Label htmlFor="name">Name</Label>
                             <Input id="name"
-                                value={formData.name}
                                 onChange={handleChange}
                                 placeholder={user?.name}
                             />
@@ -82,7 +81,6 @@ export default function BusinessSettingsProfile() {
                             <Label htmlFor="email">Email</Label>
                             <Input id="email"
                                 type="email"
-                                value={formData.email}
                                 onChange={handleChange}
                                 placeholder={user?.email} />
                         </div>

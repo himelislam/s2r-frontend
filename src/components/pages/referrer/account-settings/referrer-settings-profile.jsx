@@ -1,5 +1,6 @@
-import refereeApi from '@/api/refereeApi'
+import React, { useState } from 'react'
 import referrerApi from '@/api/referrerApi'
+import Spinner from '@/components/spinner'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
@@ -9,10 +10,10 @@ import { Separator } from '@/components/ui/separator'
 import useReferrer from '@/hooks/useReferrer'
 import { useMutation } from '@tanstack/react-query'
 import { Check } from 'lucide-react'
-import React, { useState } from 'react'
+import { toast } from 'react-toastify'
 
 export default function ReferrerSettingsProfile() {
-    const {referrerState} = useReferrer();
+    const { referrerState } = useReferrer();
 
     const user = JSON.parse(localStorage.getItem('user'))
     const [formData, setFormData] = useState({
@@ -90,7 +91,14 @@ export default function ReferrerSettingsProfile() {
                 </CardContent>
                 <CardFooter>
                     <Button className="gap-2" onClick={handleReferrerUpdateProfile}>
-                        <Check className="h-4 w-4" /> Save changes
+                        <Check className="h-4 w-4" />
+                        {updateReferrerProfileMutation.isPending
+                            ? (
+                                <>
+                                    Save Changes <Spinner />
+                                </>
+                            )
+                            : 'Save Changes'}
                     </Button>
                 </CardFooter>
             </Card>

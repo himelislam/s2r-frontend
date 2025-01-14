@@ -70,9 +70,6 @@ export default function BusinessSettingsAccount() {
             newPassword: newPassword,
             userId: user?._id,
         })
-    
-        // Handle password change logic
-        console.log('Password Change:', { currentPassword, newPassword, confirmNewPassword });
     };
 
     return (
