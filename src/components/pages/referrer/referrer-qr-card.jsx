@@ -35,6 +35,7 @@ export default function ReferrerQrCard({ card, downloadSingleQrCodesAsPdf }) {
             {card?.url}
           </a>
         </p>
+        <p>{card?.referrerName}</p>
         <div className='mx-auto w-full'>
         <ShareSocial url={card?.url} socialTypes={['facebook','twitter','whatsapp','linkedin']} style={style}/>
         </div>
