@@ -174,7 +174,7 @@ export default function CampaignBuilder() {
           <div className="flex-1 p-8">
             <div className="max-w-2xl mx-auto">
               <div className="bg-orange-100/50 text-orange-800 px-3 py-1 rounded-full text-sm inline-block mb-4">
-                Step {personReferringStep} - Person Referring
+                Step {personReferringStep} - Person Referred
               </div>
 
               {personReferringStep === 1 ? (

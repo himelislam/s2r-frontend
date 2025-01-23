@@ -33,13 +33,6 @@ export default function RefereeForm() {
         enabled: !!businessId
     })
     const foundQrCode = business?.qrCodes?.find((qrCode) => qrCode.id == qrId);
-
-    // const { data: referrer = [] } = useQuery({
-    //     queryKey: ['getReferrerById', referrerId],
-    //     queryFn: () => referrerApi.getReferrerById(referrerId),
-    //     enabled: !!referrerId
-    // })
-
     const createRefereeMutation = useMutation({
         mutationFn: refereeApi.createReferee,
         onSuccess: (data) => {
@@ -64,30 +57,25 @@ export default function RefereeForm() {
             businessId,
             referrerId: foundQrCode?.referrerId
         })
-
-        console.log(name, email, phone, date, "form data");
     }
     return (
         <div>
             <div className="max-w-lg mx-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
-                <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-4 text-center">
-                    Unlock Exclusive Discounts!
-                </h1>
-                <p className='text-md text-gray-800 dark:text-gray-200 mb-4 text-center'>Welcome! We’re excited to share an exclusive opportunity for you to grab amazing deals at {business?.businessName}. Thanks to your referrer, you now have access to our special discounts</p>
+                <div className='items-center mb-4'>
+                    <img src="https://img.freepik.com/free-vector/bird-colorful-logo-gradient-vector_343694-1365.jpg" alt="" className='w-40 h-40 mx-auto' />
 
+                    <h1 className='uppercase text-center text-xl'>{foundQrCode?.referrerName} Recommends {business?.businessName}</h1>
+                </div>
+                <p className='text-md text-gray-800 dark:text-gray-200 mb-4 text-center'>Looking to buy a car? Book a test drive with {business?.businessName}</p>
+                <p className='text-md text-gray-800 dark:text-gray-200 mb-4 text-center'>Since you're friend of {foundQrCode?.referrerName} you get an extended warranty on your purchase for free.</p>
 
-                <h2 className='text-center'>Referrer Name: {foundQrCode?.referrerName}</h2>
-
+                <div>
+                    <img src="https://dcdko16buub2z.cloudfront.net/images/XrwbjBN0860gkf4G.gif" alt="" className='w-full p-4' />
+                </div>
                 <Card className="mx-auto max-w-md">
-                    <CardHeader>
-                        <CardTitle className="text-2xl text-center">Grab Your Discount Now</CardTitle>
-                        <CardDescription>
-                            Fill out the form below to register and secure your discount. Our team will reach out to finalize your access to these exclusive deals.
-                        </CardDescription>
-                    </CardHeader>
                     <CardContent>
                         <form onSubmit={handleSubmit}>
-                            <div className="grid gap-4">
+                            <div className="grid gap-4 mt-4">
                                 <div className="grid gap-2">
                                     <Label htmlFor="email">Name</Label>
                                     <Input
