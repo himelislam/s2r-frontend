@@ -70,7 +70,7 @@ export default function RefereeForm() {
                 <p className='text-md text-gray-800 dark:text-gray-200 mb-4 text-center'>Since you're friend of {foundQrCode?.referrerName} you get an extended warranty on your purchase for free.</p>
 
                 <div>
-                    <img src="https://dcdko16buub2z.cloudfront.net/images/XrwbjBN0860gkf4G.gif" alt="" className='w-full p-4' />
+                    <img src="https://dcdko16buub2z.cloudfront.net/images/XrwbjBN0860gkf4G.gif" alt="" className='w-full p-2' />
                 </div>
                 <Card className="mx-auto max-w-md">
                     <CardContent>
