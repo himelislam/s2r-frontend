@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Monitor, Tablet, Smartphone, PenSquare, Wrench, Share2, ChevronLeft, ChevronRight, Plus, Trash2, Mail, QrCode } from 'lucide-react'
+import { Monitor, Tablet, Smartphone, PenSquare, Wrench, Share2, ChevronLeft, ChevronRight, Plus, Trash2, Mail, QrCode, CalendarIcon } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -13,6 +13,10 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { useLocation } from "react-router-dom"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Calendar } from "@/components/ui/calendar"
+import { cn } from "@/lib/utils"
+import { format } from "date-fns"
 
 const steps = [
   "Person Referring",
@@ -51,6 +55,7 @@ export default function CampaignBuilder() {
     termsAccepted: false
   })
 
+  const [date, setDate] = useState(Date)
   const { campaign } = useLocation().state;
 
   const referralLink = "https://ministry.referral-factory.com/cLILwj4l"
@@ -174,56 +179,139 @@ export default function CampaignBuilder() {
           <div className="flex-1 p-8">
             <div className="max-w-2xl mx-auto">
               <div className="bg-orange-100/50 text-orange-800 px-3 py-1 rounded-full text-sm inline-block mb-4">
-                Step {personReferringStep} - Person Referring
+                Step {personReferringStep} - Person Referred
               </div>
 
               {personReferringStep === 1 ? (
-                <Card className="mb-4">
-                  <CardContent className="p-6">
-                    <h1 className="text-2xl font-bold text-center mb-4">
-                      Refer Friends. Get Rewarded.
-                    </h1>
-                    <p className="text-center text-muted-foreground mb-6">
-                      Register below to get your referral link and start referring friends.
-                    </p>
-                    <div className="space-y-4">
-                      <div>
-                        <Label htmlFor="firstName">First Name</Label>
-                        <Input
-                          id="firstName"
-                          placeholder="Enter your first name"
-                          value={formData.firstName}
-                          onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="email">Email</Label>
-                        <Input
-                          id="email"
-                          type="email"
-                          placeholder="Enter your email"
-                          value={formData.email}
-                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        />
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Checkbox
-                          id="terms"
-                          checked={formData.termsAccepted}
-                          onCheckedChange={(checked) =>
-                            setFormData({ ...formData, termsAccepted: checked })
-                          }
-                        />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm text-muted-foreground"
-                        >
-                          I agree to Terms & Conditions
-                        </label>
-                      </div>
+                // <Card className="mb-4">
+                //   <CardContent className="p-6">
+                //     <h1 className="text-2xl font-bold text-center mb-4">
+                //       Refer Friends. Get Rewarded.
+                //     </h1>
+                //     <p className="text-center text-muted-foreground mb-6">
+                //       Register below to get your referral link and start referring friends.
+                //     </p>
+                //     <div className="space-y-4">
+                //       <div>
+                //         <Label htmlFor="firstName">First Name</Label>
+                //         <Input
+                //           id="firstName"
+                //           placeholder="Enter your first name"
+                //           value={formData.firstName}
+                //           onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                //         />
+                //       </div>
+                //       <div>
+                //         <Label htmlFor="email">Email</Label>
+                //         <Input
+                //           id="email"
+                //           type="email"
+                //           placeholder="Enter your email"
+                //           value={formData.email}
+                //           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                //         />
+                //       </div>
+                //       <div className="flex items-center space-x-2">
+                //         <Checkbox
+                //           id="terms"
+                //           checked={formData.termsAccepted}
+                //           onCheckedChange={(checked) =>
+                //             setFormData({ ...formData, termsAccepted: checked })
+                //           }
+                //         />
+                //         <label
+                //           htmlFor="terms"
+                //           className="text-sm text-muted-foreground"
+                //         >
+                //           I agree to Terms & Conditions
+                //         </label>
+                //       </div>
+                //     </div>
+                //   </CardContent>
+                // </Card>
+
+                <div>
+                  <div className="max-w-lg mx-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
+                    <div className='items-center mb-4'>
+                      <img src="https://img.freepik.com/free-vector/bird-colorful-logo-gradient-vector_343694-1365.jpg" alt="" className='w-40 h-40 mx-auto' />
+
+                      <h1 className='uppercase text-center text-xl'>ReferrerName Recommends BusinessName</h1>
                     </div>
-                  </CardContent>
-                </Card>
+                    <p className='text-md text-gray-800 dark:text-gray-200 mb-4 text-center'>Looking to buy a car? Book a test drive with BusinessName</p>
+                    <p className='text-md text-gray-800 dark:text-gray-200 mb-4 text-center'>Since you're friend of ReferrerName you get an extended warranty on your purchase for free.</p>
+
+                    <div>
+                      <img src="https://dcdko16buub2z.cloudfront.net/images/XrwbjBN0860gkf4G.gif" alt="" className='w-full p-2' />
+                    </div>
+                    <Card className="mx-auto max-w-md">
+                      <CardContent>
+                        <form>
+                          <div className="grid gap-4 mt-4">
+                            <div className="grid gap-2">
+                              <Label htmlFor="email">Name</Label>
+                              <Input
+                                id="name"
+                                type="text"
+                                placeholder=""
+                                required
+                                onChange={(e) => setName(e.target.value)}
+                              />
+                            </div>
+                            <div className="grid gap-2">
+                              <Label htmlFor="email">Email</Label>
+                              <Input
+                                id="email"
+                                type="email"
+                                placeholder="m@example.com"
+                                required
+                                onChange={(e) => setEmail(e.target.value)}
+                              />
+                            </div>
+
+                            <div className="grid gap-2">
+                              <Label htmlFor="email">Phone</Label>
+                              <Input
+                                id="number"
+                                type="number"
+                                placeholder=""
+                                required
+                                onChange={(e) => setPhone(e.target.value)}
+                              />
+                            </div>
+
+                            <Label htmlFor="email">Preferred Contact Date</Label>
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <Button
+                                  variant={"outline"}
+                                  className={cn(
+                                    "w-[330px] justify-start text-left font-normal",
+                                    !date && "text-muted-foreground"
+                                  )}
+                                >
+                                  <CalendarIcon />
+                                  {date ? format(date, "PPP") : <span>Pick a date</span>}
+                                </Button>
+                              </PopoverTrigger>
+                              <PopoverContent className="w-auto p-0">
+                                <Calendar
+                                  mode="single"
+                                  selected={date}
+                                  onSelect={setDate}
+                                  initialFocus
+                                />
+                              </PopoverContent>
+                            </Popover>
+
+                            <Button type="submit" className="w-full" >
+                              Submit
+                            </Button>
+                          </div>
+                        </form>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </div>
               ) : (
                 <Card className="mb-4">
                   <CardContent className="p-6">
