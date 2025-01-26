@@ -1,87 +1,75 @@
-// // useEditableContent.js
-// import { useState } from 'react';
-
-// const useEditableContent = () => {
-//   // State for editable content
-//   const [headerContent, setHeaderContent] = useState('{{referrerName}} Recommends {{businessName}}');
-//   const [description1, setDescription1] = useState('Looking to buy a car? Book a test drive with {{businessName}}');
-//   const [description2, setDescription2] = useState("Since you're a friend of {{referrerName}}, you get an extended warranty on your purchase for free.");
-
-//   // State for styles
-//   const [styles, setStyles] = useState({
-//     backgroundColor: '#ffffff',
-//     fontSize: '16px',
-//     fontFamily: 'Arial, sans-serif',
-//     color: '#000000',
-//     padding: '0px',
-//     borderRadius: '8px',
-//   });
-
-//   return {
-//     headerContent,
-//     setHeaderContent,
-//     description1,
-//     setDescription1,
-//     description2,
-//     setDescription2,
-//     styles,
-//     setStyles,
-//   };
-// };
-
-// export default useEditableContent;
-
-
-// useEditableContent.js
 import { useState } from 'react';
 
 const useEditableContent = () => {
-  // State for editable content
-  const [headerContent, setHeaderContent] = useState('{{referrerName}} Recommends {{businessName}}');
-  const [description1, setDescription1] = useState('Looking to buy a car? Book a test drive with {{businessName}}');
-  const [description2, setDescription2] = useState("Since you're a friend of {{referrerName}}, you get an extended warranty on your purchase for free.");
-
-  // State for styles
-  const [headerStyles, setHeaderStyles] = useState({
-    backgroundColor: '#ffffff',
-    fontSize: '24px', // Larger font size for header
-    fontFamily: 'Arial, sans-serif',
-    color: '#000000',
-    padding: '16px',
-    borderRadius: '8px',
+  // State for managing all content and styles in a single object
+  const [content, setContent] = useState({
+    header: {
+      content: '{{referrerName}} Recommends {{businessName}}',
+      styles: {
+        backgroundColor: '#ffffff',
+        fontSize: '24px',
+        fontFamily: 'Arial, sans-serif',
+        color: '#000000',
+        padding: '16px',
+        borderRadius: '8px',
+      },
+    },
+    description1: {
+      content: 'Looking to buy a car? Book a test drive with {{businessName}}',
+      styles: {
+        backgroundColor: '#ffffff',
+        fontSize: '16px',
+        fontFamily: 'Arial, sans-serif',
+        color: '#000000',
+        padding: '8px',
+        borderRadius: '8px',
+      },
+    },
+    description2: {
+      content: "Since you're a friend of {{referrerName}}, you get an extended warranty on your purchase for free.",
+      styles: {
+        backgroundColor: '#ffffff',
+        fontSize: '16px',
+        fontFamily: 'Arial, sans-serif',
+        color: '#000000',
+        padding: '8px',
+        borderRadius: '8px',
+      },
+    },
   });
 
-  const [description1Styles, setDescription1Styles] = useState({
-    backgroundColor: '#ffffff',
-    fontSize: '16px',
-    fontFamily: 'Arial, sans-serif',
-    color: '#000000',
-    padding: '8px',
-    borderRadius: '8px',
-  });
+  // Helper function to update content
+  const updateContent = (section, newContent) => {
+    setContent((prev) => ({
+      ...prev,
+      [section]: {
+        ...prev[section],
+        content: newContent,
+      },
+    }));
+  };
 
-  const [description2Styles, setDescription2Styles] = useState({
-    backgroundColor: '#ffffff',
-    fontSize: '16px',
-    fontFamily: 'Arial, sans-serif',
-    color: '#000000',
-    padding: '8px',
-    borderRadius: '8px',
-  });
+  // Helper function to update styles
+  const updateStyles = (section, newStyles) => {
+    setContent((prev) => ({
+      ...prev,
+      [section]: {
+        ...prev[section],
+        styles: newStyles,
+      },
+    }));
+  };
+
+  // Convert the content object to JSON
+  const getContentAsJSON = () => {
+    return JSON.stringify(content);
+  };
 
   return {
-    headerContent,
-    setHeaderContent,
-    description1,
-    setDescription1,
-    description2,
-    setDescription2,
-    headerStyles,
-    setHeaderStyles,
-    description1Styles,
-    setDescription1Styles,
-    description2Styles,
-    setDescription2Styles,
+    content,
+    updateContent,
+    updateStyles,
+    getContentAsJSON,
   };
 };
 
