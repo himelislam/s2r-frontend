@@ -17,6 +17,8 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Calendar } from "@/components/ui/calendar"
 import { cn } from "@/lib/utils"
 import { format } from "date-fns"
+import EditableText from "./builder/editable-text"
+import useEditableContent from "@/hooks/useEditableContent"
 
 const steps = [
   "Person Referring",
@@ -26,24 +28,6 @@ const steps = [
   "Email Notifications",
   "Promote"
 ]
-
-const sidebarComponents = {
-  text: [
-    { name: "Title", icon: "T" },
-    { name: "Body Text", icon: "¶" },
-    { name: "Personalisation", icon: "@" },
-    { name: "Divider", icon: "—" }
-  ],
-  media: [
-    { name: "Image", icon: "🖼" },
-    { name: "Video", icon: "▶" }
-  ],
-  form: [
-    { name: "Input Field", icon: "□" },
-    { name: "Select Field", icon: "▼" },
-    { name: "CRM Field", icon: "⚏" }
-  ]
-}
 
 export default function CampaignBuilder() {
   const [currentStep, setCurrentStep] = useState(0)
@@ -63,6 +47,33 @@ export default function CampaignBuilder() {
   const handleCopyLink = () => {
     navigator.clipboard.writeText(referralLink)
   }
+
+  const referrerName = 'Hiii'
+  const businessName = "Luke"
+  const [selectedElement, setSelectedElement] = useState(null);
+
+   // Use the custom hook to manage state
+   const {
+    headerContent,
+    setHeaderContent,
+    description1,
+    setDescription1,
+    description2,
+    setDescription2,
+    headerStyles,
+    setHeaderStyles,
+    description1Styles,
+    setDescription1Styles,
+    description2Styles,
+    setDescription2Styles,
+  } = useEditableContent();
+
+  // Function to replace placeholders with dynamic values
+  const renderContent = (content) => {
+    return content
+      .replace(/{{referrerName}}/g, referrerName)
+      .replace(/{{businessName}}/g, businessName);
+  };
 
   return (
     <div className="flex h-screen">
@@ -183,66 +194,58 @@ export default function CampaignBuilder() {
               </div>
 
               {personReferringStep === 1 ? (
-                // <Card className="mb-4">
-                //   <CardContent className="p-6">
-                //     <h1 className="text-2xl font-bold text-center mb-4">
-                //       Refer Friends. Get Rewarded.
-                //     </h1>
-                //     <p className="text-center text-muted-foreground mb-6">
-                //       Register below to get your referral link and start referring friends.
-                //     </p>
-                //     <div className="space-y-4">
-                //       <div>
-                //         <Label htmlFor="firstName">First Name</Label>
-                //         <Input
-                //           id="firstName"
-                //           placeholder="Enter your first name"
-                //           value={formData.firstName}
-                //           onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                //         />
-                //       </div>
-                //       <div>
-                //         <Label htmlFor="email">Email</Label>
-                //         <Input
-                //           id="email"
-                //           type="email"
-                //           placeholder="Enter your email"
-                //           value={formData.email}
-                //           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                //         />
-                //       </div>
-                //       <div className="flex items-center space-x-2">
-                //         <Checkbox
-                //           id="terms"
-                //           checked={formData.termsAccepted}
-                //           onCheckedChange={(checked) =>
-                //             setFormData({ ...formData, termsAccepted: checked })
-                //           }
-                //         />
-                //         <label
-                //           htmlFor="terms"
-                //           className="text-sm text-muted-foreground"
-                //         >
-                //           I agree to Terms & Conditions
-                //         </label>
-                //       </div>
-                //     </div>
-                //   </CardContent>
-                // </Card>
-
                 <div>
                   <div className="max-w-lg mx-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
-                    <div className='items-center mb-4'>
-                      <img src="https://img.freepik.com/free-vector/bird-colorful-logo-gradient-vector_343694-1365.jpg" alt="" className='w-40 h-40 mx-auto' />
+                    <div className="items-center mb-4">
+                      <img
+                        src="https://img.freepik.com/free-vector/bird-colorful-logo-gradient-vector_343694-1365.jpg"
+                        alt=""
+                        className="w-40 h-40 mx-auto"
+                      />
 
-                      <h1 className='uppercase text-center text-xl'>ReferrerName Recommends BusinessName</h1>
+                      {/* Editable Header */}
+                      <EditableText
+                        value={headerContent}
+                        onChange={setHeaderContent}
+                        renderContent={renderContent}
+                        className="uppercase text-center text-xl"
+                        styles={headerStyles}
+                        elementName="header"
+                        setSelectedElement={setSelectedElement}
+                      />
                     </div>
-                    <p className='text-md text-gray-800 dark:text-gray-200 mb-4 text-center'>Looking to buy a car? Book a test drive with BusinessName</p>
-                    <p className='text-md text-gray-800 dark:text-gray-200 mb-4 text-center'>Since you're friend of ReferrerName you get an extended warranty on your purchase for free.</p>
+
+                    {/* Editable Description 1 */}
+                    <EditableText
+                      value={description1}
+                      onChange={setDescription1}
+                      renderContent={renderContent}
+                      className="text-md text-gray-800 dark:text-gray-200 mb-4 text-center"
+                      styles={description1Styles}
+                      elementName="description1"
+                      setSelectedElement={setSelectedElement}
+                    />
+
+                    {/* Editable Description 2 */}
+                    <EditableText
+                      value={description2}
+                      onChange={setDescription2}
+                      renderContent={renderContent}
+                      className="text-md text-gray-800 dark:text-gray-200 mb-4 text-center"
+                      styles={description2Styles}
+                      elementName="description2"
+                      setSelectedElement={setSelectedElement}
+                    />
 
                     <div>
-                      <img src="https://dcdko16buub2z.cloudfront.net/images/XrwbjBN0860gkf4G.gif" alt="" className='w-full p-2' />
+                      <img
+                        src="https://dcdko16buub2z.cloudfront.net/images/XrwbjBN0860gkf4G.gif"
+                        alt=""
+                        className="w-full p-2"
+                      />
                     </div>
+
+                    {/* Rest of your form */}
                     <Card className="mx-auto max-w-md">
                       <CardContent>
                         <form>
@@ -303,7 +306,7 @@ export default function CampaignBuilder() {
                               </PopoverContent>
                             </Popover>
 
-                            <Button type="submit" className="w-full" >
+                            <Button type="submit" className="w-full">
                               Submit
                             </Button>
                           </div>
@@ -378,47 +381,257 @@ export default function CampaignBuilder() {
           {/* Right Sidebar */}
           <div className="w-64 border-l bg-background p-4">
             <div className="space-y-6">
-              <div>
-                <h3 className="font-medium mb-3">Text</h3>
-                <div className="grid grid-cols-2 gap-2">
-                  {sidebarComponents.text.map((component) => (
-                    <Card key={component.name} className="cursor-pointer hover:bg-accent">
-                      <CardContent className="p-4 text-center">
-                        <div className="text-2xl mb-2">{component.icon}</div>
-                        <div className="text-xs">{component.name}</div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
+              {selectedElement === 'header' && (
+                <>
+                  <h3 className="font-medium mb-3">Header Styles</h3>
+                  {/* Background Color Picker */}
+                  <div>
+                    <h3 className="font-medium mb-3">Background Color</h3>
+                    <input
+                      type="color"
+                      value={headerStyles.backgroundColor}
+                      onChange={(e) => setHeaderStyles({ ...headerStyles, backgroundColor: e.target.value })}
+                      className="w-full"
+                    />
+                  </div>
 
-              <div>
-                <h3 className="font-medium mb-3">Image And Video</h3>
-                <div className="grid grid-cols-2 gap-2">
-                  {sidebarComponents.media.map((component) => (
-                    <Card key={component.name} className="cursor-pointer hover:bg-accent">
-                      <CardContent className="p-4 text-center">
-                        <div className="text-2xl mb-2">{component.icon}</div>
-                        <div className="text-xs">{component.name}</div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
+                  {/* Font Size Slider */}
+                  <div>
+                    <h3 className="font-medium mb-3">Font Size</h3>
+                    <input
+                      type="range"
+                      min="12"
+                      max="32"
+                      value={parseInt(headerStyles.fontSize)}
+                      onChange={(e) => setHeaderStyles({ ...headerStyles, fontSize: `${e.target.value}px` })}
+                      className="w-full"
+                    />
+                    <span className="text-xs">{headerStyles.fontSize}</span>
+                  </div>
 
-              <div>
-                <h3 className="font-medium mb-3">Form Field</h3>
-                <div className="grid grid-cols-2 gap-2">
-                  {sidebarComponents.form.map((component) => (
-                    <Card key={component.name} className="cursor-pointer hover:bg-accent">
-                      <CardContent className="p-4 text-center">
-                        <div className="text-2xl mb-2">{component.icon}</div>
-                        <div className="text-xs">{component.name}</div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
+                  {/* Font Family Selector */}
+                  <div>
+                    <h3 className="font-medium mb-3">Font Family</h3>
+                    <select
+                      value={headerStyles.fontFamily}
+                      onChange={(e) => setHeaderStyles({ ...headerStyles, fontFamily: e.target.value })}
+                      className="w-full p-2 border rounded"
+                    >
+                      <option value="Arial, sans-serif">Arial</option>
+                      <option value="Times New Roman, serif">Times New Roman</option>
+                      <option value="Courier New, monospace">Courier New</option>
+                      <option value="Georgia, serif">Georgia</option>
+                    </select>
+                  </div>
+
+                  {/* Text Color Picker */}
+                  <div>
+                    <h3 className="font-medium mb-3">Text Color</h3>
+                    <input
+                      type="color"
+                      value={headerStyles.color}
+                      onChange={(e) => setHeaderStyles({ ...headerStyles, color: e.target.value })}
+                      className="w-full"
+                    />
+                  </div>
+
+                  {/* Padding Slider */}
+                  <div>
+                    <h3 className="font-medium mb-3">Padding</h3>
+                    <input
+                      type="range"
+                      min="0"
+                      max="32"
+                      value={parseInt(headerStyles.padding)}
+                      onChange={(e) => setHeaderStyles({ ...headerStyles, padding: `${e.target.value}px` })}
+                      className="w-full"
+                    />
+                    <span className="text-xs">{headerStyles.padding}</span>
+                  </div>
+
+                  {/* Border Radius Slider */}
+                  <div>
+                    <h3 className="font-medium mb-3">Border Radius</h3>
+                    <input
+                      type="range"
+                      min="0"
+                      max="32"
+                      value={parseInt(headerStyles.borderRadius)}
+                      onChange={(e) => setHeaderStyles({ ...headerStyles, borderRadius: `${e.target.value}px` })}
+                      className="w-full"
+                    />
+                    <span className="text-xs">{headerStyles.borderRadius}</span>
+                  </div>
+                </>
+              )}
+
+              {selectedElement === 'description1' && (
+                <>
+                  <h3 className="font-medium mb-3">Description 1 Styles</h3>
+                  {/* Background Color Picker */}
+                  <div>
+                    <h3 className="font-medium mb-3">Background Color</h3>
+                    <input
+                      type="color"
+                      value={description1Styles.backgroundColor}
+                      onChange={(e) => setDescription1Styles({ ...description1Styles, backgroundColor: e.target.value })}
+                      className="w-full"
+                    />
+                  </div>
+
+                  {/* Font Size Slider */}
+                  <div>
+                    <h3 className="font-medium mb-3">Font Size</h3>
+                    <input
+                      type="range"
+                      min="12"
+                      max="32"
+                      value={parseInt(description1Styles.fontSize)}
+                      onChange={(e) => setDescription1Styles({ ...description1Styles, fontSize: `${e.target.value}px` })}
+                      className="w-full"
+                    />
+                    <span className="text-xs">{description1Styles.fontSize}</span>
+                  </div>
+
+                  {/* Font Family Selector */}
+                  <div>
+                    <h3 className="font-medium mb-3">Font Family</h3>
+                    <select
+                      value={description1Styles.fontFamily}
+                      onChange={(e) => setDescription1Styles({ ...description1Styles, fontFamily: e.target.value })}
+                      className="w-full p-2 border rounded"
+                    >
+                      <option value="Arial, sans-serif">Arial</option>
+                      <option value="Times New Roman, serif">Times New Roman</option>
+                      <option value="Courier New, monospace">Courier New</option>
+                      <option value="Georgia, serif">Georgia</option>
+                    </select>
+                  </div>
+
+                  {/* Text Color Picker */}
+                  <div>
+                    <h3 className="font-medium mb-3">Text Color</h3>
+                    <input
+                      type="color"
+                      value={description1Styles.color}
+                      onChange={(e) => setDescription1Styles({ ...description1Styles, color: e.target.value })}
+                      className="w-full"
+                    />
+                  </div>
+
+                  {/* Padding Slider */}
+                  <div>
+                    <h3 className="font-medium mb-3">Padding</h3>
+                    <input
+                      type="range"
+                      min="0"
+                      max="32"
+                      value={parseInt(description1Styles.padding)}
+                      onChange={(e) => setDescription1Styles({ ...description1Styles, padding: `${e.target.value}px` })}
+                      className="w-full"
+                    />
+                    <span className="text-xs">{description1Styles.padding}</span>
+                  </div>
+
+                  {/* Border Radius Slider */}
+                  <div>
+                    <h3 className="font-medium mb-3">Border Radius</h3>
+                    <input
+                      type="range"
+                      min="0"
+                      max="32"
+                      value={parseInt(description1Styles.borderRadius)}
+                      onChange={(e) => setDescription1Styles({ ...description1Styles, borderRadius: `${e.target.value}px` })}
+                      className="w-full"
+                    />
+                    <span className="text-xs">{description1Styles.borderRadius}</span>
+                  </div>
+                </>
+              )}
+
+              {selectedElement === 'description2' && (
+                <>
+                  <h3 className="font-medium mb-3">Description 2 Styles</h3>
+                  {/* Background Color Picker */}
+                  <div>
+                    <h3 className="font-medium mb-3">Background Color</h3>
+                    <input
+                      type="color"
+                      value={description2Styles.backgroundColor}
+                      onChange={(e) => setDescription2Styles({ ...description2Styles, backgroundColor: e.target.value })}
+                      className="w-full"
+                    />
+                  </div>
+
+                  {/* Font Size Slider */}
+                  <div>
+                    <h3 className="font-medium mb-3">Font Size</h3>
+                    <input
+                      type="range"
+                      min="12"
+                      max="32"
+                      value={parseInt(description2Styles.fontSize)}
+                      onChange={(e) => setDescription2Styles({ ...description2Styles, fontSize: `${e.target.value}px` })}
+                      className="w-full"
+                    />
+                    <span className="text-xs">{description2Styles.fontSize}</span>
+                  </div>
+
+                  {/* Font Family Selector */}
+                  <div>
+                    <h3 className="font-medium mb-3">Font Family</h3>
+                    <select
+                      value={description2Styles.fontFamily}
+                      onChange={(e) => setDescription2Styles({ ...description2Styles, fontFamily: e.target.value })}
+                      className="w-full p-2 border rounded"
+                    >
+                      <option value="Arial, sans-serif">Arial</option>
+                      <option value="Times New Roman, serif">Times New Roman</option>
+                      <option value="Courier New, monospace">Courier New</option>
+                      <option value="Georgia, serif">Georgia</option>
+                    </select>
+                  </div>
+
+                  {/* Text Color Picker */}
+                  <div>
+                    <h3 className="font-medium mb-3">Text Color</h3>
+                    <input
+                      type="color"
+                      value={description2Styles.color}
+                      onChange={(e) => setDescription2Styles({ ...description2Styles, color: e.target.value })}
+                      className="w-full"
+                    />
+                  </div>
+
+                  {/* Padding Slider */}
+                  <div>
+                    <h3 className="font-medium mb-3">Padding</h3>
+                    <input
+                      type="range"
+                      min="0"
+                      max="32"
+                      value={parseInt(description2Styles.padding)}
+                      onChange={(e) => setDescription2Styles({ ...description2Styles, padding: `${e.target.value}px` })}
+                      className="w-full"
+                    />
+                    <span className="text-xs">{description2Styles.padding}</span>
+                  </div>
+
+                  {/* Border Radius Slider */}
+                  <div>
+                    <h3 className="font-medium mb-3">Border Radius</h3>
+                    <input
+                      type="range"
+                      min="0"
+                      max="32"
+                      value={parseInt(description2Styles.borderRadius)}
+                      onChange={(e) => setDescription2Styles({ ...description2Styles, borderRadius: `${e.target.value}px` })}
+                      className="w-full"
+                    />
+                    <span className="text-xs">{description2Styles.borderRadius}</span>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
