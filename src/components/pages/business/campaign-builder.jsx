@@ -40,7 +40,9 @@ export default function CampaignBuilder() {
   })
 
   const [date, setDate] = useState(Date)
-  const { campaign } = useLocation().state;
+
+  const { state } = useLocation();
+  const campaign = state?.campaign || null;
 
   const referralLink = "https://ministry.referral-factory.com/cLILwj4l"
 
@@ -52,21 +54,18 @@ export default function CampaignBuilder() {
   const businessName = "Luke"
   const [selectedElement, setSelectedElement] = useState(null);
 
-   // Use the custom hook to manage state
-   const {
-    headerContent,
-    setHeaderContent,
-    description1,
-    setDescription1,
-    description2,
-    setDescription2,
-    headerStyles,
-    setHeaderStyles,
-    description1Styles,
-    setDescription1Styles,
-    description2Styles,
-    setDescription2Styles,
+  const {
+    content,
+    updateContent,
+    updateStyles,
+    getContentAsJSON,
   } = useEditableContent();
+
+  const handleSave = () => {
+    const jsonContent = getContentAsJSON();
+    console.log(jsonContent); // This can be sent to your database
+  };
+
 
   // Function to replace placeholders with dynamic values
   const renderContent = (content) => {
@@ -205,36 +204,36 @@ export default function CampaignBuilder() {
 
                       {/* Editable Header */}
                       <EditableText
-                        value={headerContent}
-                        onChange={setHeaderContent}
-                        renderContent={renderContent}
+                        value={content.header.content}
+                        onChange={(value) => updateContent('header', value)}
                         className="uppercase text-center text-xl"
-                        styles={headerStyles}
+                        styles={content.header.styles}
                         elementName="header"
                         setSelectedElement={setSelectedElement}
+                        renderContent={renderContent}
                       />
                     </div>
 
                     {/* Editable Description 1 */}
                     <EditableText
-                      value={description1}
-                      onChange={setDescription1}
-                      renderContent={renderContent}
+                      value={content.description1.content}
+                      onChange={(value) => updateContent('description1', value)}
                       className="text-md text-gray-800 dark:text-gray-200 mb-4 text-center"
-                      styles={description1Styles}
+                      styles={content.description1.styles}
                       elementName="description1"
                       setSelectedElement={setSelectedElement}
+                      renderContent={renderContent}
                     />
 
                     {/* Editable Description 2 */}
                     <EditableText
-                      value={description2}
-                      onChange={setDescription2}
-                      renderContent={renderContent}
+                      value={content.description2.content}
+                      onChange={(value) => updateContent('description2', value)}
                       className="text-md text-gray-800 dark:text-gray-200 mb-4 text-center"
-                      styles={description2Styles}
+                      styles={content.description2.styles}
                       elementName="description2"
                       setSelectedElement={setSelectedElement}
+                      renderContent={renderContent}
                     />
 
                     <div>
@@ -316,63 +315,64 @@ export default function CampaignBuilder() {
                   </div>
                 </div>
               ) : (
-                <Card className="mb-4">
-                  <CardContent className="p-6">
-                    <h1 className="text-2xl font-bold text-center mb-4">
-                      Refer Friends {formData.firstName ? `(${formData.firstName})` : ''}
-                    </h1>
-                    <p className="text-center text-muted-foreground mb-6">
-                      Refer friends and earn rewards. All you need to do is share your referral link with friends, and if they become a customer of ours we'll reward you!
-                    </p>
-                    <div className="space-y-6">
-                      <div className="text-center">
-                        <h2 className="text-xl font-semibold mb-4">Share Your Unique Link 👆</h2>
-                        <div className="flex justify-center space-x-2 mb-6">
-                          <Button variant="outline" size="icon">
-                            <Mail className="h-4 w-4" />
-                          </Button>
-                          <Button variant="outline" size="icon">
-                            <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current">
-                              <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
-                            </svg>
-                          </Button>
-                          <Button variant="outline" size="icon">
-                            <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current">
-                              <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
-                            </svg>
-                          </Button>
-                          <Button variant="outline" size="icon">
-                            <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current">
-                              <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm3.445 17.827c-.235.077-.484.148-.742.211-.998.241-2.057.383-3.137.383-1.081 0-2.139-.142-3.137-.383-.258-.063-.507-.134-.742-.211-.819-.275-1.318-.614-1.318-.614 0-.046-.001-.092-.001-.139 0-3.344 2.707-6.051 6.051-6.051s6.051 2.707 6.051 6.051c0 .047-.001.093-.001.139 0 0-.499.339-1.318.614z" />
-                            </svg>
-                          </Button>
-                          <Button variant="outline" size="icon">
-                            <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current">
-                              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                            </svg>
-                          </Button>
-                        </div>
-                        <div className="relative">
-                          <Input
-                            value={referralLink}
-                            readOnly
-                            className="pr-24"
-                          />
-                          <Button
-                            className="absolute right-1 top-1 h-7"
-                            onClick={handleCopyLink}
-                          >
-                            Copy Link
-                          </Button>
-                        </div>
-                      </div>
+                <div>
+                  <div className="max-w-lg mx-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
+                    <div className="items-center mb-4">
+                      <img
+                        src="https://img.freepik.com/free-vector/bird-colorful-logo-gradient-vector_343694-1365.jpg"
+                        alt=""
+                        className="w-40 h-40 mx-auto"
+                      />
+
+                      {/* Editable Header */}
+                      <EditableText
+                        value={content.header.content}
+                        onChange={(value) => updateContent('header', value)}
+                        className="uppercase text-center text-xl"
+                        styles={content.header.styles}
+                        elementName="header"
+                        setSelectedElement={setSelectedElement}
+                        renderContent={renderContent}
+                      />
                     </div>
-                  </CardContent>
-                </Card>
+
+                    {/* Editable Description 1 */}
+                    <EditableText
+                      value={content.description1.content}
+                      onChange={(value) => updateContent('description1', value)}
+                      className="text-md text-gray-800 dark:text-gray-200 mb-4 text-center"
+                      styles={content.description1.styles}
+                      elementName="description1"
+                      setSelectedElement={setSelectedElement}
+                      renderContent={renderContent}
+                    />
+
+                    {/* Editable Description 2 */}
+                    <EditableText
+                      value={content.description2.content}
+                      onChange={(value) => updateContent('description2', value)}
+                      className="text-md text-gray-800 dark:text-gray-200 mb-4 text-center"
+                      styles={content.description2.styles}
+                      elementName="description2"
+                      setSelectedElement={setSelectedElement}
+                      renderContent={renderContent}
+                    />
+
+                    <div>
+                      <img
+                        src="https://dcdko16buub2z.cloudfront.net/images/XrwbjBN0860gkf4G.gif"
+                        alt=""
+                        className="w-full p-2"
+                      />
+                    </div>
+                  </div>
+                </div>
               )}
 
               <div className="flex justify-between">
-                <Button variant="outline">Save</Button>
+                <Button variant="outline" onClick={handleSave}>
+                  Save
+                </Button>
                 <Button variant="outline">Preview</Button>
               </div>
             </div>
@@ -389,8 +389,13 @@ export default function CampaignBuilder() {
                     <h3 className="font-medium mb-3">Background Color</h3>
                     <input
                       type="color"
-                      value={headerStyles.backgroundColor}
-                      onChange={(e) => setHeaderStyles({ ...headerStyles, backgroundColor: e.target.value })}
+                      value={content.header.styles.backgroundColor}
+                      onChange={(e) =>
+                        updateStyles('header', {
+                          ...content.header.styles,
+                          backgroundColor: e.target.value,
+                        })
+                      }
                       className="w-full"
                     />
                   </div>
@@ -402,19 +407,29 @@ export default function CampaignBuilder() {
                       type="range"
                       min="12"
                       max="32"
-                      value={parseInt(headerStyles.fontSize)}
-                      onChange={(e) => setHeaderStyles({ ...headerStyles, fontSize: `${e.target.value}px` })}
+                      value={parseInt(content.header.styles.fontSize)}
+                      onChange={(e) =>
+                        updateStyles('header', {
+                          ...content.header.styles,
+                          fontSize: `${e.target.value}px`,
+                        })
+                      }
                       className="w-full"
                     />
-                    <span className="text-xs">{headerStyles.fontSize}</span>
+                    <span className="text-xs">{content.header.styles.fontSize}</span>
                   </div>
 
                   {/* Font Family Selector */}
                   <div>
                     <h3 className="font-medium mb-3">Font Family</h3>
                     <select
-                      value={headerStyles.fontFamily}
-                      onChange={(e) => setHeaderStyles({ ...headerStyles, fontFamily: e.target.value })}
+                      value={content.header.styles.fontFamily}
+                      onChange={(e) =>
+                        updateStyles('header', {
+                          ...content.header.styles,
+                          fontFamily: e.target.value,
+                        })
+                      }
                       className="w-full p-2 border rounded"
                     >
                       <option value="Arial, sans-serif">Arial</option>
@@ -429,8 +444,13 @@ export default function CampaignBuilder() {
                     <h3 className="font-medium mb-3">Text Color</h3>
                     <input
                       type="color"
-                      value={headerStyles.color}
-                      onChange={(e) => setHeaderStyles({ ...headerStyles, color: e.target.value })}
+                      value={content.header.styles.color}
+                      onChange={(e) =>
+                        updateStyles('header', {
+                          ...content.header.styles,
+                          color: e.target.value,
+                        })
+                      }
                       className="w-full"
                     />
                   </div>
@@ -442,11 +462,16 @@ export default function CampaignBuilder() {
                       type="range"
                       min="0"
                       max="32"
-                      value={parseInt(headerStyles.padding)}
-                      onChange={(e) => setHeaderStyles({ ...headerStyles, padding: `${e.target.value}px` })}
+                      value={parseInt(content.header.styles.padding)}
+                      onChange={(e) =>
+                        updateStyles('header', {
+                          ...content.header.styles,
+                          padding: `${e.target.value}px`,
+                        })
+                      }
                       className="w-full"
                     />
-                    <span className="text-xs">{headerStyles.padding}</span>
+                    <span className="text-xs">{content.header.styles.padding}</span>
                   </div>
 
                   {/* Border Radius Slider */}
@@ -456,25 +481,35 @@ export default function CampaignBuilder() {
                       type="range"
                       min="0"
                       max="32"
-                      value={parseInt(headerStyles.borderRadius)}
-                      onChange={(e) => setHeaderStyles({ ...headerStyles, borderRadius: `${e.target.value}px` })}
+                      value={parseInt(content.header.styles.borderRadius)}
+                      onChange={(e) =>
+                        updateStyles('header', {
+                          ...content.header.styles,
+                          borderRadius: `${e.target.value}px`,
+                        })
+                      }
                       className="w-full"
                     />
-                    <span className="text-xs">{headerStyles.borderRadius}</span>
+                    <span className="text-xs">{content.header.styles.borderRadius}</span>
                   </div>
                 </>
               )}
 
               {selectedElement === 'description1' && (
                 <>
-                  <h3 className="font-medium mb-3">Description 1 Styles</h3>
+                  <h3 className="font-medium mb-3">Subtitle Styles</h3>
                   {/* Background Color Picker */}
                   <div>
                     <h3 className="font-medium mb-3">Background Color</h3>
                     <input
                       type="color"
-                      value={description1Styles.backgroundColor}
-                      onChange={(e) => setDescription1Styles({ ...description1Styles, backgroundColor: e.target.value })}
+                      value={content.description1.styles.backgroundColor}
+                      onChange={(e) =>
+                        updateStyles('description1', {
+                          ...content.description1.styles,
+                          backgroundColor: e.target.value,
+                        })
+                      }
                       className="w-full"
                     />
                   </div>
@@ -486,19 +521,29 @@ export default function CampaignBuilder() {
                       type="range"
                       min="12"
                       max="32"
-                      value={parseInt(description1Styles.fontSize)}
-                      onChange={(e) => setDescription1Styles({ ...description1Styles, fontSize: `${e.target.value}px` })}
+                      value={parseInt(content.description1.styles.fontSize)}
+                      onChange={(e) =>
+                        updateStyles('description1', {
+                          ...content.description1.styles,
+                          fontSize: `${e.target.value}px`,
+                        })
+                      }
                       className="w-full"
                     />
-                    <span className="text-xs">{description1Styles.fontSize}</span>
+                    <span className="text-xs">{content.description1.styles.fontSize}</span>
                   </div>
 
                   {/* Font Family Selector */}
                   <div>
                     <h3 className="font-medium mb-3">Font Family</h3>
                     <select
-                      value={description1Styles.fontFamily}
-                      onChange={(e) => setDescription1Styles({ ...description1Styles, fontFamily: e.target.value })}
+                      value={content.description1.styles.fontFamily}
+                      onChange={(e) =>
+                        updateStyles('description1', {
+                          ...content.description1.styles,
+                          fontFamily: e.target.value,
+                        })
+                      }
                       className="w-full p-2 border rounded"
                     >
                       <option value="Arial, sans-serif">Arial</option>
@@ -513,8 +558,13 @@ export default function CampaignBuilder() {
                     <h3 className="font-medium mb-3">Text Color</h3>
                     <input
                       type="color"
-                      value={description1Styles.color}
-                      onChange={(e) => setDescription1Styles({ ...description1Styles, color: e.target.value })}
+                      value={content.description1.styles.color}
+                      onChange={(e) =>
+                        updateStyles('description1', {
+                          ...content.description1.styles,
+                          color: e.target.value,
+                        })
+                      }
                       className="w-full"
                     />
                   </div>
@@ -526,11 +576,16 @@ export default function CampaignBuilder() {
                       type="range"
                       min="0"
                       max="32"
-                      value={parseInt(description1Styles.padding)}
-                      onChange={(e) => setDescription1Styles({ ...description1Styles, padding: `${e.target.value}px` })}
+                      value={parseInt(content.description1.styles.padding)}
+                      onChange={(e) =>
+                        updateStyles('description1', {
+                          ...content.description1.styles,
+                          padding: `${e.target.value}px`,
+                        })
+                      }
                       className="w-full"
                     />
-                    <span className="text-xs">{description1Styles.padding}</span>
+                    <span className="text-xs">{content.description1.styles.padding}</span>
                   </div>
 
                   {/* Border Radius Slider */}
@@ -540,25 +595,35 @@ export default function CampaignBuilder() {
                       type="range"
                       min="0"
                       max="32"
-                      value={parseInt(description1Styles.borderRadius)}
-                      onChange={(e) => setDescription1Styles({ ...description1Styles, borderRadius: `${e.target.value}px` })}
+                      value={parseInt(content.description1.styles.borderRadius)}
+                      onChange={(e) =>
+                        updateStyles('description1', {
+                          ...content.description1.styles,
+                          borderRadius: `${e.target.value}px`,
+                        })
+                      }
                       className="w-full"
                     />
-                    <span className="text-xs">{description1Styles.borderRadius}</span>
+                    <span className="text-xs">{content.description1.styles.borderRadius}</span>
                   </div>
                 </>
               )}
 
               {selectedElement === 'description2' && (
                 <>
-                  <h3 className="font-medium mb-3">Description 2 Styles</h3>
+                  <h3 className="font-medium mb-3">Description Styles</h3>
                   {/* Background Color Picker */}
                   <div>
                     <h3 className="font-medium mb-3">Background Color</h3>
                     <input
                       type="color"
-                      value={description2Styles.backgroundColor}
-                      onChange={(e) => setDescription2Styles({ ...description2Styles, backgroundColor: e.target.value })}
+                      value={content.description2.styles.backgroundColor}
+                      onChange={(e) =>
+                        updateStyles('description2', {
+                          ...content.description2.styles,
+                          backgroundColor: e.target.value,
+                        })
+                      }
                       className="w-full"
                     />
                   </div>
@@ -570,19 +635,29 @@ export default function CampaignBuilder() {
                       type="range"
                       min="12"
                       max="32"
-                      value={parseInt(description2Styles.fontSize)}
-                      onChange={(e) => setDescription2Styles({ ...description2Styles, fontSize: `${e.target.value}px` })}
+                      value={parseInt(content.description2.styles.fontSize)}
+                      onChange={(e) =>
+                        updateStyles('description2', {
+                          ...content.description2.styles,
+                          fontSize: `${e.target.value}px`,
+                        })
+                      }
                       className="w-full"
                     />
-                    <span className="text-xs">{description2Styles.fontSize}</span>
+                    <span className="text-xs">{content.description2.styles.fontSize}</span>
                   </div>
 
                   {/* Font Family Selector */}
                   <div>
                     <h3 className="font-medium mb-3">Font Family</h3>
                     <select
-                      value={description2Styles.fontFamily}
-                      onChange={(e) => setDescription2Styles({ ...description2Styles, fontFamily: e.target.value })}
+                      value={content.description2.styles.fontFamily}
+                      onChange={(e) =>
+                        updateStyles('description2', {
+                          ...content.description2.styles,
+                          fontFamily: e.target.value,
+                        })
+                      }
                       className="w-full p-2 border rounded"
                     >
                       <option value="Arial, sans-serif">Arial</option>
@@ -597,8 +672,13 @@ export default function CampaignBuilder() {
                     <h3 className="font-medium mb-3">Text Color</h3>
                     <input
                       type="color"
-                      value={description2Styles.color}
-                      onChange={(e) => setDescription2Styles({ ...description2Styles, color: e.target.value })}
+                      value={content.description2.styles.color}
+                      onChange={(e) =>
+                        updateStyles('description2', {
+                          ...content.description2.styles,
+                          color: e.target.value,
+                        })
+                      }
                       className="w-full"
                     />
                   </div>
@@ -610,11 +690,16 @@ export default function CampaignBuilder() {
                       type="range"
                       min="0"
                       max="32"
-                      value={parseInt(description2Styles.padding)}
-                      onChange={(e) => setDescription2Styles({ ...description2Styles, padding: `${e.target.value}px` })}
+                      value={parseInt(content.description2.styles.padding)}
+                      onChange={(e) =>
+                        updateStyles('description2', {
+                          ...content.description2.styles,
+                          padding: `${e.target.value}px`,
+                        })
+                      }
                       className="w-full"
                     />
-                    <span className="text-xs">{description2Styles.padding}</span>
+                    <span className="text-xs">{content.description2.styles.padding}</span>
                   </div>
 
                   {/* Border Radius Slider */}
@@ -624,14 +709,21 @@ export default function CampaignBuilder() {
                       type="range"
                       min="0"
                       max="32"
-                      value={parseInt(description2Styles.borderRadius)}
-                      onChange={(e) => setDescription2Styles({ ...description2Styles, borderRadius: `${e.target.value}px` })}
+                      value={parseInt(content.description2.styles.borderRadius)}
+                      onChange={(e) =>
+                        updateStyles('description2', {
+                          ...content.description2.styles,
+                          borderRadius: `${e.target.value}px`,
+                        })
+                      }
                       className="w-full"
                     />
-                    <span className="text-xs">{description2Styles.borderRadius}</span>
+                    <span className="text-xs">{content.description2.styles.borderRadius}</span>
                   </div>
                 </>
               )}
+
+              {/* Repeat for description1 and description2 */}
             </div>
           </div>
         </div>
