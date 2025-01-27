@@ -124,7 +124,7 @@ export default function ReferrerSettingsProfile() {
                         <div className="space-y-2">
                             <h3 className="text-lg font-medium">Profile picture</h3>
                             <div className="flex space-x-2">
-                                <Button variant="outline" size="sm">Change</Button>
+                                <Button variant="outline" size="sm" onClick={handleAvatarClick} >Change</Button>
                                 <Button variant="outline" size="sm">Remove</Button>
                             </div>
                         </div>

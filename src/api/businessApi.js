@@ -73,15 +73,15 @@ const updateProfile = async (data) => {
 
     if (response) {
         user.name = response.data.name,
-        user.email = response.data.email,
-        user.url = response.data.url,
-        localStorage.setItem('user', JSON.stringify(user));
+            user.email = response.data.email,
+            user.url = response.data.url,
+            localStorage.setItem('user', JSON.stringify(user));
     }
 
     return response.data;
 }
 
-const updateBusinessProfile = async(data) => {
+const updateBusinessProfile = async (data) => {
     const user = JSON.parse(localStorage.getItem('user'));
 
     const response = await axios.post(API_URL + '/updateBusinessProfile', data, {
@@ -93,6 +93,18 @@ const updateBusinessProfile = async(data) => {
     return response.data;
 }
 
+const uploadImage = async (data) => {
+    const user = JSON.parse(localStorage.getItem('user'))
+
+    const response = await axios.post(API_URL + '/upload', data, {
+        headers: {
+            Authorization: `Bearer ${user?.token}`
+        }
+    })
+
+    return response.data;
+}
+
 const businessApi = {
     createBusiness,
     getAllBusiness,
@@ -100,7 +112,8 @@ const businessApi = {
     getBusinessById,
     inviteReferrer,
     updateProfile,
-    updateBusinessProfile
+    updateBusinessProfile,
+    uploadImage
 };
 
 export default businessApi;
