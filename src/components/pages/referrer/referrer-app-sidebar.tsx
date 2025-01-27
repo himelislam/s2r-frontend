@@ -30,7 +30,7 @@ export function ReferrerAppSidebar({ ...props }) {
     user: {
       name: props.referrer?.name,
       email: props.referrer?.email,
-      avatar: "/avatars/shadcn.jpg",
+      avatar: props.referrer?.url,
     },
     teams: [
       {

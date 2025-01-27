@@ -69,6 +69,7 @@ const updateReferrerProfile = async(data) => {
         user.name = response.data.name,
         user.email = response.data.email,
         user.phone = response.data.phone,
+        user.url = response.data.url,
         localStorage.setItem('user', JSON.stringify(user));
     }
 

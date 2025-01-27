@@ -30,7 +30,7 @@ export function BusinessAppSidebar({ ...props }) {
     user: {
       name: props.business?.name,
       email: props.business?.email,
-      avatar: "/avatars/shadcn.jpg",
+      avatar: props?.business?.url,
     },
     teams: [
       {

@@ -50,8 +50,8 @@ export default function CampaignBuilder() {
     navigator.clipboard.writeText(referralLink)
   }
 
-  const referrerName = 'Hiii'
-  const businessName = "Luke"
+  const referrerName = 'Referrer'
+  const businessName = "Business"
   const [selectedElement, setSelectedElement] = useState('header');
 
   const {
