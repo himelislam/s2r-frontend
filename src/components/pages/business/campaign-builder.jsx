@@ -206,7 +206,7 @@ export default function CampaignBuilder() {
                       <EditableText
                         value={content.header.content}
                         onChange={(value) => updateContent('header', value)}
-                        className="uppercase text-center text-xl"
+                        className="text-center text-xl"
                         styles={content.header.styles}
                         elementName="header"
                         setSelectedElement={setSelectedElement}
@@ -328,7 +328,7 @@ export default function CampaignBuilder() {
                       <EditableText
                         value={content.header.content}
                         onChange={(value) => updateContent('header', value)}
-                        className="uppercase text-center text-xl"
+                        className="text-center text-xl"
                         styles={content.header.styles}
                         elementName="header"
                         setSelectedElement={setSelectedElement}
