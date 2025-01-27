@@ -74,6 +74,7 @@ const updateProfile = async (data) => {
     if (response) {
         user.name = response.data.name,
         user.email = response.data.email,
+        user.url = response.data.url,
         localStorage.setItem('user', JSON.stringify(user));
     }
 

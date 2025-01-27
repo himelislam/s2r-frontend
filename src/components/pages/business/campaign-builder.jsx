@@ -52,7 +52,7 @@ export default function CampaignBuilder() {
 
   const referrerName = 'Hiii'
   const businessName = "Luke"
-  const [selectedElement, setSelectedElement] = useState(null);
+  const [selectedElement, setSelectedElement] = useState('header');
 
   const {
     content,

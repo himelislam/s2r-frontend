@@ -89,13 +89,26 @@ const changePassword = async (data) => {
   return response.data;
 }
 
+const uploadImage = async (data) => {
+  const user = JSON.parse(localStorage.getItem('user'))
+
+  const response = await axios.post(API_URL + '/upload', data, {
+    headers: {
+      Authorization: `Bearer ${user?.token}`
+    }
+  })
+
+  return response.data;
+}
+
 const authApi = {
   signup,
   logout,
   login,
   forgetPassword,
   resetPassword,
-  changePassword
+  changePassword,
+  uploadImage
 };
 
 export default authApi;
