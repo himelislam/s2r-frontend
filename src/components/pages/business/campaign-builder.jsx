@@ -19,6 +19,8 @@ import { cn } from "@/lib/utils"
 import { format } from "date-fns"
 import EditableText from "./builder/editable-text"
 import useEditableContent from "@/hooks/useEditableContent"
+import campaignApi from "@/api/campaignApi"
+import { useMutation } from "@tanstack/react-query"
 
 const steps = [
   "Person Referring",
@@ -72,6 +74,35 @@ export default function CampaignBuilder() {
     return content
       .replace(/{{referrerName}}/g, referrerName)
       .replace(/{{businessName}}/g, businessName);
+  };
+
+
+  // for image
+  const [uploadedImage, setUploadedImage] = useState(null);
+
+  // profile image upload
+  const uploadLogoMutation = useMutation({
+    mutationFn: campaignApi.uploadImage,
+    onSuccess: (data) => {
+      console.log(data, "success");
+      setUploadedImage(data.url);
+      updateContent('logo', data.url);
+      toast.success('Image uploaded successfully')
+    },
+    onError: (err) => {
+      console.log(err, "errror on file upload");
+      toast.error('Unable to upload image.')
+    }
+  })
+
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('image', file);
+      uploadLogoMutation.mutate(formData);
+    }
   };
 
   return (
@@ -196,10 +227,13 @@ export default function CampaignBuilder() {
                 <div>
                   <div className="max-w-lg mx-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
                     <div className="items-center mb-4">
+                      {/* Editable Image */}
                       <img
-                        src="https://img.freepik.com/free-vector/bird-colorful-logo-gradient-vector_343694-1365.jpg"
+                        src={content.logo.content}
+                        style={content.logo.styles}
                         alt=""
-                        className="w-40 h-40 mx-auto"
+                        className="w-40 h-40 mx-auto cursor-pointer"
+                        onClick={() => setSelectedElement('logo')}
                       />
 
                       {/* Editable Header */}
@@ -720,6 +754,189 @@ export default function CampaignBuilder() {
                     />
                     <span className="text-xs">{content.description2.styles.borderRadius}</span>
                   </div>
+                </>
+              )}
+
+              {selectedElement === 'logo' && (
+                <>
+                  <h3 className="font-medium mb-3">Logo Styles</h3>
+                  {/* Background Color Picker */}
+                  <div>
+                    <h3 className="font-medium mb-3">Background Color</h3>
+                    <input
+                      type="color"
+                      value={content.logo.styles.backgroundColor}
+                      onChange={(e) =>
+                        updateStyles('logo', {
+                          ...content.logo.styles,
+                          backgroundColor: e.target.value,
+                        })
+                      }
+                      className="w-full"
+                    />
+                  </div>
+
+                  {/* Font Size Slider */}
+                  <div>
+                    <h3 className="font-medium mb-3">Font Size</h3>
+                    <input
+                      type="range"
+                      min="12"
+                      max="32"
+                      value={parseInt(content.logo.styles.fontSize)}
+                      onChange={(e) =>
+                        updateStyles('logo', {
+                          ...content.logo.styles,
+                          fontSize: `${e.target.value}px`,
+                        })
+                      }
+                      className="w-full"
+                    />
+                    <span className="text-xs">{content.logo.styles.fontSize}</span>
+                  </div>
+
+                  {/* Font Family Selector */}
+                  <div>
+                    <h3 className="font-medium mb-3">Font Family</h3>
+                    <select
+                      value={content.logo.styles.fontFamily}
+                      onChange={(e) =>
+                        updateStyles('logo', {
+                          ...content.logo.styles,
+                          fontFamily: e.target.value,
+                        })
+                      }
+                      className="w-full p-2 border rounded"
+                    >
+                      <option value="Arial, sans-serif">Arial</option>
+                      <option value="Times New Roman, serif">Times New Roman</option>
+                      <option value="Courier New, monospace">Courier New</option>
+                      <option value="Georgia, serif">Georgia</option>
+                    </select>
+                  </div>
+
+                  {/* Text Color Picker */}
+                  <div>
+                    <h3 className="font-medium mb-3">Text Color</h3>
+                    <input
+                      type="color"
+                      value={content.logo.styles.color}
+                      onChange={(e) =>
+                        updateStyles('logo', {
+                          ...content.logo.styles,
+                          color: e.target.value,
+                        })
+                      }
+                      className="w-full"
+                    />
+                  </div>
+
+                  {/* Padding Slider */}
+                  <div>
+                    <h3 className="font-medium mb-3">Padding</h3>
+                    <input
+                      type="range"
+                      min="0"
+                      max="32"
+                      value={parseInt(content.logo.styles.padding)}
+                      onChange={(e) =>
+                        updateStyles('logo', {
+                          ...content.logo.styles,
+                          padding: `${e.target.value}px`,
+                        })
+                      }
+                      className="w-full"
+                    />
+                    <span className="text-xs">{content.logo.styles.padding}</span>
+                  </div>
+
+                  {/* Border Radius Slider */}
+                  <div>
+                    <h3 className="font-medium mb-3">Border Radius</h3>
+                    <input
+                      type="range"
+                      min="0"
+                      max="32"
+                      value={parseInt(content.logo.styles.borderRadius)}
+                      onChange={(e) =>
+                        updateStyles('logo', {
+                          ...content.logo.styles,
+                          borderRadius: `${e.target.value}px`,
+                        })
+                      }
+                      className="w-full"
+                    />
+                    <span className="text-xs">{content.logo.styles.borderRadius}</span>
+                  </div>
+
+                  {/* Logo */}
+                  <div>
+                    <h3 className="font-medium mb-3">Logo</h3>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      // value={parseInt(content.logo.styles.borderRadius)}
+                      // onChange={(e) =>
+                      //   updateStyles('logo', {
+                      //     ...content.logo.styles,
+                      //     borderRadius: `${e.target.value}px`,
+                      //   })
+                      // }
+                      className="w-full"
+                    />
+                    {/* Display Uploaded Image */}
+                    {uploadedImage && (
+                      <div className="mb-4">
+                        <img
+                          src={uploadedImage}
+                          alt="Uploaded Logo"
+                          style={{ borderRadius: content.logo.styles.borderRadius }}
+                          className="w-32 h-32 object-cover border border-gray-200"
+                        />
+                      </div>
+                    )}
+                    {/* <span className="text-xs">{content.logo.styles.borderRadius}</span> */}
+                  </div>
+
+                  {/* Height */}
+                  <div>
+                    <h3 className="font-medium mb-3">Height</h3>
+                    <input
+                      type="range"
+                      min="0"
+                      max="300"
+                      value={parseInt(content.logo.styles.height)}
+                      onChange={(e) =>
+                        updateStyles('logo', {
+                          ...content.logo.styles,
+                          height: `${e.target.value}px`,
+                        })
+                      }
+                      className="w-full"
+                    />
+                    <span className="text-xs">{content.logo.styles.height}</span>
+                  </div>
+
+                  {/* Width */}
+                  <div>
+                    <h3 className="font-medium mb-3">Width</h3>
+                    <input
+                      type="range"
+                      min="0"
+                      max="300"
+                      value={parseInt(content.logo.styles.width)}
+                      onChange={(e) =>
+                        updateStyles('logo', {
+                          ...content.logo.styles,
+                          width: `${e.target.value}px`,
+                        })
+                      }
+                      className="w-full"
+                    />
+                    <span className="text-xs">{content.logo.styles.width}</span>
+                  </div>
+
                 </>
               )}
 

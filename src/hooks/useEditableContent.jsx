@@ -3,6 +3,19 @@ import { useState } from 'react';
 const useEditableContent = () => {
   // State for managing all content and styles in a single object
   const [content, setContent] = useState({
+    logo: {
+      content: 'https://marketplace.canva.com/EAFaFUz4aKo/2/0/1600w/canva-yellow-abstract-cooking-fire-free-logo-JmYWTjUsE-Q.jpg',
+      styles: {
+        backgroundColor: '#ffffff',
+        fontSize: '24px',
+        fontFamily: 'Arial, sans-serif',
+        color: '#000000',
+        padding: '2px',
+        borderRadius: '8px',
+        height: '200px',
+        width: '200px',
+      },
+    },
     header: {
       content: '{{referrerName}} Recommends {{businessName}}',
       styles: {
