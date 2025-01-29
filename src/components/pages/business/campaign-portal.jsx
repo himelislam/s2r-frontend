@@ -12,6 +12,7 @@ import CampaignItem from "./campaign-item"
 import { Outlet, useNavigate } from "react-router-dom"
 import Spinner from "@/components/spinner"
 import { toast } from "react-toastify"
+import useEditableContent from "@/hooks/useEditableContent"
 
 export default function CampaignPortal() {
     const [open, setOpen] = useState(false)
@@ -22,6 +23,7 @@ export default function CampaignPortal() {
     const [filter, setFilter] = useState("all");
     const queryClient = useQueryClient();
     const navigate = useNavigate()
+    const { getContentAsJSON } = useEditableContent();
 
 
     const createCampaignMutation = useMutation({
@@ -30,7 +32,7 @@ export default function CampaignPortal() {
             toast.success("Campaign created successfully")
             setOpen(false)
             queryClient.invalidateQueries('getCampaignsByBusinessId')
-            navigate('/b/dashboard/campaign-portal/builder', { state: { campaign: data} })
+            navigate('/b/dashboard/campaign-portal/builder', { state: { campaign: data } })
         },
         onError: (error) => {
             console.error("An error occurred:", error)
@@ -38,10 +40,12 @@ export default function CampaignPortal() {
     })
 
     const handleStartCampaign = () => {
+        const jsonContent = getContentAsJSON();
         createCampaignMutation.mutate({
             campaignName,
             campaignLanguage,
-            businessId: user.userId
+            businessId: user.userId,
+            refereeJSON: jsonContent,
         })
     }
 

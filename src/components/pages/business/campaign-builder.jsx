@@ -46,6 +46,8 @@ export default function CampaignBuilder() {
   const { state } = useLocation();
   const campaign = state?.campaign || null;
 
+  console.log(campaign._id, "campaign id");
+
   const referralLink = "https://ministry.referral-factory.com/cLILwj4l"
 
   const handleCopyLink = () => {

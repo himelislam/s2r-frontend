@@ -11,7 +11,7 @@ const createCampaign = async (campaignData) => {
             Authorization: `Bearer ${user?.token}`
         }
     });
-    
+
     return response.data;
 }
 
@@ -21,7 +21,7 @@ const getCampaignsByBusinessId = async (businessId) => {
     const response = await axios.post(API_URL + `/getCampaignsByBusinessId`, { businessId }, {
         headers: {
             Authorization: `Bearer ${user?.token}`
-        }       
+        }
     });
 
     return response.data;
@@ -33,7 +33,7 @@ const updateCampaignActiveStatus = async (campaignId, activeStatus) => {
     const response = await axios.post(API_URL + `/updateCampaignActiveStatus`, { campaignId, activeStatus }, {
         headers: {
             Authorization: `Bearer ${user?.token}`
-        }       
+        }
     });
 
     return response.data;
@@ -41,15 +41,39 @@ const updateCampaignActiveStatus = async (campaignId, activeStatus) => {
 
 const uploadImage = async (data) => {
     const user = JSON.parse(localStorage.getItem('user'))
-  
+
     const response = await axios.post(API_URL + '/upload', data, {
-      headers: {
-        Authorization: `Bearer ${user?.token}`
-      }
+        headers: {
+            Authorization: `Bearer ${user?.token}`
+        }
     })
-  
+
     return response.data;
-  }
+}
+
+const getCampaignState = async (campaignId) => {
+    const user = JSON.parse(localStorage.getItem('user'))
+
+    const response = await axios.post(API_URL + '/getCampaignState', campaignId, {
+        headers: {
+            Authorization: `Bearer ${user?.token}`
+        }
+    })
+
+    return response.data;
+}
+
+const updateCampaignState = async (data) => {
+    const user = JSON.parse(localStorage.getItem('user'))
+
+    const response = await axios.post(API_URL + '/updateCampaignState', data, {
+        headers: {
+            Authorization: `Bearer ${user?.token}`
+        }
+    })
+    
+    return response.data;
+}
 
 const campaignApi = {
     createCampaign,
