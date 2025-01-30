@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Monitor, Tablet, Smartphone, PenSquare, Wrench, Share2, ChevronLeft, ChevronRight, Plus, Trash2, Mail, QrCode, CalendarIcon } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -21,6 +21,7 @@ import EditableText from "./builder/editable-text"
 import useEditableContent from "@/hooks/useEditableContent"
 import campaignApi from "@/api/campaignApi"
 import { useMutation } from "@tanstack/react-query"
+import { toast } from "react-toastify"
 
 const steps = [
   "Person Referring",
@@ -63,13 +64,54 @@ export default function CampaignBuilder() {
     updateContent,
     updateStyles,
     getContentAsJSON,
+    setContent
   } = useEditableContent();
+
+  // get campaign state
+
+  const getCampaignStateMutation = useMutation({
+    mutationFn: campaignApi.getCampaignState,
+    onSuccess: (data) => {
+      console.log(data, "getstate");
+      const dd = JSON.parse(data)
+      setContent(dd);
+    },
+    onError: (err) => {
+      console.log(err, "get Err");
+    }
+  })
+
+  useEffect(()=> {
+    getCampaignStateMutation.mutate({
+      campaignId: campaign._id
+    })
+  },[])
+
+// ---------------------
+
+
+  // update builder state
+
+  const updateCampaignStateMutation = useMutation({
+    mutationFn: campaignApi.updateCampaignState,
+    onSuccess: (data) => {
+      console.log(data);
+      toast.success(data.message)
+    },
+    onError: (err) => {
+      console.log(err, "err");
+    }
+  })
 
   const handleSave = () => {
     const jsonContent = getContentAsJSON();
+    updateCampaignStateMutation.mutate({
+      state: JSON.stringify(content),
+      campaignId: campaign._id
+    })
     console.log(jsonContent); // This can be sent to your database
   };
-
+// ------------
 
   // Function to replace placeholders with dynamic values
   const renderContent = (content) => {

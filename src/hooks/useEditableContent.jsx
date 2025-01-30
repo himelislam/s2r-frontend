@@ -83,6 +83,7 @@ const useEditableContent = () => {
     updateContent,
     updateStyles,
     getContentAsJSON,
+    setContent
   };
 };
 

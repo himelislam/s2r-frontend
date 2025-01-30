@@ -79,7 +79,9 @@ const campaignApi = {
     createCampaign,
     getCampaignsByBusinessId,
     updateCampaignActiveStatus,
-    uploadImage
+    uploadImage,
+    updateCampaignState,
+    getCampaignState
 };
 
 export default campaignApi;
