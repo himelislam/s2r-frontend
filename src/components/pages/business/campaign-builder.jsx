@@ -47,7 +47,6 @@ export default function CampaignBuilder() {
   const { state } = useLocation();
   const campaign = state?.campaign || null;
 
-  console.log(campaign._id, "campaign id");
 
   const referralLink = "https://ministry.referral-factory.com/cLILwj4l"
 
@@ -64,7 +63,10 @@ export default function CampaignBuilder() {
     updateContent,
     updateStyles,
     getContentAsJSON,
-    setContent
+    setContent,
+    addFormField,
+    updateFormField,
+    deleteFormField
   } = useEditableContent();
 
   // get campaign state
@@ -81,13 +83,13 @@ export default function CampaignBuilder() {
     }
   })
 
-  useEffect(()=> {
+  useEffect(() => {
     getCampaignStateMutation.mutate({
-      campaignId: campaign._id
+      campaignId: campaign?._id
     })
-  },[])
+  }, [])
 
-// ---------------------
+  // ---------------------
 
 
   // update builder state
@@ -111,7 +113,7 @@ export default function CampaignBuilder() {
     })
     console.log(jsonContent); // This can be sent to your database
   };
-// ------------
+  // ------------
 
   // Function to replace placeholders with dynamic values
   const renderContent = (content) => {
@@ -315,74 +317,32 @@ export default function CampaignBuilder() {
                     />
 
                     <div>
-                      <img
+                      {/* <img
                         src="https://dcdko16buub2z.cloudfront.net/images/XrwbjBN0860gkf4G.gif"
                         alt=""
                         className="w-full p-2"
-                      />
+                      /> */}
                     </div>
 
                     {/* Rest of your form */}
-                    <Card className="mx-auto max-w-md">
+                    <Card className="mx-auto max-w-md cursor-pointer">
                       <CardContent>
                         <form>
-                          <div className="grid gap-4 mt-4">
-                            <div className="grid gap-2">
-                              <Label htmlFor="email">Name</Label>
-                              <Input
-                                id="name"
-                                type="text"
-                                placeholder=""
-                                required
-                                onChange={(e) => setName(e.target.value)}
-                              />
-                            </div>
-                            <div className="grid gap-2">
-                              <Label htmlFor="email">Email</Label>
-                              <Input
-                                id="email"
-                                type="email"
-                                placeholder="m@example.com"
-                                required
-                                onChange={(e) => setEmail(e.target.value)}
-                              />
-                            </div>
-
-                            <div className="grid gap-2">
-                              <Label htmlFor="email">Phone</Label>
-                              <Input
-                                id="number"
-                                type="number"
-                                placeholder=""
-                                required
-                                onChange={(e) => setPhone(e.target.value)}
-                              />
-                            </div>
-
-                            <Label htmlFor="email">Preferred Contact Date</Label>
-                            <Popover>
-                              <PopoverTrigger asChild>
-                                <Button
-                                  variant={"outline"}
-                                  className={cn(
-                                    "w-[330px] justify-start text-left font-normal",
-                                    !date && "text-muted-foreground"
-                                  )}
-                                >
-                                  <CalendarIcon />
-                                  {date ? format(date, "PPP") : <span>Pick a date</span>}
-                                </Button>
-                              </PopoverTrigger>
-                              <PopoverContent className="w-auto p-0">
-                                <Calendar
-                                  mode="single"
-                                  selected={date}
-                                  onSelect={setDate}
-                                  initialFocus
+                          <div className="grid gap-4 mt-4" onClick={() => setSelectedElement('form')}>
+                            {content?.form?.fields?.map((field) => (
+                              <div key={field.id} className="grid gap-2">
+                                <Label htmlFor={field.id} style={field.styles}>
+                                  {field.label}
+                                </Label>
+                                <Input
+                                  id={field.id}
+                                  type={field.type}
+                                  placeholder={field.placeholder}
+                                  required={field.required}
+                                  style={field.styles}
                                 />
-                              </PopoverContent>
-                            </Popover>
-
+                              </div>
+                            ))}
                             <Button type="submit" className="w-full">
                               Submit
                             </Button>
@@ -981,6 +941,119 @@ export default function CampaignBuilder() {
                     <span className="text-xs">{content.logo.styles.width}</span>
                   </div>
 
+                </>
+              )}
+
+              {selectedElement === 'form' && (
+                <>
+                  <h3 className="font-medium mb-3">Form Fields</h3>
+                  <Button
+                    variant="outline"
+                    className="w-full mb-4"
+                    onClick={() =>
+                      addFormField({
+                        id: `field-${content.form.fields.length + 1}`,
+                        type: 'text',
+                        label: 'New Field',
+                        placeholder: '',
+                        required: false,
+                        styles: {
+                          fontSize: '16px',
+                          color: '#000000',
+                          padding: '8px',
+                          borderRadius: '4px',
+                        },
+                      })
+                    }
+                  >
+                    Add Field
+                  </Button>
+
+                  {content.form.fields.map((field) => (
+                    <div key={field.id} className="mb-4">
+                      <div className="flex justify-between items-center mb-2">
+                        <h4 className="font-medium">{field.label}</h4>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => deleteFormField(field.id)}
+                        >
+                          <Trash2 className="h-4 w-4" /> {/* Use an icon if desired */}
+                        </Button>
+                      </div>
+                      <select
+                        value={field.type}
+                        onChange={(e) =>
+                          updateFormField(field.id, {
+                            ...field,
+                            type: e.target.value,
+                          })
+                        }
+                        className="w-full p-2 border rounded mb-2"
+                      >
+                        <option value="text">Text</option>
+                        <option value="email">Email</option>
+                        <option value="number">Number</option>
+                        <option value="date">Date</option>
+                      </select>
+
+                      <input
+                        type="text"
+                        value={field.label}
+                        onChange={(e) =>
+                          updateFormField(field.id, {
+                            ...field,
+                            label: e.target.value,
+                          })
+                        }
+                        className="w-full p-2 border rounded mb-2"
+                        placeholder="Label"
+                      />
+
+                      <input
+                        type="text"
+                        value={field.placeholder}
+                        onChange={(e) =>
+                          updateFormField(field.id, {
+                            ...field,
+                            placeholder: e.target.value,
+                          })
+                        }
+                        className="w-full p-2 border rounded mb-2"
+                        placeholder="Placeholder"
+                      />
+
+                      <label className="flex items-center space-x-2 mb-2">
+                        <input
+                          type="checkbox"
+                          checked={field.required}
+                          onChange={(e) =>
+                            updateFormField(field.id, {
+                              ...field,
+                              required: e.target.checked,
+                            })
+                          }
+                        />
+                        <span>Required</span>
+                      </label>
+
+                      <h4 className="font-medium mb-2">Field Styles</h4>
+                      <input
+                        type="color"
+                        value={field.styles.color}
+                        onChange={(e) =>
+                          updateFormField(field.id, {
+                            ...field,
+                            styles: {
+                              ...field.styles,
+                              color: e.target.value,
+                            },
+                          })
+                        }
+                        className="w-full mb-2"
+                      />
+                    </div>
+                  ))}
                 </>
               )}
 
