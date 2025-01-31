@@ -49,6 +49,36 @@ const useEditableContent = () => {
         borderRadius: '8px',
       },
     },
+    form: {
+      fields: [
+        {
+          id: 'name',
+          type: 'text',
+          label: 'Name',
+          placeholder: '',
+          required: true,
+          styles: {
+            fontSize: '16px',
+            color: '#000000',
+            padding: '8px',
+            borderRadius: '4px',
+          },
+        },
+        {
+          id: 'email',
+          type: 'email',
+          label: 'Email',
+          placeholder: 'm@example.com',
+          required: true,
+          styles: {
+            fontSize: '16px',
+            color: '#000000',
+            padding: '8px',
+            borderRadius: '4px',
+          },
+        },
+      ],
+    },
   });
 
   // Helper function to update content
@@ -73,6 +103,38 @@ const useEditableContent = () => {
     }));
   };
 
+  const addFormField = (field) => {
+    setContent((prev) => ({
+      ...prev,
+      form: {
+        ...prev.form,
+        fields: [...prev.form.fields, field],
+      },
+    }));
+  };
+
+  const updateFormField = (fieldId, updatedField) => {
+    setContent((prev) => ({
+      ...prev,
+      form: {
+        ...prev.form,
+        fields: prev.form.fields.map((field) =>
+          field.id === fieldId ? updatedField : field
+        ),
+      },
+    }));
+  };
+
+  const deleteFormField = (fieldId) => {
+    setContent((prev) => ({
+      ...prev,
+      form: {
+        ...prev.form,
+        fields: prev.form.fields.filter((field) => field.id !== fieldId),
+      },
+    }));
+  };
+
   // Convert the content object to JSON
   const getContentAsJSON = () => {
     return JSON.stringify(content);
@@ -83,7 +145,10 @@ const useEditableContent = () => {
     updateContent,
     updateStyles,
     getContentAsJSON,
-    setContent
+    setContent,
+    addFormField,
+    updateFormField,
+    deleteFormField
   };
 };
 
