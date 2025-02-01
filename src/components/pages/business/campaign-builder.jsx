@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Card, CardContent } from "@/components/ui/card"
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   Tooltip,
   TooltipContent,
@@ -22,6 +22,10 @@ import useEditableContent from "@/hooks/useEditableContent"
 import campaignApi from "@/api/campaignApi"
 import { useMutation } from "@tanstack/react-query"
 import { toast } from "react-toastify"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Switch } from "@/components/ui/switch"
+import { Slider } from "@/components/ui/slider"
 
 const steps = [
   "Person Referring",
@@ -417,7 +421,7 @@ export default function CampaignBuilder() {
           </div>
 
           {/* Right Sidebar */}
-          <div className="w-64 border-l bg-background p-4">
+          <div className="w-96 border-l bg-background p-4">
             <div className="space-y-6">
               {selectedElement === 'header' && (
                 <>
@@ -762,299 +766,561 @@ export default function CampaignBuilder() {
               )}
 
               {selectedElement === 'logo' && (
-                <>
-                  <h3 className="font-medium mb-3">Logo Styles</h3>
-                  {/* Background Color Picker */}
-                  <div>
-                    <h3 className="font-medium mb-3">Background Color</h3>
-                    <input
-                      type="color"
-                      value={content.logo.styles.backgroundColor}
-                      onChange={(e) =>
-                        updateStyles('logo', {
-                          ...content.logo.styles,
-                          backgroundColor: e.target.value,
-                        })
-                      }
-                      className="w-full"
-                    />
-                  </div>
+                // <>
+                //   <h3 className="font-medium mb-3">Logo Styles</h3>
+                //   {/* Background Color Picker */}
+                //   <div>
+                //     <h3 className="font-medium mb-3">Background Color</h3>
+                //     <input
+                //       type="color"
+                //       value={content.logo.styles.backgroundColor}
+                //       onChange={(e) =>
+                //         updateStyles('logo', {
+                //           ...content.logo.styles,
+                //           backgroundColor: e.target.value,
+                //         })
+                //       }
+                //       className="w-full"
+                //     />
+                //   </div>
 
-                  {/* Font Size Slider */}
-                  <div>
-                    <h3 className="font-medium mb-3">Font Size</h3>
-                    <input
-                      type="range"
-                      min="12"
-                      max="32"
-                      value={parseInt(content.logo.styles.fontSize)}
-                      onChange={(e) =>
-                        updateStyles('logo', {
-                          ...content.logo.styles,
-                          fontSize: `${e.target.value}px`,
-                        })
-                      }
-                      className="w-full"
-                    />
-                    <span className="text-xs">{content.logo.styles.fontSize}</span>
-                  </div>
+                //   {/* Font Size Slider */}
+                //   <div>
+                //     <h3 className="font-medium mb-3">Font Size</h3>
+                //     <input
+                //       type="range"
+                //       min="12"
+                //       max="32"
+                //       value={parseInt(content.logo.styles.fontSize)}
+                //       onChange={(e) =>
+                //         updateStyles('logo', {
+                //           ...content.logo.styles,
+                //           fontSize: `${e.target.value}px`,
+                //         })
+                //       }
+                //       className="w-full"
+                //     />
+                //     <span className="text-xs">{content.logo.styles.fontSize}</span>
+                //   </div>
 
-                  {/* Font Family Selector */}
-                  <div>
-                    <h3 className="font-medium mb-3">Font Family</h3>
-                    <select
-                      value={content.logo.styles.fontFamily}
-                      onChange={(e) =>
-                        updateStyles('logo', {
-                          ...content.logo.styles,
-                          fontFamily: e.target.value,
-                        })
-                      }
-                      className="w-full p-2 border rounded"
-                    >
-                      <option value="Arial, sans-serif">Arial</option>
-                      <option value="Times New Roman, serif">Times New Roman</option>
-                      <option value="Courier New, monospace">Courier New</option>
-                      <option value="Georgia, serif">Georgia</option>
-                    </select>
-                  </div>
+                //   {/* Font Family Selector */}
+                //   <div>
+                //     <h3 className="font-medium mb-3">Font Family</h3>
+                //     <select
+                //       value={content.logo.styles.fontFamily}
+                //       onChange={(e) =>
+                //         updateStyles('logo', {
+                //           ...content.logo.styles,
+                //           fontFamily: e.target.value,
+                //         })
+                //       }
+                //       className="w-full p-2 border rounded"
+                //     >
+                //       <option value="Arial, sans-serif">Arial</option>
+                //       <option value="Times New Roman, serif">Times New Roman</option>
+                //       <option value="Courier New, monospace">Courier New</option>
+                //       <option value="Georgia, serif">Georgia</option>
+                //     </select>
+                //   </div>
 
-                  {/* Text Color Picker */}
-                  <div>
-                    <h3 className="font-medium mb-3">Text Color</h3>
-                    <input
-                      type="color"
-                      value={content.logo.styles.color}
-                      onChange={(e) =>
-                        updateStyles('logo', {
-                          ...content.logo.styles,
-                          color: e.target.value,
-                        })
-                      }
-                      className="w-full"
-                    />
-                  </div>
+                //   {/* Text Color Picker */}
+                //   <div>
+                //     <h3 className="font-medium mb-3">Text Color</h3>
+                //     <input
+                //       type="color"
+                //       value={content.logo.styles.color}
+                //       onChange={(e) =>
+                //         updateStyles('logo', {
+                //           ...content.logo.styles,
+                //           color: e.target.value,
+                //         })
+                //       }
+                //       className="w-full"
+                //     />
+                //   </div>
 
-                  {/* Padding Slider */}
-                  <div>
-                    <h3 className="font-medium mb-3">Padding</h3>
-                    <input
-                      type="range"
-                      min="0"
-                      max="32"
-                      value={parseInt(content.logo.styles.padding)}
-                      onChange={(e) =>
-                        updateStyles('logo', {
-                          ...content.logo.styles,
-                          padding: `${e.target.value}px`,
-                        })
-                      }
-                      className="w-full"
-                    />
-                    <span className="text-xs">{content.logo.styles.padding}</span>
-                  </div>
+                //   {/* Padding Slider */}
+                //   <div>
+                //     <h3 className="font-medium mb-3">Padding</h3>
+                //     <input
+                //       type="range"
+                //       min="0"
+                //       max="32"
+                //       value={parseInt(content.logo.styles.padding)}
+                //       onChange={(e) =>
+                //         updateStyles('logo', {
+                //           ...content.logo.styles,
+                //           padding: `${e.target.value}px`,
+                //         })
+                //       }
+                //       className="w-full"
+                //     />
+                //     <span className="text-xs">{content.logo.styles.padding}</span>
+                //   </div>
 
-                  {/* Border Radius Slider */}
-                  <div>
-                    <h3 className="font-medium mb-3">Border Radius</h3>
-                    <input
-                      type="range"
-                      min="0"
-                      max="32"
-                      value={parseInt(content.logo.styles.borderRadius)}
-                      onChange={(e) =>
-                        updateStyles('logo', {
-                          ...content.logo.styles,
-                          borderRadius: `${e.target.value}px`,
-                        })
-                      }
-                      className="w-full"
-                    />
-                    <span className="text-xs">{content.logo.styles.borderRadius}</span>
-                  </div>
+                //   {/* Border Radius Slider */}
+                //   <div>
+                //     <h3 className="font-medium mb-3">Border Radius</h3>
+                //     <input
+                //       type="range"
+                //       min="0"
+                //       max="32"
+                //       value={parseInt(content.logo.styles.borderRadius)}
+                //       onChange={(e) =>
+                //         updateStyles('logo', {
+                //           ...content.logo.styles,
+                //           borderRadius: `${e.target.value}px`,
+                //         })
+                //       }
+                //       className="w-full"
+                //     />
+                //     <span className="text-xs">{content.logo.styles.borderRadius}</span>
+                //   </div>
 
-                  {/* Logo */}
-                  <div>
-                    <h3 className="font-medium mb-3">Logo</h3>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                      // value={parseInt(content.logo.styles.borderRadius)}
-                      // onChange={(e) =>
-                      //   updateStyles('logo', {
-                      //     ...content.logo.styles,
-                      //     borderRadius: `${e.target.value}px`,
-                      //   })
-                      // }
-                      className="w-full"
-                    />
-                    {/* Display Uploaded Image */}
-                    {uploadedImage && (
-                      <div className="mb-4">
-                        <img
-                          src={uploadedImage}
-                          alt="Uploaded Logo"
-                          style={{ borderRadius: content.logo.styles.borderRadius }}
-                          className="w-32 h-32 object-cover border border-gray-200"
-                        />
-                      </div>
-                    )}
-                    {/* <span className="text-xs">{content.logo.styles.borderRadius}</span> */}
-                  </div>
+                //   {/* Logo */}
+                //   <div>
+                //     <h3 className="font-medium mb-3">Logo</h3>
+                //     <input
+                //       type="file"
+                //       accept="image/*"
+                //       onChange={handleImageUpload}
+                //       // value={parseInt(content.logo.styles.borderRadius)}
+                //       // onChange={(e) =>
+                //       //   updateStyles('logo', {
+                //       //     ...content.logo.styles,
+                //       //     borderRadius: `${e.target.value}px`,
+                //       //   })
+                //       // }
+                //       className="w-full"
+                //     />
+                //     {/* Display Uploaded Image */}
+                //     {uploadedImage && (
+                //       <div className="mb-4">
+                //         <img
+                //           src={uploadedImage}
+                //           alt="Uploaded Logo"
+                //           style={{ borderRadius: content.logo.styles.borderRadius }}
+                //           className="w-32 h-32 object-cover border border-gray-200"
+                //         />
+                //       </div>
+                //     )}
+                //     {/* <span className="text-xs">{content.logo.styles.borderRadius}</span> */}
+                //   </div>
 
-                  {/* Height */}
-                  <div>
-                    <h3 className="font-medium mb-3">Height</h3>
-                    <input
-                      type="range"
-                      min="0"
-                      max="300"
-                      value={parseInt(content.logo.styles.height)}
-                      onChange={(e) =>
-                        updateStyles('logo', {
-                          ...content.logo.styles,
-                          height: `${e.target.value}px`,
-                        })
-                      }
-                      className="w-full"
-                    />
-                    <span className="text-xs">{content.logo.styles.height}</span>
-                  </div>
+                //   {/* Height */}
+                //   <div>
+                //     <h3 className="font-medium mb-3">Height</h3>
+                //     <input
+                //       type="range"
+                //       min="0"
+                //       max="300"
+                //       value={parseInt(content.logo.styles.height)}
+                //       onChange={(e) =>
+                //         updateStyles('logo', {
+                //           ...content.logo.styles,
+                //           height: `${e.target.value}px`,
+                //         })
+                //       }
+                //       className="w-full"
+                //     />
+                //     <span className="text-xs">{content.logo.styles.height}</span>
+                //   </div>
 
-                  {/* Width */}
-                  <div>
-                    <h3 className="font-medium mb-3">Width</h3>
-                    <input
-                      type="range"
-                      min="0"
-                      max="300"
-                      value={parseInt(content.logo.styles.width)}
-                      onChange={(e) =>
-                        updateStyles('logo', {
-                          ...content.logo.styles,
-                          width: `${e.target.value}px`,
-                        })
-                      }
-                      className="w-full"
-                    />
-                    <span className="text-xs">{content.logo.styles.width}</span>
-                  </div>
+                //   {/* Width */}
+                //   <div>
+                //     <h3 className="font-medium mb-3">Width</h3>
+                //     <input
+                //       type="range"
+                //       min="0"
+                //       max="300"
+                //       value={parseInt(content.logo.styles.width)}
+                //       onChange={(e) =>
+                //         updateStyles('logo', {
+                //           ...content.logo.styles,
+                //           width: `${e.target.value}px`,
+                //         })
+                //       }
+                //       className="w-full"
+                //     />
+                //     <span className="text-xs">{content.logo.styles.width}</span>
+                //   </div>
 
-                </>
+                // </>
+
+                <Card className="w-full max-w-3xl mx-auto">
+                  <CardHeader>
+                    <CardTitle>Logo Styles</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <Tabs defaultValue="colors" className="w-full">
+                      <TabsList className="grid w-full grid-cols-4">
+                        <TabsTrigger value="colors">Colors</TabsTrigger>
+                        <TabsTrigger value="typography">Typography</TabsTrigger>
+                        <TabsTrigger value="layout">Layout</TabsTrigger>
+                        <TabsTrigger value="logo">Logo</TabsTrigger>
+                      </TabsList>
+                      <TabsContent value="colors" className="space-y-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="backgroundColor">Background Color</Label>
+                          <div className="flex space-x-2">
+                            <Input
+                              id="backgroundColor"
+                              type="color"
+                              value={content.logo.styles.backgroundColor}
+                              onChange={(e) => updateStyles("backgroundColor", e.target.value)}
+                              className="w-12 h-12 p-1 rounded"
+                            />
+                            <Input
+                              value={content.logo.styles.backgroundColor}
+                              onChange={(e) => updateStyles("backgroundColor", e.target.value)}
+                              placeholder="#ffffff"
+                            />
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="color">Text Color</Label>
+                          <div className="flex space-x-2">
+                            <Input
+                              id="color"
+                              type="color"
+                              value={content.logo.styles.color}
+                              onChange={(e) => updateStyles("color", e.target.value)}
+                              className="w-12 h-12 p-1 rounded"
+                            />
+                            <Input
+                              value={content.logo.styles.color}
+                              onChange={(e) => updateStyles("color", e.target.value)}
+                              placeholder="#000000"
+                            />
+                          </div>
+                        </div>
+                      </TabsContent>
+                      <TabsContent value="typography" className="space-y-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="fontSize">Font Size: {content.logo.styles.fontSize}</Label>
+                          <Slider
+                            id="fontSize"
+                            min={12}
+                            max={32}
+                            step={1}
+                            value={[Number.parseInt(content.logo.styles.fontSize)]}
+                            onValueChange={(value) => updateStyles("fontSize", `${value[0]}px`)}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="fontFamily">Font Family</Label>
+                          <Select
+                            value={content.logo.styles.fontFamily}
+                            onValueChange={(value) => updateStyles("fontFamily", value)}
+                          >
+                            <SelectTrigger id="fontFamily">
+                              <SelectValue placeholder="Select a font" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="Arial, sans-serif">Arial</SelectItem>
+                              <SelectItem value="Times New Roman, serif">Times New Roman</SelectItem>
+                              <SelectItem value="Courier New, monospace">Courier New</SelectItem>
+                              <SelectItem value="Georgia, serif">Georgia</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </TabsContent>
+                      <TabsContent value="layout" className="space-y-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="padding">Padding: {content.logo.styles.padding}</Label>
+                          <Slider
+                            id="padding"
+                            min={0}
+                            max={32}
+                            step={1}
+                            value={[Number.parseInt(content.logo.styles.padding)]}
+                            onValueChange={(value) => updateStyles("padding", `${value[0]}px`)}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="borderRadius">Border Radius: {content.logo.styles.borderRadius}</Label>
+                          <Slider
+                            id="borderRadius"
+                            min={0}
+                            max={32}
+                            step={1}
+                            value={[Number.parseInt(content.logo.styles.borderRadius)]}
+                            onValueChange={(value) => updateStyles("borderRadius", `${value[0]}px`)}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="height">Height: {content.logo.styles.height}</Label>
+                          <Slider
+                            id="height"
+                            min={0}
+                            max={300}
+                            step={1}
+                            value={[Number.parseInt(content.logo.styles.height)]}
+                            onValueChange={(value) => updateStyles("height", `${value[0]}px`)}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="width">Width: {content.logo.styles.width}</Label>
+                          <Slider
+                            id="width"
+                            min={0}
+                            max={300}
+                            step={1}
+                            value={[Number.parseInt(content.logo.styles.width)]}
+                            onValueChange={(value) => updateStyles("width", `${value[0]}px`)}
+                          />
+                        </div>
+                      </TabsContent>
+                      <TabsContent value="logo" className="space-y-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="logoUpload">Upload Logo</Label>
+                          <Input id="logoUpload" type="file" accept="image/*" onChange={handleImageUpload} />
+                        </div>
+                        {uploadedImage && (
+                          <div className="mt-4">
+                            <img
+                              src={uploadedImage || "/placeholder.svg"}
+                              alt="Uploaded Logo"
+                              style={{
+                                borderRadius: content.logo.styles.borderRadius,
+                                height: content.logo.styles.height,
+                                width: content.logo.styles.width,
+                                backgroundColor: content.logo.styles.backgroundColor,
+                                padding: content.logo.styles.padding,
+                              }}
+                              className="object-cover border border-gray-200"
+                            />
+                          </div>
+                        )}
+                      </TabsContent>
+                    </Tabs>
+                  </CardContent>
+                </Card>
               )}
 
               {selectedElement === 'form' && (
-                <>
-                  <h3 className="font-medium mb-3">Form Fields</h3>
-                  <Button
-                    variant="outline"
-                    className="w-full mb-4"
-                    onClick={() =>
-                      addFormField({
-                        id: `field-${content.form.fields.length + 1}`,
-                        type: 'text',
-                        label: 'New Field',
-                        placeholder: '',
-                        required: false,
-                        styles: {
-                          fontSize: '16px',
-                          color: '#000000',
-                          padding: '8px',
-                          borderRadius: '4px',
-                        },
-                      })
-                    }
-                  >
-                    Add Field
-                  </Button>
+                // <>
+                //   <h3 className="font-medium mb-3">Form Fields</h3>
+                //   <Button
+                //     variant="outline"
+                //     className="w-full mb-4"
+                //     onClick={() =>
+                //       addFormField({
+                //         id: `field-${content.form.fields.length + 1}`,
+                //         type: 'text',
+                //         label: 'New Field',
+                //         placeholder: '',
+                //         required: false,
+                //         styles: {
+                //           fontSize: '16px',
+                //           color: '#000000',
+                //           padding: '8px',
+                //           borderRadius: '4px',
+                //         },
+                //       })
+                //     }
+                //   >
+                //     Add Field
+                //   </Button>
 
-                  {content.form.fields.map((field) => (
-                    <div key={field.id} className="mb-4">
-                      <div className="flex justify-between items-center mb-2">
-                        <h4 className="font-medium">{field.label}</h4>
-                        <Button
-                          variant="destructive"
-                          size="sm"
-                          onClick={() => deleteFormField(field.id)}
-                        >
-                          <Trash2 className="h-4 w-4" /> {/* Use an icon if desired */}
-                        </Button>
-                      </div>
-                      <select
-                        value={field.type}
-                        onChange={(e) =>
-                          updateFormField(field.id, {
-                            ...field,
-                            type: e.target.value,
-                          })
-                        }
-                        className="w-full p-2 border rounded mb-2"
-                      >
-                        <option value="text">Text</option>
-                        <option value="email">Email</option>
-                        <option value="number">Number</option>
-                        <option value="date">Date</option>
-                      </select>
+                //   {content.form.fields.map((field) => (
+                //     <div key={field.id} className="mb-4">
+                //       <div className="flex justify-between items-center mb-2">
+                //         <h4 className="font-medium">{field.label}</h4>
+                //         <Button
+                //           variant="destructive"
+                //           size="sm"
+                //           onClick={() => deleteFormField(field.id)}
+                //         >
+                //           <Trash2 className="h-4 w-4" /> {/* Use an icon if desired */}
+                //         </Button>
+                //       </div>
+                //       <select
+                //         value={field.type}
+                //         onChange={(e) =>
+                //           updateFormField(field.id, {
+                //             ...field,
+                //             type: e.target.value,
+                //           })
+                //         }
+                //         className="w-full p-2 border rounded mb-2"
+                //       >
+                //         <option value="text">Text</option>
+                //         <option value="email">Email</option>
+                //         <option value="number">Number</option>
+                //         <option value="date">Date</option>
+                //       </select>
 
-                      <input
-                        type="text"
-                        value={field.label}
-                        onChange={(e) =>
-                          updateFormField(field.id, {
-                            ...field,
-                            label: e.target.value,
-                          })
-                        }
-                        className="w-full p-2 border rounded mb-2"
-                        placeholder="Label"
-                      />
+                //       <input
+                //         type="text"
+                //         value={field.label}
+                //         onChange={(e) =>
+                //           updateFormField(field.id, {
+                //             ...field,
+                //             label: e.target.value,
+                //           })
+                //         }
+                //         className="w-full p-2 border rounded mb-2"
+                //         placeholder="Label"
+                //       />
 
-                      <input
-                        type="text"
-                        value={field.placeholder}
-                        onChange={(e) =>
-                          updateFormField(field.id, {
-                            ...field,
-                            placeholder: e.target.value,
-                          })
-                        }
-                        className="w-full p-2 border rounded mb-2"
-                        placeholder="Placeholder"
-                      />
+                //       <input
+                //         type="text"
+                //         value={field.placeholder}
+                //         onChange={(e) =>
+                //           updateFormField(field.id, {
+                //             ...field,
+                //             placeholder: e.target.value,
+                //           })
+                //         }
+                //         className="w-full p-2 border rounded mb-2"
+                //         placeholder="Placeholder"
+                //       />
 
-                      <label className="flex items-center space-x-2 mb-2">
-                        <input
-                          type="checkbox"
-                          checked={field.required}
-                          onChange={(e) =>
-                            updateFormField(field.id, {
-                              ...field,
-                              required: e.target.checked,
-                            })
-                          }
-                        />
-                        <span>Required</span>
-                      </label>
+                //       <label className="flex items-center space-x-2 mb-2">
+                //         <input
+                //           type="checkbox"
+                //           checked={field.required}
+                //           onChange={(e) =>
+                //             updateFormField(field.id, {
+                //               ...field,
+                //               required: e.target.checked,
+                //             })
+                //           }
+                //         />
+                //         <span>Required</span>
+                //       </label>
 
-                      <h4 className="font-medium mb-2">Field Styles</h4>
-                      <input
-                        type="color"
-                        value={field.styles.color}
-                        onChange={(e) =>
-                          updateFormField(field.id, {
-                            ...field,
-                            styles: {
-                              ...field.styles,
-                              color: e.target.value,
-                            },
-                          })
-                        }
-                        className="w-full mb-2"
-                      />
-                    </div>
-                  ))}
-                </>
+                //       <h4 className="font-medium mb-2">Field Styles</h4>
+                //       <input
+                //         type="color"
+                //         value={field.styles.color}
+                //         onChange={(e) =>
+                //           updateFormField(field.id, {
+                //             ...field,
+                //             styles: {
+                //               ...field.styles,
+                //               color: e.target.value,
+                //             },
+                //           })
+                //         }
+                //         className="w-full mb-2"
+                //       />
+                //     </div>
+                //   ))}
+                // </>
+
+                <Card className="w-full max-w-3xl mx-auto">
+                  <CardHeader>
+                    <CardTitle>Form Fields</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <Button variant="outline" className="w-full mb-6" onClick={addFormField}>
+                      <Plus className="mr-2 h-4 w-4" /> Add Field
+                    </Button>
+
+                    <Accordion type="single" collapsible className="w-full">
+                      {content.form.fields.map((field, index) => (
+                        <AccordionItem key={field.id} value={field.id}>
+                          <AccordionTrigger className="hover:no-underline">
+                            <div className="flex justify-between items-center w-full">
+                              <span>{field.label || `Field ${index + 1}`}</span>
+                              <Button
+                                variant="destructive"
+                                size="icon"
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  deleteFormField(field.id)
+                                }}
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </AccordionTrigger>
+                          <AccordionContent>
+                            <div className="space-y-4">
+                              <div className="space-y-2">
+                                <Label htmlFor={`${field.id}-type`}>Field Type</Label>
+                                <Select
+                                  value={field.type}
+                                  onValueChange={(value) => updateFormField(field.id, { ...field, type: value })}
+                                >
+                                  <SelectTrigger id={`${field.id}-type`}>
+                                    <SelectValue placeholder="Select field type" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="text">Text</SelectItem>
+                                    <SelectItem value="email">Email</SelectItem>
+                                    <SelectItem value="number">Number</SelectItem>
+                                    <SelectItem value="date">Date</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </div>
+
+                              <div className="space-y-2">
+                                <Label htmlFor={`${field.id}-label`}>Label</Label>
+                                <Input
+                                  id={`${field.id}-label`}
+                                  value={field.label}
+                                  onChange={(e) => updateFormField(field.id, { ...field, label: e.target.value })}
+                                  placeholder="Enter field label"
+                                />
+                              </div>
+
+                              <div className="space-y-2">
+                                <Label htmlFor={`${field.id}-placeholder`}>Placeholder</Label>
+                                <Input
+                                  id={`${field.id}-placeholder`}
+                                  value={field.placeholder}
+                                  onChange={(e) => updateFormField(field.id, { ...field, placeholder: e.target.value })}
+                                  placeholder="Enter field placeholder"
+                                />
+                              </div>
+
+                              <div className="flex items-center space-x-2">
+                                <Switch
+                                  id={`${field.id}-required`}
+                                  checked={field.required}
+                                  onCheckedChange={(checked) => updateFormField(field.id, { ...field, required: checked })}
+                                />
+                                <Label htmlFor={`${field.id}-required`}>Required</Label>
+                              </div>
+
+                              <div className="space-y-2">
+                                <Label htmlFor={`${field.id}-color`}>Text Color</Label>
+                                <div className="flex space-x-2">
+                                  <Input
+                                    id={`${field.id}-color`}
+                                    type="color"
+                                    value={field.styles.color}
+                                    onChange={(e) =>
+                                      updateFormField(field.id, {
+                                        ...field,
+                                        styles: { ...field.styles, color: e.target.value },
+                                      })
+                                    }
+                                    className="w-12 h-12 p-1 rounded"
+                                  />
+                                  <Input
+                                    value={field.styles.color}
+                                    onChange={(e) =>
+                                      updateFormField(field.id, {
+                                        ...field,
+                                        styles: { ...field.styles, color: e.target.value },
+                                      })
+                                    }
+                                    placeholder="#000000"
+                                    className="flex-grow"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </AccordionContent>
+                        </AccordionItem>
+                      ))}
+                    </Accordion>
+                  </CardContent>
+                </Card>
               )}
 
               {/* Repeat for description1 and description2 */}
