@@ -62,7 +62,7 @@ export default function RefereeForm() {
     }
     return (
         <div>
-            {/* <div className="max-w-lg mx-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
+            <div className="max-w-lg mx-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
                 <div className='items-center mb-4'>
                     <img src="https://img.freepik.com/free-vector/bird-colorful-logo-gradient-vector_343694-1365.jpg" alt="" className='w-40 h-40 mx-auto' />
 
@@ -147,15 +147,14 @@ export default function RefereeForm() {
                         </form>
                     </CardContent>
                 </Card>
-            </div> */}
+            </div>
 
 
 
 
-            <div>
+            {/* <div>
                 <div className="max-w-lg mx-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
                     <div className="items-center mb-4">
-                        {/* Editable Image */}
                         <img
                             src={content.logo.content}
                             style={content.logo.styles}
@@ -164,7 +163,6 @@ export default function RefereeForm() {
                             onClick={() => setSelectedElement('logo')}
                         />
 
-                        {/* Editable Header */}
                         <div
                             value={content.header.content}
                             className="text-center text-xl "
@@ -174,7 +172,6 @@ export default function RefereeForm() {
                         </div>
                     </div>
 
-                    {/* Editable Description 1 */}
                     <div
                         value={content.description1.content}
                         className="text-md text-gray-800"
@@ -183,7 +180,6 @@ export default function RefereeForm() {
                         {content.description1.content}
                     </div>
 
-                    {/* Editable Description 2 */}
                     <div
                         value={content.description2.content}
                         className="text-md text-gray-800 dark:text-gray-200 mb-4 text-center"
@@ -192,7 +188,6 @@ export default function RefereeForm() {
                         {content.description2.content}
                     </div>
 
-                    {/* Rest of your form */}
                     <Card className="mx-auto max-w-md cursor-pointer">
                         <CardContent>
                             <form onSubmit={handleSubmit}>
@@ -226,7 +221,7 @@ export default function RefereeForm() {
                         </CardContent>
                     </Card>
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }

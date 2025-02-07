@@ -1104,228 +1104,228 @@ export default function CampaignBuilder() {
               )}
 
               {selectedElement === 'form' && (
-                // <>
-                //   <h3 className="font-medium mb-3">Form Fields</h3>
-                //   <Button
-                //     variant="outline"
-                //     className="w-full mb-4"
-                //     onClick={() =>
-                //       addFormField({
-                //         id: `field-${content.form.fields.length + 1}`,
-                //         type: 'text',
-                //         label: 'New Field',
-                //         placeholder: '',
-                //         required: false,
-                //         styles: {
-                //           fontSize: '16px',
-                //           color: '#000000',
-                //           padding: '8px',
-                //           borderRadius: '4px',
-                //         },
-                //       })
-                //     }
-                //   >
-                //     Add Field
-                //   </Button>
+                <>
+                  <h3 className="font-medium mb-3">Form Fields</h3>
+                  <Button
+                    variant="outline"
+                    className="w-full mb-4"
+                    onClick={() =>
+                      addFormField({
+                        id: `field-${content.form.fields.length + 1}`,
+                        type: 'text',
+                        label: 'New Field',
+                        placeholder: '',
+                        required: false,
+                        styles: {
+                          fontSize: '16px',
+                          color: '#000000',
+                          padding: '8px',
+                          borderRadius: '4px',
+                        },
+                      })
+                    }
+                  >
+                    Add Field
+                  </Button>
 
-                //   {content.form.fields.map((field) => (
-                //     <div key={field.id} className="mb-4">
-                //       <div className="flex justify-between items-center mb-2">
-                //         <h4 className="font-medium">{field.label}</h4>
-                //         <Button
-                //           variant="destructive"
-                //           size="sm"
-                //           onClick={() => deleteFormField(field.id)}
-                //         >
-                //           <Trash2 className="h-4 w-4" /> {/* Use an icon if desired */}
-                //         </Button>
-                //       </div>
-                //       <select
-                //         value={field.type}
-                //         onChange={(e) =>
-                //           updateFormField(field.id, {
-                //             ...field,
-                //             type: e.target.value,
-                //           })
-                //         }
-                //         className="w-full p-2 border rounded mb-2"
-                //       >
-                //         <option value="text">Text</option>
-                //         <option value="email">Email</option>
-                //         <option value="number">Number</option>
-                //         <option value="date">Date</option>
-                //       </select>
+                  {content.form.fields.map((field) => (
+                    <div key={field.id} className="mb-4">
+                      <div className="flex justify-between items-center mb-2">
+                        <h4 className="font-medium">{field.label}</h4>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => deleteFormField(field.id)}
+                        >
+                          <Trash2 className="h-4 w-4" /> {/* Use an icon if desired */}
+                        </Button>
+                      </div>
+                      <select
+                        value={field.type}
+                        onChange={(e) =>
+                          updateFormField(field.id, {
+                            ...field,
+                            type: e.target.value,
+                          })
+                        }
+                        className="w-full p-2 border rounded mb-2"
+                      >
+                        <option value="text">Text</option>
+                        <option value="email">Email</option>
+                        <option value="number">Number</option>
+                        <option value="date">Date</option>
+                      </select>
 
-                //       <input
-                //         type="text"
-                //         value={field.label}
-                //         onChange={(e) =>
-                //           updateFormField(field.id, {
-                //             ...field,
-                //             label: e.target.value,
-                //           })
-                //         }
-                //         className="w-full p-2 border rounded mb-2"
-                //         placeholder="Label"
-                //       />
+                      <input
+                        type="text"
+                        value={field.label}
+                        onChange={(e) =>
+                          updateFormField(field.id, {
+                            ...field,
+                            label: e.target.value,
+                          })
+                        }
+                        className="w-full p-2 border rounded mb-2"
+                        placeholder="Label"
+                      />
 
-                //       <input
-                //         type="text"
-                //         value={field.placeholder}
-                //         onChange={(e) =>
-                //           updateFormField(field.id, {
-                //             ...field,
-                //             placeholder: e.target.value,
-                //           })
-                //         }
-                //         className="w-full p-2 border rounded mb-2"
-                //         placeholder="Placeholder"
-                //       />
+                      <input
+                        type="text"
+                        value={field.placeholder}
+                        onChange={(e) =>
+                          updateFormField(field.id, {
+                            ...field,
+                            placeholder: e.target.value,
+                          })
+                        }
+                        className="w-full p-2 border rounded mb-2"
+                        placeholder="Placeholder"
+                      />
 
-                //       <label className="flex items-center space-x-2 mb-2">
-                //         <input
-                //           type="checkbox"
-                //           checked={field.required}
-                //           onChange={(e) =>
-                //             updateFormField(field.id, {
-                //               ...field,
-                //               required: e.target.checked,
-                //             })
-                //           }
-                //         />
-                //         <span>Required</span>
-                //       </label>
+                      <label className="flex items-center space-x-2 mb-2">
+                        <input
+                          type="checkbox"
+                          checked={field.required}
+                          onChange={(e) =>
+                            updateFormField(field.id, {
+                              ...field,
+                              required: e.target.checked,
+                            })
+                          }
+                        />
+                        <span>Required</span>
+                      </label>
 
-                //       <h4 className="font-medium mb-2">Field Styles</h4>
-                //       <input
-                //         type="color"
-                //         value={field.styles.color}
-                //         onChange={(e) =>
-                //           updateFormField(field.id, {
-                //             ...field,
-                //             styles: {
-                //               ...field.styles,
-                //               color: e.target.value,
-                //             },
-                //           })
-                //         }
-                //         className="w-full mb-2"
-                //       />
-                //     </div>
-                //   ))}
-                // </>
+                      <h4 className="font-medium mb-2">Field Styles</h4>
+                      <input
+                        type="color"
+                        value={field.styles.color}
+                        onChange={(e) =>
+                          updateFormField(field.id, {
+                            ...field,
+                            styles: {
+                              ...field.styles,
+                              color: e.target.value,
+                            },
+                          })
+                        }
+                        className="w-full mb-2"
+                      />
+                    </div>
+                  ))}
+                </>
 
-                <Card className="w-full max-w-3xl mx-auto">
-                  <CardHeader>
-                    <CardTitle>Form Fields</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <Button variant="outline" className="w-full mb-6" onClick={addFormField}>
-                      <Plus className="mr-2 h-4 w-4" /> Add Field
-                    </Button>
+                // <Card className="w-full max-w-3xl mx-auto">
+                //   <CardHeader>
+                //     <CardTitle>Form Fields</CardTitle>
+                //   </CardHeader>
+                //   <CardContent>
+                //     <Button variant="outline" className="w-full mb-6" onClick={addFormField}>
+                //       <Plus className="mr-2 h-4 w-4" /> Add Field
+                //     </Button>
 
-                    <Accordion type="single" collapsible className="w-full">
-                      {content.form.fields.map((field, index) => (
-                        <AccordionItem key={field.id} value={field.id}>
-                          <AccordionTrigger className="hover:no-underline">
-                            <div className="flex justify-between items-center w-full">
-                              <span>{field.label || `Field ${index + 1}`}</span>
-                              <Button
-                                variant="destructive"
-                                size="icon"
-                                onClick={(e) => {
-                                  e.stopPropagation()
-                                  deleteFormField(field.id)
-                                }}
-                              >
-                                <Trash2 className="h-4 w-4" />
-                              </Button>
-                            </div>
-                          </AccordionTrigger>
-                          <AccordionContent>
-                            <div className="space-y-4">
-                              <div className="space-y-2">
-                                <Label htmlFor={`${field.id}-type`}>Field Type</Label>
-                                <Select
-                                  value={field.type}
-                                  onValueChange={(value) => updateFormField(field.id, { ...field, type: value })}
-                                >
-                                  <SelectTrigger id={`${field.id}-type`}>
-                                    <SelectValue placeholder="Select field type" />
-                                  </SelectTrigger>
-                                  <SelectContent>
-                                    <SelectItem value="text">Text</SelectItem>
-                                    <SelectItem value="email">Email</SelectItem>
-                                    <SelectItem value="number">Number</SelectItem>
-                                    <SelectItem value="date">Date</SelectItem>
-                                  </SelectContent>
-                                </Select>
-                              </div>
+                //     <Accordion type="single" collapsible className="w-full">
+                //       {content.form.fields.map((field, index) => (
+                //         <AccordionItem key={field.id} value={field.id}>
+                //           <AccordionTrigger className="hover:no-underline">
+                //             <div className="flex justify-between items-center w-full">
+                //               <span>{field.label || `Field ${index + 1}`}</span>
+                //               <Button
+                //                 variant="destructive"
+                //                 size="icon"
+                //                 onClick={(e) => {
+                //                   e.stopPropagation()
+                //                   deleteFormField(field.id)
+                //                 }}
+                //               >
+                //                 <Trash2 className="h-4 w-4" />
+                //               </Button>
+                //             </div>
+                //           </AccordionTrigger>
+                //           <AccordionContent>
+                //             <div className="space-y-4">
+                //               <div className="space-y-2">
+                //                 <Label htmlFor={`${field.id}-type`}>Field Type</Label>
+                //                 <Select
+                //                   value={field.type}
+                //                   onValueChange={(value) => updateFormField(field.id, { ...field, type: value })}
+                //                 >
+                //                   <SelectTrigger id={`${field.id}-type`}>
+                //                     <SelectValue placeholder="Select field type" />
+                //                   </SelectTrigger>
+                //                   <SelectContent>
+                //                     <SelectItem value="text">Text</SelectItem>
+                //                     <SelectItem value="email">Email</SelectItem>
+                //                     <SelectItem value="number">Number</SelectItem>
+                //                     <SelectItem value="date">Date</SelectItem>
+                //                   </SelectContent>
+                //                 </Select>
+                //               </div>
 
-                              <div className="space-y-2">
-                                <Label htmlFor={`${field.id}-label`}>Label</Label>
-                                <Input
-                                  id={`${field.id}-label`}
-                                  value={field.label}
-                                  onChange={(e) => updateFormField(field.id, { ...field, label: e.target.value })}
-                                  placeholder="Enter field label"
-                                />
-                              </div>
+                //               <div className="space-y-2">
+                //                 <Label htmlFor={`${field.id}-label`}>Label</Label>
+                //                 <Input
+                //                   id={`${field.id}-label`}
+                //                   value={field.label}
+                //                   onChange={(e) => updateFormField(field.id, { ...field, label: e.target.value })}
+                //                   placeholder="Enter field label"
+                //                 />
+                //               </div>
 
-                              <div className="space-y-2">
-                                <Label htmlFor={`${field.id}-placeholder`}>Placeholder</Label>
-                                <Input
-                                  id={`${field.id}-placeholder`}
-                                  value={field.placeholder}
-                                  onChange={(e) => updateFormField(field.id, { ...field, placeholder: e.target.value })}
-                                  placeholder="Enter field placeholder"
-                                />
-                              </div>
+                //               <div className="space-y-2">
+                //                 <Label htmlFor={`${field.id}-placeholder`}>Placeholder</Label>
+                //                 <Input
+                //                   id={`${field.id}-placeholder`}
+                //                   value={field.placeholder}
+                //                   onChange={(e) => updateFormField(field.id, { ...field, placeholder: e.target.value })}
+                //                   placeholder="Enter field placeholder"
+                //                 />
+                //               </div>
 
-                              <div className="flex items-center space-x-2">
-                                <Switch
-                                  id={`${field.id}-required`}
-                                  checked={field.required}
-                                  onCheckedChange={(checked) => updateFormField(field.id, { ...field, required: checked })}
-                                />
-                                <Label htmlFor={`${field.id}-required`}>Required</Label>
-                              </div>
+                //               <div className="flex items-center space-x-2">
+                //                 <Switch
+                //                   id={`${field.id}-required`}
+                //                   checked={field.required}
+                //                   onCheckedChange={(checked) => updateFormField(field.id, { ...field, required: checked })}
+                //                 />
+                //                 <Label htmlFor={`${field.id}-required`}>Required</Label>
+                //               </div>
 
-                              <div className="space-y-2">
-                                <Label htmlFor={`${field.id}-color`}>Text Color</Label>
-                                <div className="flex space-x-2">
-                                  <Input
-                                    id={`${field.id}-color`}
-                                    type="color"
-                                    value={field.styles.color}
-                                    onChange={(e) =>
-                                      updateFormField(field.id, {
-                                        ...field,
-                                        styles: { ...field.styles, color: e.target.value },
-                                      })
-                                    }
-                                    className="w-12 h-12 p-1 rounded"
-                                  />
-                                  <Input
-                                    value={field.styles.color}
-                                    onChange={(e) =>
-                                      updateFormField(field.id, {
-                                        ...field,
-                                        styles: { ...field.styles, color: e.target.value },
-                                      })
-                                    }
-                                    placeholder="#000000"
-                                    className="flex-grow"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </AccordionContent>
-                        </AccordionItem>
-                      ))}
-                    </Accordion>
-                  </CardContent>
-                </Card>
+                //               <div className="space-y-2">
+                //                 <Label htmlFor={`${field.id}-color`}>Text Color</Label>
+                //                 <div className="flex space-x-2">
+                //                   <Input
+                //                     id={`${field.id}-color`}
+                //                     type="color"
+                //                     value={field.styles?.color}
+                //                     onChange={(e) =>
+                //                       updateFormField(field.id, {
+                //                         ...field,
+                //                         styles: { ...field.styles, color: e.target.value },
+                //                       })
+                //                     }
+                //                     className="w-12 h-12 p-1 rounded"
+                //                   />
+                //                   <Input
+                //                     value={field.styles?.color}
+                //                     onChange={(e) =>
+                //                       updateFormField(field.id, {
+                //                         ...field,
+                //                         styles: { ...field.styles, color: e.target.value },
+                //                       })
+                //                     }
+                //                     placeholder="#000000"
+                //                     className="flex-grow"
+                //                   />
+                //                 </div>
+                //               </div>
+                //             </div>
+                //           </AccordionContent>
+                //         </AccordionItem>
+                //       ))}
+                //     </Accordion>
+                //   </CardContent>
+                // </Card>
               )}
 
               {/* Repeat for description1 and description2 */}
