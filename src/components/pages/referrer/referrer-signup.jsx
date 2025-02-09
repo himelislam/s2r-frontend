@@ -12,7 +12,7 @@ import { toast } from 'react-toastify';
 import businessApi from '@/api/businessApi';
 
 export default function ReferrerSignup() {
-    const { businessId, email: paramEmail, name: paramName } = useParams();
+    const { businessId, campaignId, email: paramEmail, name: paramName } = useParams();
     const [name, setName] = useState(paramName || '');
     const [email, setEmail] = useState(paramEmail || '');
     const [password, setPassword] = useState('');
@@ -29,7 +29,7 @@ export default function ReferrerSignup() {
         mutationFn: ({name, email, password, dispatch}) => authApi.signup({name, email, password}, dispatch),
         onSuccess: (data) => {
             console.log('Signup successful:', data);
-            navigate(`/referrer-invitation-setup/${businessId}/${email}/${name}`)
+            navigate(`/referrer-invitation-setup/${businessId}/${campaignId}/${email}/${name}`)
         },
         onError: (error) => {
             console.error('Signup failed:', error?.message);
