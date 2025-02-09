@@ -12,6 +12,8 @@ import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, Dr
 import { Minus, Plus } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import campaignApi from '@/api/campaignApi';
 
 export default function BusinessQrCodes() {
     const [isAvailable, setisAvailable] = useState(false);
@@ -23,6 +25,13 @@ export default function BusinessQrCodes() {
     const [qrCodeWidth, setQrCodeWidth] = useState(50)
     const queryClient = useQueryClient();
     const user = JSON.parse(localStorage.getItem('user'));
+    const [selectedCampaign, setSelectedCampaign] = useState(""); 
+
+    const { data: campaigns = [] } = useQuery({
+        queryKey: ['getCampaignsByBusinessId', user?.userId],
+        queryFn: () => campaignApi.getCampaignsByBusinessId(user?.userId),
+        enabled: !!user?.userId,
+    })
 
     const { data: business = [], isLoading, isError, error } = useQuery({
         queryKey: ['getBusinessById', user?.userId],
@@ -44,9 +53,15 @@ export default function BusinessQrCodes() {
 
     const generateQrCodes = async () => {
         setLoading(true);
+        if (!selectedCampaign) {
+            toast.error("Please select a campaign");
+            setLoading(false);
+            return;
+        }
         generateQrCodeMutation.mutate({
             businessId: user?.userId,
-            numberOfCodes: numberOfCodes
+            numberOfCodes: numberOfCodes,
+            campaignId: selectedCampaign
         })
         setLoading(false);
         setOpenGenerateModal(false);
@@ -136,65 +151,6 @@ export default function BusinessQrCodes() {
     };
 
 
-    // const downloadAllQrCodesAsJpg = (busienss, qrCodeWidth, qrCodeHeight) => {
-    //     const canvas = document.createElement("canvas");
-    //     const ctx = canvas.getContext("2d");
-
-    //     // Set canvas size based on QR code layout
-    //     const marginX = 10;
-    //     const marginY = 10;
-    //     const spacingX = 10;
-    //     const spacingY = 10;
-    //     const pageWidth = 210; // Width in mm (default A4 width)
-    //     const pageHeight = 297; // Height in mm (default A4 height)
-
-    //     canvas.width = pageWidth * 4; // Convert mm to pixels (at 96 DPI)
-    //     canvas.height = pageHeight * 4; // Convert mm to pixels (at 96 DPI)
-    //     ctx.scale(4, 4); // Scale up for high-resolution output
-
-    //     let currentX = marginX;
-    //     let currentY = marginY;
-
-    //     busienss.qrCodes.forEach((card) => {
-    //         // Draw QR Code Image
-    //         const img = new Image();
-    //         img.src = card?.qrCodeBase64;
-    //         ctx.drawImage(img, currentX, currentY, qrCodeWidth, qrCodeHeight);
-
-    //         // Add QR ID text below the QR code
-    //         ctx.font = "8px Helvetica";
-    //         ctx.textAlign = "center";
-    //         ctx.fillText(
-    //             `QR ID: ${card?.id}`,
-    //             currentX + qrCodeWidth / 2,
-    //             currentY + qrCodeHeight + 5
-    //         ); 
-
-    //         // Move to the next column
-    //         currentX += qrCodeWidth + spacingX;
-
-    //         // Check if the next QR code will overflow the page width
-    //         if (currentX + qrCodeWidth + marginX > pageWidth) {
-    //             currentX = marginX; // Reset to the first column
-    //             currentY += qrCodeHeight + spacingY; // Move to the next row
-    //         }
-
-    //         // Check if the next QR code will overflow the page height
-    //         if (currentY + qrCodeHeight + marginY > pageHeight) {
-    //             console.error("Exceeds canvas height. Add new canvas if needed.");
-    //         }
-    //     });
-
-    //     // Convert Canvas to JPG
-    //     canvas.toBlob((blob) => {
-    //         const link = document.createElement("a");
-    //         link.href = URL.createObjectURL(blob);
-    //         link.download = "AnH-qrCodes.jpg";
-    //         link.click();
-    //     }, "image/jpeg");
-    // };
-
-
     return (
         <div className="container">
             <div>
@@ -214,6 +170,19 @@ export default function BusinessQrCodes() {
                             onChange={(e) => setNumberOfCodes(Number(e.target.value))}
                             min={1} // Ensure that the number is at least 1
                         />
+                        <Label>Choose a campaign</Label>
+                        <Select value={selectedCampaign} onValueChange={setSelectedCampaign}>
+                            <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Select a campaign" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {campaigns.map((campaign) => (
+                                    <SelectItem key={campaign._id} value={campaign._id}>
+                                        {campaign.campaignName}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
                         <DialogFooter>
                             <Button onClick={generateQrCodes} disabled={generateQrCodeMutation.isPending} className='mb-6 me-5'>
                                 {generateQrCodeMutation.isPending ? "Generating..." : "Generate QR Codes"}

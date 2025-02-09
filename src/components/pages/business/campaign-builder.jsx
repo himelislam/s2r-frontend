@@ -40,28 +40,11 @@ export default function CampaignBuilder() {
   const [currentStep, setCurrentStep] = useState(0)
   const [deviceView, setDeviceView] = useState("desktop")
   const [personReferringStep, setPersonReferringStep] = useState(1)
-  const [formData, setFormData] = useState({
-    firstName: "",
-    email: "",
-    termsAccepted: false
-  })
-
-  const [date, setDate] = useState(Date)
-
   const { state } = useLocation();
   const campaign = state?.campaign || null;
-
-
-  const referralLink = "https://ministry.referral-factory.com/cLILwj4l"
-
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(referralLink)
-  }
-
   const referrerName = 'Referrer'
   const businessName = "Business"
   const [selectedElement, setSelectedElement] = useState('header');
-
   const {
     content,
     updateContent,
@@ -74,7 +57,6 @@ export default function CampaignBuilder() {
   } = useEditableContent();
 
   // get campaign state
-
   const getCampaignStateMutation = useMutation({
     mutationFn: campaignApi.getCampaignState,
     onSuccess: (data) => {
@@ -95,9 +77,7 @@ export default function CampaignBuilder() {
 
   // ---------------------
 
-
   // update builder state
-
   const updateCampaignStateMutation = useMutation({
     mutationFn: campaignApi.updateCampaignState,
     onSuccess: (data) => {
@@ -110,12 +90,10 @@ export default function CampaignBuilder() {
   })
 
   const handleSave = () => {
-    const jsonContent = getContentAsJSON();
     updateCampaignStateMutation.mutate({
       state: JSON.stringify(content),
       campaignId: campaign._id
     })
-    console.log(jsonContent); // This can be sent to your database
   };
   // ------------
 
@@ -144,7 +122,6 @@ export default function CampaignBuilder() {
       toast.error('Unable to upload image.')
     }
   })
-
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -269,11 +246,9 @@ export default function CampaignBuilder() {
         <div className="flex-1 flex">
           <div className="flex-1 p-8">
             <div className="max-w-2xl mx-auto">
-              <div className="bg-orange-100/50 text-orange-800 px-3 py-1 rounded-full text-sm inline-block mb-4">
+              {/* <div className="bg-orange-100/50 text-orange-800 px-3 py-1 rounded-full text-sm inline-block mb-4">
                 Step {personReferringStep} - Person Referred
-              </div>
-
-              {personReferringStep === 1 ? (
+              </div> */}
                 <div>
                   <div className="max-w-lg mx-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
                     <div className="items-center mb-4">
@@ -357,60 +332,6 @@ export default function CampaignBuilder() {
                     </Card>
                   </div>
                 </div>
-              ) : (
-                <div>
-                  <div className="max-w-lg mx-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
-                    <div className="items-center mb-4">
-                      <img
-                        src="https://img.freepik.com/free-vector/bird-colorful-logo-gradient-vector_343694-1365.jpg"
-                        alt=""
-                        className="w-40 h-40 mx-auto"
-                      />
-
-                      {/* Editable Header */}
-                      <EditableText
-                        value={content.header.content}
-                        onChange={(value) => updateContent('header', value)}
-                        className="text-center text-xl hover:border-2 hover:border-dashed hover:border-blue-500 transition duration-200 ease-in-out cursor-pointer"
-                        styles={content.header.styles}
-                        elementName="header"
-                        setSelectedElement={setSelectedElement}
-                        renderContent={renderContent}
-                      />
-                    </div>
-
-                    {/* Editable Description 1 */}
-                    <EditableText
-                      value={content.description1.content}
-                      onChange={(value) => updateContent('description1', value)}
-                      className="text-md text-gray-800 dark:text-gray-200 mb-4 text-center hover:border-2 hover:border-dashed hover:border-blue-500 transition duration-200 ease-in-out cursor-pointer"
-                      styles={content.description1.styles}
-                      elementName="description1"
-                      setSelectedElement={setSelectedElement}
-                      renderContent={renderContent}
-                    />
-
-                    {/* Editable Description 2 */}
-                    <EditableText
-                      value={content.description2.content}
-                      onChange={(value) => updateContent('description2', value)}
-                      className="text-md text-gray-800 dark:text-gray-200 mb-4 text-center hover:border-2 hover:border-dashed hover:border-blue-500 transition duration-200 ease-in-out cursor-pointer"
-                      styles={content.description2.styles}
-                      elementName="description2"
-                      setSelectedElement={setSelectedElement}
-                      renderContent={renderContent}
-                    />
-
-                    <div>
-                      <img
-                        src="https://dcdko16buub2z.cloudfront.net/images/XrwbjBN0860gkf4G.gif"
-                        alt=""
-                        className="w-full p-2"
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
 
               <div className="flex justify-between">
                 <Button variant="outline" onClick={handleSave}>
@@ -892,7 +813,7 @@ export default function CampaignBuilder() {
                       //     borderRadius: `${e.target.value}px`,
                       //   })
                       // }
-                      className="w-full"
+                      className="w-full cursor-pointer"
                     />
                     {/* Display Uploaded Image */}
                     {uploadedImage && (
@@ -1327,8 +1248,6 @@ export default function CampaignBuilder() {
                 //   </CardContent>
                 // </Card>
               )}
-
-              {/* Repeat for description1 and description2 */}
             </div>
           </div>
         </div>

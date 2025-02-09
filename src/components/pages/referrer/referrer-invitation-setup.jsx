@@ -10,7 +10,7 @@ import referrerApi from "@/api/referrerApi";
 import businessApi from "@/api/businessApi";
 
 export function ReferrerInvitationSetup() {
-    const { businessId, email, name } = useParams();
+    const { businessId, campaignId, email, name } = useParams();
     const [form, setForm] = useState({
         name: name,
         email: email,
@@ -62,6 +62,7 @@ export function ReferrerInvitationSetup() {
             signature: form.signature,
             userType: 'referrer',
             businessId: businessId,
+            campaignId: campaignId,
             invited: true // sending flag from referrer setup without invitation
         })
         console.log("Referrer setup data:", form);

@@ -170,11 +170,11 @@ export const appRoutes = createBrowserRouter([
         element: <RefereeForm/>
     },
     {
-        path: 'referrer-signup/:businessId/:email?/:name?',
+        path: 'referrer-signup/:businessId/:campaignId/:email?/:name?',
         element: <ReferrerSignup/>
     },
     {
-        path: 'referrer-invitation-setup/:businessId/:email/:name',
+        path: 'referrer-invitation-setup/:businessId/:campaignId/:email/:name',
         element: <ReferrerInvitationSetup/>
     }
 ]);
