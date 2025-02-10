@@ -166,7 +166,7 @@ export const appRoutes = createBrowserRouter([
         element: <ReferrerSetup />
     },
     {
-        path: 'qr/:businessId/:qrId',
+        path: 'qr/:businessId/:campaignId/:qrId',
         element: <RefereeForm/>
     },
     {

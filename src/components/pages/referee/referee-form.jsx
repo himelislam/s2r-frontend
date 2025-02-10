@@ -1,6 +1,6 @@
 import businessApi from '@/api/businessApi';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -18,13 +18,14 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { toast } from 'react-toastify';
 import Spinner from '@/components/spinner';
+import campaignApi from '@/api/campaignApi';
 
 export default function RefereeForm() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState();
     const [date, setDate] = useState(Date)
-    const { businessId, qrId } = useParams();
+    const { businessId, campaignId, qrId } = useParams();
     const user = JSON.parse(localStorage.getItem('user'))
 
     const { data: business = [] } = useQuery({
@@ -32,7 +33,13 @@ export default function RefereeForm() {
         queryFn: () => businessApi.getBusinessById(businessId),
         enabled: !!businessId
     })
+
     const foundQrCode = business?.qrCodes?.find((qrCode) => qrCode.id == qrId);
+    const Referrer = business?.qrCodes?.find((qrCode) => qrCode.id == qrId)?.referrerName;
+    const Business = business?.businessName;
+    // const Referrer = 'Referrer'
+    // const Business = 'Business'
+
     const createRefereeMutation = useMutation({
         mutationFn: refereeApi.createReferee,
         onSuccess: (data) => {
@@ -45,8 +52,6 @@ export default function RefereeForm() {
         }
     })
 
-    const content = { "logo": { "content": "https://res.cloudinary.com/dmcm8r72j/image/upload/v1738523241/business/user_1738523239507.svg", "styles": { "backgroundColor": "#ffffff", "fontSize": "24px", "fontFamily": "Arial, sans-serif", "color": "#000000", "padding": "2px", "borderRadius": "8px", "height": "170px", "width": "168px" } }, "header": { "content": "{{referrerName}} Recommends {{businessName}}", "styles": { "backgroundColor": "#df9a9a", "fontSize": "23px", "fontFamily": "Arial, sans-serif", "color": "#000000", "padding": "2px", "borderRadius": "8px" } }, "description1": { "content": "Looking to buy a car? Book a test drive with {{businessName}}", "styles": { "backgroundColor": "#ffffff", "fontSize": "16px", "fontFamily": "Arial, sans-serif", "color": "#000000", "padding": "2px", "borderRadius": "8px" } }, "description2": { "content": "Since you're a friend of {{referrerName}}, you get an extended warranty on your purchase for free.", "styles": { "backgroundColor": "#ffffff", "fontSize": "16px", "fontFamily": "Arial, sans-serif", "color": "#000000", "padding": "8px", "borderRadius": "8px" } }, "form": { "fields": [{ "id": "name", "type": "text", "label": "Name", "placeholder": "", "required": true, "styles": { "fontSize": "16px", "color": "#b06d6d", "padding": "8px", "borderRadius": "4px" } }, { "id": "email", "type": "email", "label": "Email", "placeholder": "m@example.com", "required": true, "styles": { "fontSize": "16px", "color": "#c34646", "padding": "8px", "borderRadius": "4px" } }] }, "padding": { "styles": "14px" }, "borderRadius": { "styles": "14px" }, "height": { "styles": "222px" }, "width": { "styles": "209px" } }
-
     const handleSubmit = (e) => {
         e.preventDefault();
         // Convert date to ISO string
@@ -57,12 +62,55 @@ export default function RefereeForm() {
             phone,
             date: formattedDate,
             businessId,
+            campaignId,
             referrerId: foundQrCode?.referrerId
         })
     }
+
+    const [updatedContent, setUpdatedContent] = useState(null);
+    const { data: campaign = null } = useQuery({
+        queryKey: ['getCampaignById', campaignId],
+        queryFn: () => campaignApi.getCampaignById({ campaignId }),
+        enabled: !!campaignId,
+    });
+
+    // Function to replace placeholders
+    const replacePlaceholders = (text) => {
+            return text
+                ?.replace(/{{referrerName}}/g, Referrer)
+                ?.replace(/{{businessName}}/g, Business);
+    };
+
+
+    useEffect(() => {
+        if (campaign?.refereeJSON) {
+            try {
+                const refereeData = JSON.parse(campaign.refereeJSON);
+
+                // Replace placeholders safely
+                if (refereeData.header?.content)
+                    refereeData.header.content = replacePlaceholders(refereeData.header.content);
+
+                if (refereeData.description1?.content)
+                    refereeData.description1.content = replacePlaceholders(refereeData.description1.content);
+
+                if (refereeData.description2?.content)
+                    refereeData.description2.content = replacePlaceholders(refereeData.description2.content);
+
+                // Store the updated content in state
+                setUpdatedContent(refereeData);
+            } catch (error) {
+                console.error("Error parsing refereeJSON:", error);
+            }
+        }
+    }, [campaign]);
+
+    // Use the updated content or fallback to empty object
+    const content = updatedContent || {};
+
     return (
         <div>
-            <div className="max-w-lg mx-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
+            {/* <div className="max-w-lg mx-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
                 <div className='items-center mb-4'>
                     <img src="https://img.freepik.com/free-vector/bird-colorful-logo-gradient-vector_343694-1365.jpg" alt="" className='w-40 h-40 mx-auto' />
 
@@ -147,45 +195,45 @@ export default function RefereeForm() {
                         </form>
                     </CardContent>
                 </Card>
-            </div>
+            </div> */}
 
 
 
 
-            {/* <div>
+            <div>
                 <div className="max-w-lg mx-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
                     <div className="items-center mb-4">
                         <img
-                            src={content.logo.content}
-                            style={content.logo.styles}
+                            src={content?.logo?.content}
+                            style={content?.logo?.styles}
                             alt=""
-                            className="w-40 h-40 mx-auto cursor-pointer hover:border-2 hover:border-dashed hover:border-blue-500 transition duration-200 ease-in-out cursor-pointer"
+                            className="w-40 h-40 mx-auto"
                             onClick={() => setSelectedElement('logo')}
                         />
 
                         <div
-                            value={content.header.content}
+                            value={content?.header?.content}
                             className="text-center text-xl "
-                            styles={content.header.styles}
+                            style={content?.header?.styles}
                         >
-                            {content.header.content}
+                            {content?.header?.content}
                         </div>
                     </div>
 
                     <div
-                        value={content.description1.content}
-                        className="text-md text-gray-800"
-                        styles={content.description1.styles}
+                        value={content?.description1?.content}
+                        className="text-md text-gray-800 text-center"
+                        style={content?.description1?.styles}
                     >
-                        {content.description1.content}
+                        {content?.description1?.content}
                     </div>
 
                     <div
-                        value={content.description2.content}
+                        value={content?.description2?.content}
                         className="text-md text-gray-800 dark:text-gray-200 mb-4 text-center"
-                        styles={content.description2.styles}
+                        style={content?.description2?.styles}
                     >
-                        {content.description2.content}
+                        {content?.description2?.content}
                     </div>
 
                     <Card className="mx-auto max-w-md cursor-pointer">
@@ -207,7 +255,7 @@ export default function RefereeForm() {
                                             />
                                         </div>
                                     ))}
-                                    <Button type="submit" className="w-full" disabled={createRefereeMutation.isPending}>
+                                    {/* <Button type="submit" className="w-full" disabled={createRefereeMutation.isPending}>
                                         {createRefereeMutation.isPending
                                             ? (
                                                 <>
@@ -215,13 +263,23 @@ export default function RefereeForm() {
                                                 </>
                                             )
                                             : 'Submit'}
-                                    </Button>
+                                    </Button> */}
+
+                                    <Button type="submit" className="w-full" disabled={createRefereeMutation.isPending}>
+                                    {createRefereeMutation.isPending
+                                        ? (
+                                            <>
+                                                Submit <Spinner />
+                                            </>
+                                        )
+                                        : 'Submit'}
+                                </Button>
                                 </div>
                             </form>
                         </CardContent>
                     </Card>
                 </div>
-            </div> */}
+            </div>
         </div>
     )
 }

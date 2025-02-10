@@ -71,7 +71,18 @@ const updateCampaignState = async (data) => {
             Authorization: `Bearer ${user?.token}`
         }
     })
-    
+
+    return response.data;
+}
+
+const getCampaignById = async (campaignId) => {
+    const user = JSON.parse(localStorage.getItem('user'))
+
+    const response = await axios.post(API_URL + '/getCampaignById', campaignId, {
+        headers: {
+            Authorization: `Bearer ${user?.token}`
+        }
+    })
     return response.data;
 }
 
@@ -81,7 +92,8 @@ const campaignApi = {
     updateCampaignActiveStatus,
     uploadImage,
     updateCampaignState,
-    getCampaignState
+    getCampaignState,
+    getCampaignById
 };
 
 export default campaignApi;
