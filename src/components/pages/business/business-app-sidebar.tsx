@@ -9,6 +9,10 @@ import {
   PieChart,
   Settings2,
   SquareTerminal,
+  QrCode,
+  Settings,
+  Trophy,
+  Magnet
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -124,7 +128,7 @@ export function BusinessAppSidebar({ ...props }) {
       {
         title: "Awards",
         url: "/b/dashboard/payouts",
-        icon: BookOpen,
+        icon: Trophy,
         items: [
           {
             title: "Introduction",
@@ -147,7 +151,7 @@ export function BusinessAppSidebar({ ...props }) {
       {
         title: "QR Codes",
         url: "/b/dashboard/qr-codes",
-        icon: Settings2,
+        icon: QrCode,
         items: [
           {
             title: "General",
@@ -170,7 +174,7 @@ export function BusinessAppSidebar({ ...props }) {
       {
         title: "Invite Referrer",
         url: "/b/dashboard/invite-referrer",
-        icon: Settings2,
+        icon: Magnet,
         items: [
           {
             title: "General",
@@ -193,7 +197,7 @@ export function BusinessAppSidebar({ ...props }) {
       {
         title: "Account Settings",
         url: "/b/dashboard/account-settings",
-        icon: Settings2,
+        icon: Settings,
         items: [
           {
             title: "General",

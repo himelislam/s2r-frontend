@@ -25,7 +25,8 @@ export default function BusinessQrCodes() {
     const [qrCodeWidth, setQrCodeWidth] = useState(50)
     const queryClient = useQueryClient();
     const user = JSON.parse(localStorage.getItem('user'));
-    const [selectedCampaign, setSelectedCampaign] = useState(""); 
+    const [selectedCampaign, setSelectedCampaign] = useState("");
+    const [filter, setFilter] = useState("all");
 
     const { data: campaigns = [] } = useQuery({
         queryKey: ['getCampaignsByBusinessId', user?.userId],
@@ -38,6 +39,10 @@ export default function BusinessQrCodes() {
         queryFn: () => businessApi.getBusinessById(user?.userId),
         enabled: !!user?.userId,
     })
+
+    const filteredQrCodes = filter !== "all"
+    ? business?.qrCodes?.filter((qr) => qr.campaignId === filter) // Show only selected campaign's QR codes
+    : business?.qrCodes;
 
     const generateQrCodeMutation = useMutation({
         mutationFn: businessApi.generateQrCodes,
@@ -153,10 +158,10 @@ export default function BusinessQrCodes() {
 
     return (
         <div className="container">
-            <div>
+            <div className='flex justify-normal items-center gap-2 mb-2'>
                 <Dialog open={openGenerateModal} onOpenChange={setOpenGenerateModal}>
                     <DialogTrigger asChild>
-                        <Button disabled={generateQrCodeMutation.isLoading} className="mb-6 me-5">
+                        <Button disabled={generateQrCodeMutation.isLoading} className="">
                             Generate QR Codes
                         </Button>
                     </DialogTrigger>
@@ -254,10 +259,27 @@ export default function BusinessQrCodes() {
                         </div>
                     </DrawerContent>
                 </Drawer>
+
+                <div>
+                    <Select defaultValue="all" onValueChange={(value) => setFilter(value)}>
+                        <SelectTrigger className="w-[180px]">
+                            <SelectValue placeholder="Filter campaigns" />
+                        </SelectTrigger>
+                        <SelectContent>
+                        <SelectItem value="all">All Campaigns</SelectItem>
+                            {
+                                campaigns?.map((campaign) => {
+                                    return <SelectItem value={campaign?._id}>{campaign?.campaignName}</SelectItem>
+                                })
+                            }
+                        </SelectContent>
+                    </Select>
+                </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-                {business?.qrCodes?.map((card) => <BusinessQrCard card={card} downloadSingleQrCodesAsPdf={downloadSingleQrCodesAsPdf} />)}
+                {/* {business?.qrCodes?.map((card) => <BusinessQrCard card={card} downloadSingleQrCodesAsPdf={downloadSingleQrCodesAsPdf} />)} */}
+                {filteredQrCodes?.map((card) => <BusinessQrCard card={card} downloadSingleQrCodesAsPdf={downloadSingleQrCodesAsPdf} />)}
             </div>
         </div>
     )
