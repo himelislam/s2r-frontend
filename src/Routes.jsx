@@ -30,6 +30,7 @@ import ReferrerSignup from "./components/pages/referrer/referrer-signup";
 import { ReferrerInvitationSetup } from "./components/pages/referrer/referrer-invitation-setup";
 import CampaignBuilder from "./components/pages/business/campaign-builder";
 import BusinessCampaigns from "./components/pages/business/business-campaigns";
+import AddReferrer from "./components/pages/business/add-referrer";
 
 
 
@@ -109,6 +110,10 @@ export const appRoutes = createBrowserRouter([
                             {
                                 path: 'invite-referrer',
                                 element: <InviteReferrer/>
+                            },
+                            {
+                                path: 'add-referrer',
+                                element: <AddReferrer/>
                             },
                             {
                                 path: 'account-settings',

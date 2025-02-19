@@ -195,6 +195,29 @@ export function BusinessAppSidebar({ ...props }) {
         ],
       },
       {
+        title: "Add Referrer",
+        url: "/b/dashboard/add-referrer",
+        icon: Magnet,
+        items: [
+          {
+            title: "General",
+            url: "#",
+          },
+          {
+            title: "Team",
+            url: "#",
+          },
+          {
+            title: "Billing",
+            url: "#",
+          },
+          {
+            title: "Limits",
+            url: "#",
+          },
+        ],
+      },
+      {
         title: "Account Settings",
         url: "/b/dashboard/account-settings",
         icon: Settings,
