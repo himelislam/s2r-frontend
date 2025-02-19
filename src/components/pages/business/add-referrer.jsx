@@ -12,11 +12,12 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react"
 import { toast } from "react-toastify";
 
-export default function InviteReferrer() {
+export default function AddReferrer() {
     const referees = [];
     const [openInvitationModal, setOpenInvitationModal] = useState(false);
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
+    const [phone, setPhone] = useState('');
     const queryClient = useQueryClient();
     const user = JSON.parse(localStorage.getItem('user'))
     const [selectedCampaign, setSelectedCampaign] = useState("");
@@ -33,11 +34,11 @@ export default function InviteReferrer() {
         enabled: !!user?.userId,
     })
 
-    const inviteReferrerMutation = useMutation({
-        mutationFn: businessApi.inviteReferrer,
+    const addReferrerMutation = useMutation({
+        mutationFn: businessApi.addReferrer,
         onSuccess: (data) => {
-            console.log(data);
-            queryClient.invalidateQueries(['getMembersByBusinessId', user?.userId])
+            console.log(data, "successfully created a referrer");
+            // queryClient.invalidateQueries(['getMembersByBusinessId', user?.userId])
             setOpenInvitationModal(false);
         },
         onError: (err) => {
@@ -46,28 +47,17 @@ export default function InviteReferrer() {
         }
     })
 
-    const inviteReferrer = (e) => {
+    const addReferrer = (e) => {
         e.preventDefault();
-        inviteReferrerMutation.mutate({
+        addReferrerMutation.mutate({
             businessId: user?.userId,
             email,
             name,
+            phone,
+            userType: 'referrer',
             campaignId: selectedCampaign
         })
     }
-
-    const invitationUrl = `${import.meta.env.VITE_CLIENT_URL}/referrer-signup/${user?.userId}`;
-    const handleCopy = () => {
-        navigator.clipboard.writeText(invitationUrl)
-            .then(() => {
-                toast.success("Invitation link copied to clipboard!");
-            })
-            .catch((err) => {
-                console.error("Failed to copy: ", err);
-                toast.error("Failed to copy the link.");
-            });
-    };
-
 
     return (
         <>
@@ -75,14 +65,12 @@ export default function InviteReferrer() {
                 <Dialog open={openInvitationModal} onOpenChange={setOpenInvitationModal}>
                     <DialogTrigger asChild>
                         <Button className="me-5">
-                            Invite Referrer
+                            Add Referrer
                         </Button>
                     </DialogTrigger>
 
-                    <Button onClick={handleCopy}>Invitation Link</Button>
-
                     <DialogContent>
-                        <DialogTitle>Invite Referrer</DialogTitle>
+                        <DialogTitle>Add Referrer</DialogTitle>
                         <DialogDescription>Please input the email and name of the referrer.</DialogDescription>
                         <Label>Email</Label>
                         <Input
@@ -95,6 +83,12 @@ export default function InviteReferrer() {
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
+                        />
+                        <Label>Phone</Label>
+                        <Input
+                            type="number"
+                            value={phone}
+                            onChange={(e) => setPhone(e.target.value)}
                         />
                         <Label>Choose a Campaign</Label>
                         <Select value={selectedCampaign} onValueChange={setSelectedCampaign}>
@@ -110,14 +104,14 @@ export default function InviteReferrer() {
                             </SelectContent>
                         </Select>
                         <DialogFooter>
-                            <Button onClick={inviteReferrer} className='mb-6 me-5'>
-                                {inviteReferrerMutation.isPending
+                            <Button onClick={addReferrer} className='mb-6 me-5'>
+                                {addReferrerMutation.isPending
                                     ? (
                                         <>
-                                            Invite <Spinner />
+                                            Add <Spinner />
                                         </>
                                     )
-                                    : 'Invite'}
+                                    : 'Add'}
                             </Button>
                             <DialogClose asChild>
                                 <Button variant="outline">Cancel</Button>
@@ -147,6 +141,12 @@ export default function InviteReferrer() {
                         </TableRow>
                     ))}
                 </TableBody>
+                {/* <TableFooter>
+            <TableRow>
+              <TableCell colSpan={3}>Total</TableCell>
+              <TableCell className="text-right">$2,500.00</TableCell>
+            </TableRow>
+          </TableFooter> */}
             </Table>
         </>
     )

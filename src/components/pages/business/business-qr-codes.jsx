@@ -66,7 +66,7 @@ export default function BusinessQrCodes() {
         generateQrCodeMutation.mutate({
             businessId: user?.userId,
             numberOfCodes: numberOfCodes,
-            campaignId: selectedCampaign
+            campaignId: selectedCampaign  
         })
         setLoading(false);
         setOpenGenerateModal(false);

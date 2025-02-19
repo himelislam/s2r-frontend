@@ -17,6 +17,17 @@ const createBusiness = async (userData) => {
     return response.data;
 }
 
+const addReferrer = async (data) => {
+    const user = JSON.parse(localStorage.getItem('user'))
+    const response = await axios.post(API_URL + "/addReferrer", data, {
+        headers: {
+            Authorization: `Bearer ${user?.token}`
+        }
+    });
+
+    return response.data;
+}
+
 const getAllBusiness = async () => {
     const user = JSON.parse(localStorage.getItem('user'))
     const response = await axios.get(API_URL + "/getAllBusiness", {
@@ -107,6 +118,7 @@ const uploadImage = async (data) => {
 
 const businessApi = {
     createBusiness,
+    addReferrer,
     getAllBusiness,
     generateQrCodes,
     getBusinessById,
