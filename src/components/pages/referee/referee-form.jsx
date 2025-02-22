@@ -54,6 +54,8 @@ export default function RefereeForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        console.log(e.target.field-3, 'submitting form');
         // Convert date to ISO string
         const formattedDate = date instanceof Date ? date.toISOString() : null;
         createRefereeMutation.mutate({
@@ -110,7 +112,7 @@ export default function RefereeForm() {
 
     return (
         <div>
-            {/* <div className="max-w-lg mx-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
+            <div className="max-w-lg mx-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
                 <div className='items-center mb-4'>
                     <img src="https://img.freepik.com/free-vector/bird-colorful-logo-gradient-vector_343694-1365.jpg" alt="" className='w-40 h-40 mx-auto' />
 
@@ -195,12 +197,12 @@ export default function RefereeForm() {
                         </form>
                     </CardContent>
                 </Card>
-            </div> */}
+            </div>
 
 
 
 
-            <div>
+            {/* <div>
                 <div className="max-w-lg mx-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
                     <div className="items-center mb-4">
                         <img
@@ -255,16 +257,6 @@ export default function RefereeForm() {
                                             />
                                         </div>
                                     ))}
-                                    {/* <Button type="submit" className="w-full" disabled={createRefereeMutation.isPending}>
-                                        {createRefereeMutation.isPending
-                                            ? (
-                                                <>
-                                                    Submit <Spinner />
-                                                </>
-                                            )
-                                            : 'Submit'}
-                                    </Button> */}
-
                                     <Button type="submit" className="w-full" disabled={createRefereeMutation.isPending}>
                                     {createRefereeMutation.isPending
                                         ? (
@@ -279,7 +271,7 @@ export default function RefereeForm() {
                         </CardContent>
                     </Card>
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }

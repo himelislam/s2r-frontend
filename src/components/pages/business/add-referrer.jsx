@@ -38,7 +38,7 @@ export default function AddReferrer() {
         mutationFn: businessApi.addReferrer,
         onSuccess: (data) => {
             console.log(data, "successfully created a referrer");
-            // queryClient.invalidateQueries(['getMembersByBusinessId', user?.userId])
+            queryClient.invalidateQueries(['getMembersByBusinessId', user?.userId])
             setOpenInvitationModal(false);
         },
         onError: (err) => {
@@ -127,6 +127,8 @@ export default function AddReferrer() {
                         <TableHead className="w-[100px]">ID</TableHead>
                         <TableHead>Name</TableHead>
                         <TableHead>Email</TableHead>
+                        <TableHead>Campaign Name</TableHead>
+                        <TableHead>QR Code ID</TableHead>
                         <TableHead className="">Status</TableHead>
                     </TableRow>
                 </TableHeader>
@@ -136,6 +138,8 @@ export default function AddReferrer() {
                             <TableCell className="font-medium">{index + 1}</TableCell>
                             <TableCell>{member?.name}</TableCell>
                             <TableCell>{member?.email}</TableCell>
+                            <TableCell>{member?.campaignName}</TableCell>
+                            <TableCell>{member?.qrCode?.id}</TableCell>
                             {/* <TableCell >{member?.phone}</TableCell> */}
                             <TableCell >{member?.status}</TableCell>
                         </TableRow>
