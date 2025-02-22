@@ -36,8 +36,16 @@ const getRefereeBusinessById = async (businessId) => {
 
     return response.data;
 }
+
+const getRefeeeList = async (refereerId) => {
+    const response = await axios.post(API_URL + '/getRefereeList', { refereerId })
+
+    return response.data;
+}
+
 const refereeApi = {
     createReferee,
+    getRefeeeList,
     getRefereeBusinessById,
     getRefereeByReferrerId
 };

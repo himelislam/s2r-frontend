@@ -31,6 +31,7 @@ import { ReferrerInvitationSetup } from "./components/pages/referrer/referrer-in
 import CampaignBuilder from "./components/pages/business/campaign-builder";
 import BusinessCampaigns from "./components/pages/business/business-campaigns";
 import AddReferrer from "./components/pages/business/add-referrer";
+import RefereeList from "./components/pages/referee-list";
 
 
 
@@ -181,5 +182,9 @@ export const appRoutes = createBrowserRouter([
     {
         path: 'referrer-invitation-setup/:businessId/:campaignId/:email/:name',
         element: <ReferrerInvitationSetup/>
+    },
+    {
+        path: 'referee-list/:refereerId',
+        element: <RefereeList/>
     }
 ]);
