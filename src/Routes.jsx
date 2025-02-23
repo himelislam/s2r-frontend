@@ -32,6 +32,7 @@ import CampaignBuilder from "./components/pages/business/campaign-builder";
 import BusinessCampaigns from "./components/pages/business/business-campaigns";
 import AddReferrer from "./components/pages/business/add-referrer";
 import RefereeList from "./components/pages/referee-list";
+import ReferrerSetupPass from "./components/pages/referrer-setup-pass";
 
 
 
@@ -186,5 +187,9 @@ export const appRoutes = createBrowserRouter([
     {
         path: 'referee-list/:refereerId',
         element: <RefereeList/>
+    },
+    {
+        path: 'referrer-setup-pass/:businessId/:referrerId/:email',
+        element: <ReferrerSetupPass/>
     }
 ]);
