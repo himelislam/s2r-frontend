@@ -101,14 +101,30 @@ const uploadImage = async (data) => {
   return response.data;
 }
 
-const authApi = {
-  signup,
-  logout,
-  login,
-  forgetPassword,
-  resetPassword,
-  changePassword,
-  uploadImage
-};
+const referrerSetupPass = async (data) => {
+  const response = await axios.post(API_URL + '/referrer-setup-pass', data)
 
-export default authApi;
+  if (response.data) {
+    sessionStorage.setItem("user", JSON.stringify(response.data));
+    localStorage.setItem("user", JSON.stringify(response.data));
+
+    // dispatch({
+    //   type: 'SET_USER',
+    //   payload: response.data
+    // })
+  }
+
+  return response.data;
+}
+  const authApi = {
+    signup,
+    logout,
+    login,
+    forgetPassword,
+    resetPassword,
+    changePassword,
+    uploadImage,
+    referrerSetupPass
+  };
+
+  export default authApi;
