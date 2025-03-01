@@ -103,13 +103,44 @@ const useEditableContent = () => {
     }));
   };
 
-  const addFormField = (field) => {
-    setContent((prev) => ({
+  // const addFormField = (field) => {
+  //   setContent((prev) => ({
+  //     ...prev,
+  //     form: {
+  //       ...prev.form,
+  //       fields: [...prev.form.fields, field],
+  //     },
+  //   }));
+  // };
+
+  const addFormField = (type) => {
+    const newField = {
+      phone: {
+        id: 'phone',
+        type: 'tel',
+        label: 'Phone',
+        placeholder: 'Enter phone number',
+        required: false,
+        styles: { /* default styles */ }
+      },
+      date: {
+        id: 'date',
+        type: 'date',
+        label: 'Date',
+        placeholder: '',
+        required: false,
+        styles: { /* default styles */ }
+      }
+    }[type];
+
+    setContent(prev => ({
       ...prev,
       form: {
         ...prev.form,
-        fields: [...prev.form.fields, field],
-      },
+        fields: prev.form.fields.some(f => f.id === newField.id) 
+          ? prev.form.fields 
+          : [...prev.form.fields, newField]
+      }
     }));
   };
 
@@ -125,13 +156,25 @@ const useEditableContent = () => {
     }));
   };
 
+  // const deleteFormField = (fieldId) => {
+  //   setContent((prev) => ({
+  //     ...prev,
+  //     form: {
+  //       ...prev.form,
+  //       fields: prev.form.fields.filter((field) => field.id !== fieldId),
+  //     },
+  //   }));
+  // };
+
   const deleteFormField = (fieldId) => {
-    setContent((prev) => ({
+    if (['name', 'email'].includes(fieldId)) return; // Prevent deleting required fields
+    
+    setContent(prev => ({
       ...prev,
       form: {
         ...prev.form,
-        fields: prev.form.fields.filter((field) => field.id !== fieldId),
-      },
+        fields: prev.form.fields.filter(f => f.id !== fieldId)
+      }
     }));
   };
 
