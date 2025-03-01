@@ -249,89 +249,89 @@ export default function CampaignBuilder() {
               {/* <div className="bg-orange-100/50 text-orange-800 px-3 py-1 rounded-full text-sm inline-block mb-4">
                 Step {personReferringStep} - Person Referred
               </div> */}
-                <div>
-                  <div className="max-w-lg mx-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
-                    <div className="items-center mb-4">
-                      {/* Editable Image */}
-                      <img
-                        src={content.logo.content}
-                        style={content.logo.styles}
-                        alt=""
-                        className="w-40 h-40 mx-auto cursor-pointer hover:border-2 hover:border-dashed hover:border-blue-500 transition duration-200 ease-in-out cursor-pointer"
-                        onClick={() => setSelectedElement('logo')}
-                      />
+              <div>
+                <div className="max-w-lg mx-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
+                  <div className="items-center mb-4">
+                    {/* Editable Image */}
+                    <img
+                      src={content.logo.content}
+                      style={content.logo.styles}
+                      alt=""
+                      className="w-40 h-40 mx-auto cursor-pointer hover:border-2 hover:border-dashed hover:border-blue-500 transition duration-200 ease-in-out cursor-pointer"
+                      onClick={() => setSelectedElement('logo')}
+                    />
 
-                      {/* Editable Header */}
-                      <EditableText
-                        value={content.header.content}
-                        onChange={(value) => updateContent('header', value)}
-                        className="text-center text-xl hover:border-2 hover:border-dashed hover:border-blue-500 transition duration-200 ease-in-out cursor-pointer"
-                        styles={content.header.styles}
-                        elementName="header"
-                        setSelectedElement={setSelectedElement}
-                        renderContent={renderContent}
-                      />
-                    </div>
-
-                    {/* Editable Description 1 */}
+                    {/* Editable Header */}
                     <EditableText
-                      value={content.description1.content}
-                      onChange={(value) => updateContent('description1', value)}
-                      className="text-md text-gray-800 dark:text-gray-200 mb-4 text-center hover:border-2 hover:border-dashed hover:border-blue-500 transition duration-200 ease-in-out cursor-pointer"
-                      styles={content.description1.styles}
-                      elementName="description1"
+                      value={content.header.content}
+                      onChange={(value) => updateContent('header', value)}
+                      className="text-center text-xl hover:border-2 hover:border-dashed hover:border-blue-500 transition duration-200 ease-in-out cursor-pointer"
+                      styles={content.header.styles}
+                      elementName="header"
                       setSelectedElement={setSelectedElement}
                       renderContent={renderContent}
                     />
+                  </div>
 
-                    {/* Editable Description 2 */}
-                    <EditableText
-                      value={content.description2.content}
-                      onChange={(value) => updateContent('description2', value)}
-                      className="text-md text-gray-800 dark:text-gray-200 mb-4 text-center hover:border-2 hover:border-dashed hover:border-blue-500 transition duration-200 ease-in-out cursor-pointer"
-                      styles={content.description2.styles}
-                      elementName="description2"
-                      setSelectedElement={setSelectedElement}
-                      renderContent={renderContent}
-                    />
+                  {/* Editable Description 1 */}
+                  <EditableText
+                    value={content.description1.content}
+                    onChange={(value) => updateContent('description1', value)}
+                    className="text-md text-gray-800 dark:text-gray-200 mb-4 text-center hover:border-2 hover:border-dashed hover:border-blue-500 transition duration-200 ease-in-out cursor-pointer"
+                    styles={content.description1.styles}
+                    elementName="description1"
+                    setSelectedElement={setSelectedElement}
+                    renderContent={renderContent}
+                  />
 
-                    <div>
-                      {/* <img
+                  {/* Editable Description 2 */}
+                  <EditableText
+                    value={content.description2.content}
+                    onChange={(value) => updateContent('description2', value)}
+                    className="text-md text-gray-800 dark:text-gray-200 mb-4 text-center hover:border-2 hover:border-dashed hover:border-blue-500 transition duration-200 ease-in-out cursor-pointer"
+                    styles={content.description2.styles}
+                    elementName="description2"
+                    setSelectedElement={setSelectedElement}
+                    renderContent={renderContent}
+                  />
+
+                  <div>
+                    {/* <img
                         src="https://dcdko16buub2z.cloudfront.net/images/XrwbjBN0860gkf4G.gif"
                         alt=""
                         className="w-full p-2"
                       /> */}
-                    </div>
-
-                    {/* Rest of your form */}
-                    <Card className="mx-auto max-w-md cursor-pointer hover:border-2 hover:border-dashed hover:border-blue-500 transition duration-200 ease-in-out cursor-pointer">
-                      <CardContent>
-                        <form disabled>
-                          <div className="grid gap-4 mt-4" onClick={() => setSelectedElement('form')}>
-                            {content?.form?.fields?.map((field) => (
-                              <div key={field.id} className="grid gap-2">
-                                <Label htmlFor={field.id} style={field.styles}>
-                                  {field.label}
-                                </Label>
-                                <Input
-                                  id={field.id}
-                                  type={field.type}
-                                  placeholder={field.placeholder}
-                                  required={field.required}
-                                  style={field.styles}
-                                  disabled
-                                />
-                              </div>
-                            ))}
-                            <Button type="submit" className="w-full" disabled>
-                              Submit
-                            </Button>
-                          </div>
-                        </form>
-                      </CardContent>
-                    </Card>
                   </div>
+
+                  {/* Rest of your form */}
+                  <Card className="mx-auto max-w-md cursor-pointer hover:border-2 hover:border-dashed hover:border-blue-500 transition duration-200 ease-in-out cursor-pointer">
+                    <CardContent>
+                      <form disabled>
+                        <div className="grid gap-4 mt-4" onClick={() => setSelectedElement('form')}>
+                          {content?.form?.fields?.map((field) => (
+                            <div key={field.id} className="grid gap-2">
+                              <Label htmlFor={field.id} style={field.styles}>
+                                {field.label}
+                              </Label>
+                              <Input
+                                id={field.id}
+                                type={field.type}
+                                placeholder={field.placeholder}
+                                required={field.required}
+                                style={field.styles}
+                                disabled
+                              />
+                            </div>
+                          ))}
+                          <Button type="submit" className="w-full" disabled>
+                            Submit
+                          </Button>
+                        </div>
+                      </form>
+                    </CardContent>
+                  </Card>
                 </div>
+              </div>
 
               <div className="flex justify-between">
                 <Button variant="outline" onClick={handleSave}>
@@ -1027,7 +1027,7 @@ export default function CampaignBuilder() {
               {selectedElement === 'form' && (
                 <>
                   <h3 className="font-medium mb-3">Form Fields</h3>
-                  <Button
+                  {/* <Button
                     variant="outline"
                     className="w-full mb-4"
                     onClick={() =>
@@ -1047,21 +1047,48 @@ export default function CampaignBuilder() {
                     }
                   >
                     Add Field
-                  </Button>
+                  </Button> */}
+
+                  <div className="grid grid-cols-2 gap-2 mb-4">
+                    <Button
+                      variant="outline"
+                      onClick={() => addFormField('phone')}
+                      disabled={content.form.fields.some(f => f.id === 'phone')}
+                    >
+                      Add Phone
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => addFormField('date')}
+                      disabled={content.form.fields.some(f => f.id === 'date')}
+                    >
+                      Add Date
+                    </Button>
+                  </div>
 
                   {content.form.fields.map((field) => (
                     <div key={field.id} className="mb-4">
                       <div className="flex justify-between items-center mb-2">
                         <h4 className="font-medium">{field.label}</h4>
-                        <Button
+                        {/* <Button
                           variant="destructive"
                           size="sm"
                           onClick={() => deleteFormField(field.id)}
                         >
-                          <Trash2 className="h-4 w-4" /> {/* Use an icon if desired */}
-                        </Button>
+                          <Trash2 className="h-4 w-4" />
+                        </Button> */}
+
+                        {!['name', 'email'].includes(field.id) && (
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            onClick={() => deleteFormField(field.id)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        )}
                       </div>
-                      <select
+                      {/* <select
                         value={field.type}
                         onChange={(e) =>
                           updateFormField(field.id, {
@@ -1075,7 +1102,7 @@ export default function CampaignBuilder() {
                         <option value="email">Email</option>
                         <option value="number">Number</option>
                         <option value="date">Date</option>
-                      </select>
+                      </select> */}
 
                       <input
                         type="text"
