@@ -34,8 +34,10 @@ import AddReferrer from "./components/pages/business/add-referrer";
 import RefereeList from "./components/pages/referee-list";
 import ReferrerSetupPass from "./components/pages/referrer-setup-pass";
 import EmailBuilder from "./components/pages/business/campaign/email/email-builder";
-import CampaignIntegration from "./components/pages/business/campaign/promotes/campaign-integration";
+import CampaignIntegration from "./components/pages/business/campaign/integration/campaign-integration";
 import CampaignSettings from "./components/pages/business/campaign/settings/campaign-settings";
+import CampaignReward from "./components/pages/business/campaign/reward/campaign-reward";
+import CampaignPromotes from "./components/pages/business/campaign/promotes/campaign-promotes";
 
 
 
@@ -111,6 +113,10 @@ export const appRoutes = createBrowserRouter([
                                         element: <CampaignBuilder/>
                                     },
                                     {
+                                        path: 'reward/:campaignId',
+                                        element: <CampaignReward/>
+                                    },
+                                    {
                                         path: 'settings/:campaignId',
                                         element: <CampaignSettings/>
                                     },
@@ -121,6 +127,10 @@ export const appRoutes = createBrowserRouter([
                                     {
                                         path: 'integration/:campaignId',
                                         element: <CampaignIntegration/>
+                                    },
+                                    {
+                                        path: 'promotes/:campaignId',
+                                        element: <CampaignPromotes/>
                                     }
                                 ]
                             },
