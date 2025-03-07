@@ -26,6 +26,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
 import { Slider } from "@/components/ui/slider"
+import { Loader } from "../../loader"
 
 const steps = [
   "Campaign",
@@ -74,6 +75,8 @@ export default function CampaignBuilder() {
       campaignId: campaignId
     })
   }, [])
+
+
 
   // ---------------------
 
@@ -133,11 +136,15 @@ export default function CampaignBuilder() {
     }
   };
 
+  if (getCampaignbyIdMutation.isPending) {
+    return <Loader />
+  }
+
   return (
     <div className="flex h-screen">
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
-        <h1 className="text-xl font-bold mb-2 ps-4">{campaign?.campaignName}</h1>
+        <h1 className="text-xl font-bold mb-2">{campaign?.campaignName}</h1>
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-2">
             <div
@@ -145,6 +152,14 @@ export default function CampaignBuilder() {
               onClick={() => navigate(`/b/dashboard/campaign-portal/builder/${campaignId}`)}
             >
               Campaign
+            </div>
+            <ChevronRight className="h-4 w-4 text-muted-foreground" />
+
+            <div
+              className="text-sm text-muted-foreground font-medium cursor-pointer hover:underline"
+              onClick={() => navigate(`/b/dashboard/campaign-portal/reward/${campaignId}`)}
+            >
+              Reward
             </div>
             <ChevronRight className="h-4 w-4 text-muted-foreground" />
 
@@ -169,6 +184,14 @@ export default function CampaignBuilder() {
               onClick={() => navigate(`/b/dashboard/campaign-portal/integration/${campaignId}`)}
             >
               Integration
+            </div>
+            <ChevronRight className="h-4 w-4 text-muted-foreground" />
+
+            <div
+              className="text-sm text-muted-foreground cursor-pointer hover:underline"
+              onClick={() => navigate(`/b/dashboard/campaign-portal/promotes/${campaignId}`)}
+            >
+              Promotes
             </div>
           </div>
         </div>
@@ -275,7 +298,7 @@ export default function CampaignBuilder() {
                         src={content.logo.content}
                         style={content.logo.styles}
                         alt=""
-                        className="w-40 h-40 mx-auto cursor-pointer hover:border-2 hover:border-dashed hover:border-blue-500 transition duration-200 ease-in-out cursor-pointer"
+                        className="w-40 h-40 mx-auto cursor-pointer hover:border-2 hover:border-dashed hover:border-blue-500 transition duration-200 ease-in-out"
                         onClick={() => setSelectedElement('logo')}
                       />
 
@@ -322,7 +345,7 @@ export default function CampaignBuilder() {
                     </div>
 
                     {/* Rest of your form */}
-                    <Card className="mx-auto max-w-md cursor-pointer hover:border-2 hover:border-dashed hover:border-blue-500 transition duration-200 ease-in-out cursor-pointer">
+                    <Card className="mx-auto max-w-md cursor-pointer hover:border-2 hover:border-dashed hover:border-blue-500 transition duration-200 ease-in-out">
                       <CardContent>
                         <form disabled>
                           <div className="grid gap-4 mt-4" onClick={() => setSelectedElement('form')}>
@@ -986,7 +1009,12 @@ export default function CampaignBuilder() {
             </div>
           </div>
         </div>
+        <div className="flex justify-end gap-2 pt-4">
+          <Button onClick={() => navigate('/b/dashboard/campaign-portal')} variant="outline">Back</Button>
+          <Button onClick={() => navigate(`/b/dashboard/campaign-portal/reward/${campaignId}`)} className="bg-amber-500 hover:bg-amber-600">Next</Button>
+        </div>
       </div>
+
     </div>
   )
 }
