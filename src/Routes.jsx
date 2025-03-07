@@ -14,7 +14,7 @@ import ReferrerDashboard from "./app/dashboard/referrerDashboard";
 import ReferrerOverview from "./components/pages/referrer/referrerOverview";
 import ReferrerReferees from "./components/pages/referrer/referrer-referees";
 import Payouts from "./components/pages/business/payouts";
-import CampaignPortal from "./components/pages/business/campaign-portal";
+import CampaignPortal from "./components/pages/business/campaign/campaign-portal";
 import InviteReferrer from "./components/pages/business/invite-referrer";
 import BusinessAccountSettings from "./components/pages/business/business-account-settings";
 import Errorpage from "./components/pages/errorpage";
@@ -28,11 +28,14 @@ import RefereeForm from "./components/pages/referee/referee-form";
 import BusinessReferees from "./components/pages/business/business-referees";
 import ReferrerSignup from "./components/pages/referrer/referrer-signup";
 import { ReferrerInvitationSetup } from "./components/pages/referrer/referrer-invitation-setup";
-import CampaignBuilder from "./components/pages/business/campaign-builder";
+import CampaignBuilder from "./components/pages/business/campaign/campaign-builder";
 import BusinessCampaigns from "./components/pages/business/business-campaigns";
 import AddReferrer from "./components/pages/business/add-referrer";
 import RefereeList from "./components/pages/referee-list";
 import ReferrerSetupPass from "./components/pages/referrer-setup-pass";
+import EmailBuilder from "./components/pages/business/campaign/email/email-builder";
+import CampaignIntegration from "./components/pages/business/campaign/promotes/campaign-integration";
+import CampaignSettings from "./components/pages/business/campaign/settings/campaign-settings";
 
 
 
@@ -104,8 +107,20 @@ export const appRoutes = createBrowserRouter([
                                         element: <CampaignPortal/>
                                     },
                                     {
-                                        path: 'builder',
+                                        path: 'builder/:campaignId',
                                         element: <CampaignBuilder/>
+                                    },
+                                    {
+                                        path: 'settings/:campaignId',
+                                        element: <CampaignSettings/>
+                                    },
+                                    {
+                                        path: 'email-builder/:campaignId',
+                                        element: <EmailBuilder/>
+                                    },
+                                    {
+                                        path: 'integration/:campaignId',
+                                        element: <CampaignIntegration/>
                                     }
                                 ]
                             },
