@@ -35,7 +35,7 @@ export default function CampaignItem({ campaign }) {
 
     const handleEditCampaign = (id) => {
         // Navigate to edit campaign page
-        navigate(`/b/dashboard/campaign-portal/builder`, { state: { campaign } });
+        navigate(`/b/dashboard/campaign-portal/builder/${campaign?._id}`, { state: { campaign } });
     }
 
     return (

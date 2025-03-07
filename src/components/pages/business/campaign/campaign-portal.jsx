@@ -13,6 +13,7 @@ import { Outlet, useNavigate } from "react-router-dom"
 import Spinner from "@/components/spinner"
 import { toast } from "react-toastify"
 import useEditableContent from "@/hooks/useEditableContent"
+import BusinessCampaigns from "../business-campaigns"
 
 export default function CampaignPortal() {
     const [open, setOpen] = useState(false)
@@ -32,7 +33,7 @@ export default function CampaignPortal() {
             toast.success("Campaign created successfully")
             setOpen(false)
             queryClient.invalidateQueries('getCampaignsByBusinessId')
-            navigate('/b/dashboard/campaign-portal/builder', { state: { campaign: data } })
+            navigate(`/b/dashboard/campaign-portal/builder/${data._id}`, { state: { campaign: data } })
         },
         onError: (error) => {
             console.error("An error occurred:", error)
