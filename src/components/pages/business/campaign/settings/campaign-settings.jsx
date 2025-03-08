@@ -235,7 +235,7 @@ export default function CampaignSettings() {
                         </Collapsible>
 
                         {/* Facebook Pixel and Google Analytics */}
-                        <Collapsible
+                        {/* <Collapsible
                             open={openSections.facebookPixel}
                             onOpenChange={() => toggleSection("facebookPixel")}
                             className="bg-white rounded-lg shadow-sm overflow-hidden"
@@ -255,10 +255,10 @@ export default function CampaignSettings() {
                                     <Button className="bg-blue-500 hover:bg-blue-600">Start 15 Day Trial</Button>
                                 </div>
                             </CollapsibleContent>
-                        </Collapsible>
+                        </Collapsible> */}
 
                         {/* Crawler Access */}
-                        <Collapsible
+                        {/* <Collapsible
                             open={openSections.crawlerAccess}
                             onOpenChange={() => toggleSection("crawlerAccess")}
                             className="bg-white rounded-lg shadow-sm overflow-hidden"
@@ -275,10 +275,10 @@ export default function CampaignSettings() {
                                     <p className="text-gray-600">Configure crawler access settings for your referral links.</p>
                                 </div>
                             </CollapsibleContent>
-                        </Collapsible>
+                        </Collapsible> */}
 
                         {/* Google Recaptcha */}
-                        <Collapsible
+                        {/* <Collapsible
                             open={openSections.googleRecaptcha}
                             onOpenChange={() => toggleSection("googleRecaptcha")}
                             className="bg-white rounded-lg shadow-sm overflow-hidden"
@@ -295,7 +295,7 @@ export default function CampaignSettings() {
                                     <p className="text-gray-600">Configure Google Recaptcha settings for your forms.</p>
                                 </div>
                             </CollapsibleContent>
-                        </Collapsible>
+                        </Collapsible> */}
 
                         {/* Referral Limits */}
                         <Collapsible
@@ -338,7 +338,7 @@ export default function CampaignSettings() {
                         </Collapsible>
 
                         {/* User Behavior */}
-                        <Collapsible
+                        {/* <Collapsible
                             open={openSections.userBehavior}
                             onOpenChange={() => toggleSection("userBehavior")}
                             className="bg-white rounded-lg shadow-sm overflow-hidden"
@@ -354,7 +354,7 @@ export default function CampaignSettings() {
                                     <p className="text-gray-600">Configure user behavior tracking and settings.</p>
                                 </div>
                             </CollapsibleContent>
-                        </Collapsible>
+                        </Collapsible> */}
 
                         {/* Default Text For Paused Campaign */}
                         <Collapsible
@@ -377,7 +377,7 @@ export default function CampaignSettings() {
                         </Collapsible>
 
                         {/* User Verification */}
-                        <Collapsible
+                        {/* <Collapsible
                             open={openSections.userVerification}
                             onOpenChange={() => toggleSection("userVerification")}
                             className="bg-white rounded-lg shadow-sm overflow-hidden"
@@ -394,7 +394,7 @@ export default function CampaignSettings() {
                                     <p className="text-gray-600">Configure user verification methods and settings.</p>
                                 </div>
                             </CollapsibleContent>
-                        </Collapsible>
+                        </Collapsible> */}
 
                         {/* Campaign Favicon */}
                         <Collapsible
