@@ -1,106 +1,105 @@
-import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableFooter,
-    TableHead,
-    TableHeader,
-    TableRow,
-  } from "@/components/ui/table"
-  import referrerApi from '@/api/referrerApi'
-  import { useQuery } from '@tanstack/react-query'
-  
-  
-  const user = JSON.parse(localStorage.getItem("user"))
-  
-  
-  const invoices = [
-    {
-      invoice: "INV001",
-      paymentStatus: "Paid",
-      totalAmount: "$250.00",
-      paymentMethod: "Credit Card",
-    },
-    {
-      invoice: "INV002",
-      paymentStatus: "Pending",
-      totalAmount: "$150.00",
-      paymentMethod: "PayPal",
-    },
-    {
-      invoice: "INV003",
-      paymentStatus: "Unpaid",
-      totalAmount: "$350.00",
-      paymentMethod: "Bank Transfer",
-    },
-    {
-      invoice: "INV004",
-      paymentStatus: "Paid",
-      totalAmount: "$450.00",
-      paymentMethod: "Credit Card",
-    },
-    {
-      invoice: "INV005",
-      paymentStatus: "Paid",
-      totalAmount: "$550.00",
-      paymentMethod: "PayPal",
-    },
-    {
-      invoice: "INV006",
-      paymentStatus: "Pending",
-      totalAmount: "$200.00",
-      paymentMethod: "Bank Transfer",
-    },
-    {
-      invoice: "INV007",
-      paymentStatus: "Unpaid",
-      totalAmount: "$300.00",
-      paymentMethod: "Credit Card",
-    },
-  ]
-  
-  
-  
-  export default function Payouts() {
-  
-  
-    // const { data: businesses = [], isLoading, isError, error } = useQuery({
-    //   queryKey: ['getReferrersByBusinessId', user?.userId],
-    //   queryFn: () => referrerApi.getReferrersByBusinessId(user?.userId),
-    //   enabled: !!user?.userId,
-    // })
-  
-    const businesses = [];
-    console.log(businesses);
+import campaignApi from "@/api/campaignApi"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { Plus, Search } from "lucide-react"
+import React, { useState } from "react"
+import { Outlet, useNavigate } from "react-router-dom"
+import Spinner from "@/components/spinner"
+import { toast } from "react-toastify"
+import useEditableContent from "@/hooks/useEditableContent"
+import CampaignItem from "./campaign/campaign-item"
+
+export default function CampaignPortal() {
+    const [open, setOpen] = useState(false)
+    const [campaignName, setCampaignName] = useState("")
+    const [campaignLanguage, setCampaignLanguage] = useState("")
+    const user = JSON.parse(localStorage.getItem("user"))
+    const [searchTerm, setSearchTerm] = useState("");
+    const [filter, setFilter] = useState("all");
+    const queryClient = useQueryClient();
+    const navigate = useNavigate()
+    const { getContentAsJSON } = useEditableContent();
+
+
+    const createCampaignMutation = useMutation({
+        mutationFn: campaignApi.createCampaign,
+        onSuccess: (data) => {
+            toast.success("Campaign created successfully")
+            setOpen(false)
+            queryClient.invalidateQueries('getCampaignsByBusinessId')
+            navigate(`/b/dashboard/campaign-portal/builder/${data._id}`, { state: { campaign: data } })
+        },
+        onError: (error) => {
+            console.error("An error occurred:", error)
+        }
+    })
+
+    const handleStartCampaign = () => {
+        const jsonContent = getContentAsJSON();
+        createCampaignMutation.mutate({
+            campaignName,
+            campaignLanguage,
+            businessId: user.userId,
+            refereeJSON: jsonContent,
+        })
+    }
+
+    const { data: campaigns = [], isLoading, isError, error } = useQuery({
+        queryKey: ['getCampaignsByBusinessId', user?.userId],
+        queryFn: () => campaignApi.getCampaignsByBusinessId(user?.userId),
+        enabled: !!user?.userId
+    })
+
+    const filteredCampaigns = campaigns.filter((campaign) => {
+        // Filter by active status
+        if (filter === "active" && !campaign.active) return false;
+        if (filter === "inactive" && campaign.active) return false;
+
+        // Search by campaign name
+        if (searchTerm && !campaign?.campaignName?.toLowerCase()?.includes(searchTerm?.toLowerCase())) return false;
+
+        return true;
+    });
+
     return (
-      <Table>
-        {/* <TableCaption>A list of referrer.</TableCaption> */}
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[100px]">ID from Payout</TableHead>
-            <TableHead>Name</TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead className="text-right">Status</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {businesses.map((business, index) => (
-            <TableRow key={business?.invoice}>
-              <TableCell className="font-medium">{index + 1}</TableCell>
-              <TableCell>{business?.name}</TableCell>
-              <TableCell>{business?.email}</TableCell>
-              <TableCell className="text-right">{business?.totalAmount}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-        {/* <TableFooter>
-            <TableRow>
-              <TableCell colSpan={3}>Total</TableCell>
-              <TableCell className="text-right">$2,500.00</TableCell>
-            </TableRow>
-          </TableFooter> */}
-      </Table>
+        <div>
+            <div className="container mx-auto">
+                <div className="flex items-center justify-between mb-8">
+                    <div className="flex items-center gap-4 flex-1">
+                        <div className="relative w-[240px]">
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                            <Input
+                                placeholder="Search"
+                                className="pl-9"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                        </div>
+                        <Select defaultValue="active" onValueChange={(value) => setFilter(value)}>
+                            <SelectTrigger className="w-[180px]">
+                                <SelectValue placeholder="Filter campaigns" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="active">Active Campaigns</SelectItem>
+                                <SelectItem value="inactive">Inactive Campaigns</SelectItem>
+                                <SelectItem value="all">All Campaigns</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                </div>
+
+                <div className="space-y-4">
+                    {filteredCampaigns.map((campaign) => (
+                        <CampaignItem key={campaign.id} campaign={campaign} />
+                    ))}
+                    {filteredCampaigns.length === 0 && <p>No campaigns found.</p>}
+                </div>
+            </div>
+        </div>
     )
-  }
-  
+}

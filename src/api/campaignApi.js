@@ -86,6 +86,31 @@ const getCampaignById = async (campaignId) => {
     return response.data;
 }
 
+const updateCampaignReward = async (data) => {
+    const user = JSON.parse(localStorage.getItem('user'))
+
+    const response = await axios.post(API_URL + '/updateCampaignReward', data, {
+        headers: {
+            Authorization: `Bearer ${user?.token}`
+        }
+    })
+
+    return response.data;
+}
+
+const updateCampaignSettings = async (data) => {
+    const user = JSON.parse(localStorage.getItem('user'))
+
+    const response = await axios.post(API_URL + '/updateCampaignSettings', data, {
+        headers: {
+            Authorization: `Bearer ${user?.token}`
+        }
+    })
+
+    return response.data;
+}
+
+
 const campaignApi = {
     createCampaign,
     getCampaignsByBusinessId,
@@ -93,7 +118,9 @@ const campaignApi = {
     uploadImage,
     updateCampaignState,
     getCampaignState,
-    getCampaignById
+    getCampaignById,
+    updateCampaignReward,
+    updateCampaignSettings
 };
 
 export default campaignApi;

@@ -126,7 +126,7 @@ export function BusinessAppSidebar({ ...props }) {
         ],
       },
       {
-        title: "Awards",
+        title: "Rewards",
         url: "/b/dashboard/payouts",
         icon: Trophy,
         items: [
