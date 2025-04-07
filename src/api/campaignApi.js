@@ -75,6 +75,17 @@ const updateCampaignState = async (data) => {
     return response.data;
 }
 
+const updateCampaignEmailState = async (data) => {
+    const user = JSON.parse(localStorage.getItem('user'))
+
+    const response = await axios.post(API_URL + '/updateCampaignEmailState', data, {
+        headers: {
+            Authorization: `Bearer ${user?.token}`
+        }
+    })
+    return response.data;
+}
+
 const getCampaignById = async (campaignId) => {
     const user = JSON.parse(localStorage.getItem('user'))
 
@@ -117,6 +128,7 @@ const campaignApi = {
     updateCampaignActiveStatus,
     uploadImage,
     updateCampaignState,
+    updateCampaignEmailState,
     getCampaignState,
     getCampaignById,
     updateCampaignReward,
