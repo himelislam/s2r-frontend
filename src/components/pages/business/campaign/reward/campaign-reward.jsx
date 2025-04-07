@@ -17,7 +17,7 @@ export default function RewardSystemForm() {
     const [codes, setCodes] = useState([]); // Array of codes for GIFTCARD
     const [amount, setAmount] = useState(0); // Amount for GIFTCARD or CASH
     const [currency, setCurrency] = useState(""); // Currency for GIFTCARD or CASH
-    const [giftCardMethod, setGiftCardMethod] = useState("add-later"); // Bulk import or add later
+    const [giftCardMethod, setGiftCardMethod] = useState(""); // Bulk import or add later
     const [bulkImportMethod, setBulkImportMethod] = useState("add-now"); // Add now or upload CSV
     const [csvFile, setCsvFile] = useState(null); // Uploaded CSV file
     const navigate = useNavigate();
@@ -57,7 +57,11 @@ export default function RewardSystemForm() {
     };
 
     const handleTextareaChange = (event) => {
-        setCodes(event.target.value.split("\n").map((line) => line.trim()).filter((line) => line.length > 0));
+        setCodes(
+            event.target.value
+                .split("\n")
+                .map((line) => line.trim()) // Trim whitespace from each line
+        );
     };
 
     const handleFileChange = (event) => {
@@ -108,6 +112,14 @@ export default function RewardSystemForm() {
         mutationFn: campaignApi.getCampaignById,
         onSuccess: (data) => {
             setCampaign(data);
+            if (data.reward) {
+                setRewardType(data.reward.rewardType || undefined);
+                setCode(data.reward.code || "");
+                setCodes(data.reward.codes || []);
+                setAmount(data.reward.amount || 0);
+                setCurrency(data.reward.currency || "");
+                setGiftCardMethod(data.reward.method || "add-later");
+            }
         },
         onError: (err) => {
             console.log(err, "get Err");
@@ -125,8 +137,8 @@ export default function RewardSystemForm() {
     }
 
     return (
-        <div className="flex-1 flex flex-col p-6">
-            <h1 className="text-xl font-bold mb-4">{campaign?.campaignName}</h1>
+        <div className="flex-1 flex flex-col">
+            <h1 className="text-xl font-bold mb-2">{campaign?.campaignName}</h1>
             <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center space-x-2">
                     <div
@@ -224,7 +236,7 @@ export default function RewardSystemForm() {
                             <div className="grid gap-2">
                                 <Label className="text-base">Gift Card Setup Method</Label>
                                 <RadioGroup
-                                    defaultValue="add-later"
+                                    // defaultValue="add-later"
                                     name="gift-card-method"
                                     className="grid gap-3"
                                     value={giftCardMethod}
@@ -250,7 +262,7 @@ export default function RewardSystemForm() {
                                     <div className="grid gap-2">
                                         <Label className="text-base">Bulk Import Method</Label>
                                         <RadioGroup
-                                            defaultValue="add-now"
+                                            // defaultValue="add-now"
                                             name="bulk-import-method"
                                             className="grid gap-3"
                                             value={bulkImportMethod}
