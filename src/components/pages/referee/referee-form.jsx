@@ -21,6 +21,8 @@ import Spinner from '@/components/spinner';
 import campaignApi from '@/api/campaignApi';
 import { date } from 'zod';
 
+import { Helmet } from 'react-helmet';
+
 export default function RefereeForm() {
     const [formData, setFormData] = useState({});
     const { businessId, campaignId, qrId } = useParams();
@@ -146,6 +148,12 @@ export default function RefereeForm() {
 
     return (
         <div>
+            <Helmet>
+                <title>{campaign?.settings?.meta?.title}</title>
+                <meta name="description" content={campaign?.settings?.meta?.description} />
+                <link rel="icon" href={campaign?.settings?.campaignFavicon} />
+                {/* <link rel="icon" href={`${campaign?.settings?.campaignFavicon}?v=${Date.now()}`} /> */}
+            </Helmet>
             <div>
                 <div className="max-w-lg mx-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
                     <div className="items-center mb-4">

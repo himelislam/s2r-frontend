@@ -722,11 +722,11 @@ export default function CampaignSettings() {
                                 <div>
                                     <h3 className="font-medium">Default Domain (Used For Links)</h3>
                                     <p className="text-sm text-gray-600 mt-1">
-                                        By default your links will be generated on a subdomain of Referral Factory.
+                                        By default your links will be generated on a subdomain of Attach-N-Hatch.
                                     </p>
                                     <div className="flex items-center gap-2 mt-4">
                                         <Input value="demo" className="max-w-[200px] bg-gray-50" />
-                                        <div className="bg-gray-200 text-gray-600 px-3 py-2 rounded">.referral-factory.com</div>
+                                        <div className="bg-gray-200 text-gray-600 px-3 py-2 rounded">.attachnhatch.com</div>
                                     </div>
                                 </div>
                                 <div className="bg-blue-600 text-white p-4 rounded-lg">
