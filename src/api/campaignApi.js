@@ -121,6 +121,18 @@ const updateCampaignSettings = async (data) => {
     return response.data;
 }
 
+const deleteCampaignById = async (campaignId) => {
+    const user = JSON.parse(localStorage.getItem('user'))
+
+    const response = await axios.post(API_URL + '/deleteCampaignById', campaignId, {
+        headers: {
+            Authorization: `Bearer ${user?.token}`
+        }
+    })
+
+    return response.data;
+}
+
 
 const campaignApi = {
     createCampaign,
@@ -132,7 +144,8 @@ const campaignApi = {
     getCampaignState,
     getCampaignById,
     updateCampaignReward,
-    updateCampaignSettings
+    updateCampaignSettings,
+    deleteCampaignById
 };
 
 export default campaignApi;

@@ -155,10 +155,10 @@ export default function CampaignPortal() {
                 </div>
 
                 <div className="space-y-4">
-                    {filteredCampaigns.map((campaign) => (
+                    {filteredCampaigns?.map((campaign) => (
                         <CampaignItem key={campaign.id} campaign={campaign} />
                     ))}
-                    {filteredCampaigns.length === 0 && <p>No campaigns found.</p>}
+                    {filteredCampaigns?.length === 0 && <p>No campaigns found.</p>}
                 </div>
             </div>
         </div>

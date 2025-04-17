@@ -6,13 +6,25 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Switch } from '@/components/ui/switch'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { BarChart2, Eye, Gift, Megaphone, MoreVertical, PenSquare, Share2, UserCheck, UserPlus, Users, Link } from 'lucide-react'
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import {
+    AlertDialog,
+    AlertDialogTrigger,
+    AlertDialogContent,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogCancel,
+    AlertDialogAction,
+} from '@/components/ui/alert-dialog'
 
 export default function CampaignItem({ campaign }) {
     const queryClient = useQueryClient();
     const navigate = useNavigate()
+    const [openDeleteCampaign, setOpenDeleteCampaign] = useState(false)
 
 
     const updateCampaignActiveStatusMutation = useMutation({
@@ -38,28 +50,50 @@ export default function CampaignItem({ campaign }) {
         navigate(`/b/dashboard/campaign-portal/builder/${campaign?._id}`, { state: { campaign } });
     }
 
+    const handleDeleteCampaign = async (campaignId) => {
+        try {
+            setOpenDeleteCampaign(false);
+            await deleteCampaignByIdMutation.mutateAsync(campaignId);
+        } catch (error) {
+            console.error('Delete failed:', error);
+        }
+    }
+
+    const deleteCampaignByIdMutation = useMutation({
+        mutationFn: (campaignId) => campaignApi.deleteCampaignById({ campaignId: campaignId }),
+        onSuccess: (data) => {
+            console.log('Campaign deleted successfully:', data);
+            toast.success('Campaign deleted successfully');
+            queryClient.invalidateQueries('getCampaignsByBusinessId');
+        },
+        onError: (error) => {
+            console.error('Error deleting campaign:', error);
+            toast.error('Error deleting campaign');
+        },
+    })
+
     return (
         <>
             <Collapsible key={campaign._id} className="rounded-lg border">
                 <CollapsibleTrigger className="flex items-center justify-between w-full p-4">
                     <div className="flex items-center gap-4">
-                        <Switch checked={campaign.active} onClick={(e)=> {handleCampaignActive(), e.stopPropagation()}} />
+                        <Switch checked={campaign.active} onClick={(e) => { handleCampaignActive(), e.stopPropagation() }} />
                         <span className="font-medium">{campaign.campaignName}</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <Button variant="outline" size="sm" className="gap-2" onClick={
-                            (e)=> {
-                            e.stopPropagation();
-                            handleEditCampaign() 
+                            (e) => {
+                                e.stopPropagation();
+                                handleEditCampaign()
                             }
-                            }>
+                        }>
                             <PenSquare className="h-4 w-4" />
                             Edit Campaign
                         </Button>
-                        <Button variant="outline" size="icon" className="h-8 w-8" onClick={(e)=> {e.stopPropagation()}}>
+                        <Button variant="outline" size="icon" className="h-8 w-8" onClick={(e) => { e.stopPropagation() }}>
                             <Share2 className="h-4 w-4" />
                         </Button>
-                        <Button variant="outline" size="icon" className="h-8 w-8" onClick={(e)=> {e.stopPropagation()}}>
+                        <Button variant="outline" size="icon" className="h-8 w-8" onClick={(e) => { e.stopPropagation() }}>
                             <Eye className="h-4 w-4" />
                         </Button>
                         <DropdownMenu>
@@ -69,7 +103,8 @@ export default function CampaignItem({ campaign }) {
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                                <DropdownMenuItem>Delete</DropdownMenuItem>
+                                {/* <DropdownMenuItem onSelect={() => setOpenDeleteCampaign(true)}>Delete</DropdownMenuItem> */}
+                                <DropdownMenuItem onClick={()=> handleDeleteCampaign(campaign._id)}>Delete</DropdownMenuItem>
                                 <DropdownMenuItem>Duplicate</DropdownMenuItem>
                                 <DropdownMenuItem>Archive</DropdownMenuItem>
                             </DropdownMenuContent>
@@ -139,7 +174,24 @@ export default function CampaignItem({ campaign }) {
                         </div>
                     </div>
                 </CollapsibleContent>
+                {/* <AlertDialog open={openDeleteCampaign} onOpenChange={setOpenDeleteCampaign}>
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                            <AlertDialogTitle>Delete this campaign?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                                This will also delete all QR codes linked to it. Are you sure?
+                            </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => handleDeleteCampaign(campaign?._id)}>
+                                Yes, Delete
+                            </AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog> */}
             </Collapsible>
+
         </>
     )
 }

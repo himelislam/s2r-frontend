@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import referrerApi from '@/api/referrerApi'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import refereeApi from "@/api/refereeApi"
 import { MoreVertical, Search } from "lucide-react"
 import { Input } from "@/components/ui/input"
@@ -18,6 +18,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
+import { toast } from "react-toastify"
 
 
 const user = JSON.parse(localStorage.getItem("user"))
@@ -25,6 +26,7 @@ const user = JSON.parse(localStorage.getItem("user"))
 export default function BusinessReferees() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState("all");
+  const queryClient = useQueryClient();
 
   const { data: referees = [], isLoading, isError, error } = useQuery({
     queryKey: ['getRefereeByBusinessId', user?.userId],
@@ -32,44 +34,25 @@ export default function BusinessReferees() {
     enabled: !!user?.userId,
   })
 
-  return (
-    // <Table>
-    //   {/* <TableCaption>A list of referrer.</TableCaption> */}
-    //   <TableHeader>
-    //     <TableRow>
-    //       <TableHead className="w-[100px]">ID</TableHead>
-    //       <TableHead>Name</TableHead>
-    //       <TableHead>Email</TableHead>
-    //       <TableHead>Phone</TableHead>
-    //       <TableHead>Referrer Name</TableHead>
-    //       <TableHead className="">Available Time</TableHead>
-    //       <TableHead className="">Status</TableHead>
-    //     </TableRow>
-    //   </TableHeader>
-    //   <TableBody>
-    //     {referees?.map((referee, index) => (
-    //       <TableRow key={index}>
-    //         <TableCell className="font-medium">{index + 1}</TableCell>
-    //         <TableCell>{referee?.name}</TableCell>
-    //         <TableCell>{referee?.email}</TableCell>
-    //         <TableCell >{referee?.phone}</TableCell>
-    //         <TableCell >{referee?.referrerName}</TableCell>
-    //         {/* <TableCell >{new Date(referee?.date)}</TableCell> */}
-    //         <TableCell >{referee?.date
-    //           ? new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' }).format(new Date(referee.date))
-    //           : 'N/A'}</TableCell>
-    //         <TableCell >{referee?.status}</TableCell>
-    //       </TableRow>
-    //     ))}
-    //   </TableBody>
-    //   {/* <TableFooter>
-    //         <TableRow>
-    //           <TableCell colSpan={3}>Total</TableCell>
-    //           <TableCell className="text-right">$2,500.00</TableCell>
-    //         </TableRow>
-    //       </TableFooter> */}
-    // </Table>
+  const updateRefereeStatusMutation = useMutation({
+    mutationFn: refereeApi.updateRefereeStatus,
+    onSuccess: (data) => {
+      toast.success("Referee status updated successfully")
+      queryClient.invalidateQueries('getRefereeByBusinessId')
+    },
+    onError: (error) => {
+      console.error("An error occurred:", error)
+    }
+  })
 
+  const handleUpdateRefereeStatus = (refereeId, status) => {
+    updateRefereeStatusMutation.mutate({
+      refereeId,
+      status
+    })
+  }
+
+  return (
     <div>
       <div className="container mx-auto">
         <div className="flex items-center justify-between mb-8">
@@ -138,9 +121,9 @@ export default function BusinessReferees() {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-[200px]">
-                          <DropdownMenuItem>Approve</DropdownMenuItem>
-                          <DropdownMenuItem>Pending</DropdownMenuItem>
-                          <DropdownMenuItem className="text-red-500">Cancel</DropdownMenuItem>
+                          <DropdownMenuItem onClick={()=> handleUpdateRefereeStatus(referee._id, 'Active')}>Approve</DropdownMenuItem>
+                          <DropdownMenuItem onClick={()=> handleUpdateRefereeStatus(referee._id, 'Pending')}>Pending</DropdownMenuItem>
+                          <DropdownMenuItem onClick={()=> handleUpdateRefereeStatus(referee._id, 'Cancel')} className="text-red-500">Cancel</DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>
