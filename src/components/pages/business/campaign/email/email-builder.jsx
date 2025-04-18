@@ -97,17 +97,47 @@ export default function EmailBuilder() {
       <h1 className="text-xl font-bold mb-2">{campaign?.campaignName}</h1>
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-2">
-          {['Campaign', 'Reward', 'Settings', 'Email', 'Integration', 'Promotes'].map((item, index) => (
-            <React.Fragment key={item}>
-              <div
-                className={`text-sm ${item === 'Email' ? 'text-orange-500' : 'text-muted-foreground'} cursor-pointer hover:underline`}
-                onClick={() => navigate(`/b/dashboard/campaign-portal/${item.toLowerCase()}/${campaignId}`)}
-              >
-                {item}
-              </div>
-              {index < 5 && <ChevronRight className="h-4 w-4 text-muted-foreground" />}
-            </React.Fragment>
-          ))}
+          <div
+            className="text-sm text-muted-foreground font-medium cursor-pointer hover:underline"
+            onClick={() => navigate(`/b/dashboard/campaign-portal/builder/${campaignId}`)}
+          >
+            Campaign
+          </div>
+          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+          <div
+            className="text-sm text-muted-foreground font-medium cursor-pointer hover:underline"
+            onClick={() => navigate(`/b/dashboard/campaign-portal/reward/${campaignId}`)}
+          >
+            Reward
+          </div>
+          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+          <div
+            className="text-sm text-muted-foreground cursor-pointer hover:underline"
+            onClick={() => navigate(`/b/dashboard/campaign-portal/settings/${campaignId}`)}
+          >
+            Settings
+          </div>
+          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+          <div
+            className="text-sm text-orange-500  cursor-pointer hover:underline"
+            onClick={() => navigate(`/b/dashboard/campaign-portal/email-builder/${campaignId}`)}
+          >
+            Email
+          </div>
+          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+          <div
+            className="text-sm text-muted-foreground cursor-pointer hover:underline"
+            onClick={() => navigate(`/b/dashboard/campaign-portal/integration/${campaignId}`)}
+          >
+            Integration
+          </div>
+          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+          <div
+            className="text-sm text-muted-foreground cursor-pointer hover:underline"
+            onClick={() => navigate(`/b/dashboard/campaign-portal/promotes/${campaignId}`)}
+          >
+            Promotes
+          </div>
         </div>
       </div>
 

@@ -26,11 +26,15 @@ export default function CampaignPortal() {
     const [campaignLanguage, setCampaignLanguage] = useState("")
     const user = JSON.parse(localStorage.getItem("user"))
     const [searchTerm, setSearchTerm] = useState("");
-    const [filter, setFilter] = useState("all");
+    const [filters, setFilters] = useState({
+        status: "all",
+        campaignName: "",
+        rewardType: "all",
+        nameSearch: ""
+    });
     const queryClient = useQueryClient();
     const navigate = useNavigate()
     const { getContentAsJSON } = useEditableContent();
-
 
     const createCampaignMutation = useMutation({
         mutationFn: campaignApi.createCampaign,
@@ -67,43 +71,51 @@ export default function CampaignPortal() {
         enabled: !!user?.userId,
     })
 
-    const filteredCampaigns = campaigns.filter((campaign) => {
-        // Filter by active status
-        if (filter === "active" && !campaign.active) return false;
-        if (filter === "inactive" && campaign.active) return false;
+    const handleFilterChange = (name, value) => {
+        setFilters(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
 
-        // Search by campaign name
-        if (searchTerm && !campaign?.campaignName?.toLowerCase()?.includes(searchTerm?.toLowerCase())) return false;
+    const filteredReferees = referees?.filter(reward => {
+        // Filter by status
+        if (filters.status !== "all" && reward.status !== filters.status) return false;
+
+        // Filter by campaign name
+        if (filters.campaignName && filters.campaignName !== "all-campaigns" && 
+            !reward.campaignName?.toLowerCase().includes(filters.campaignName.toLowerCase())) {
+            return false;
+        }
+
+        // Filter by reward type
+        if (filters.rewardType !== "all" && reward?.reward?.rewardType !== filters.rewardType) {
+            return false;
+        }
+
+        // Search by name
+        if (filters.nameSearch && !reward.name?.toLowerCase().includes(filters.nameSearch.toLowerCase())) {
+            return false;
+        }
+
+        // Search by general search term
+        if (searchTerm) {
+            const searchLower = searchTerm.toLowerCase();
+            if (
+                !reward.campaignName?.toLowerCase().includes(searchLower) &&
+                !reward.name?.toLowerCase().includes(searchLower) &&
+                !reward.email?.toLowerCase().includes(searchLower)
+            ) {
+                return false;
+            }
+        }
 
         return true;
     });
 
-    // const [rewards, setRewards] = useState([
-    //     {
-    //         id: 1,
-    //         active: true,
-    //         campaign: "Ministry Vineyard",
-    //         email: "john@example.com",
-    //         name: "Reee",
-    //         rewardType: "Standard",
-    //         rewardAmount: "$55.00",
-    //         coupon: "WELCOME20",
-    //         issuingMethod: "Issue Yourself",
-    //     },
-    //     {
-    //         id: 2,
-    //         active: true,
-    //         campaign: "2354t",
-    //         email: "jane@example.com",
-    //         name: "Person Referring",
-    //         rewardType: "Standard",
-    //         rewardAmount: "Lek22.00",
-    //         coupon: "SUMMER10",
-    //         issuingMethod: "Issue Yourself",
-    //     },
-    // ])
-
-   
+    // Get unique campaign names and reward types for filter options
+    const uniqueCampaignNames = [...new Set(referees?.map(ref => ref.campaignName))].filter(Boolean);
+    const uniqueRewardTypes = [...new Set(referees?.map(ref => ref?.reward?.rewardType))].filter(Boolean);
 
     return (
         <div>
@@ -119,16 +131,62 @@ export default function CampaignPortal() {
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />
                         </div>
-                        <Select defaultValue="active" onValueChange={(value) => setFilter(value)}>
+
+                        {/* Status Filter */}
+                        <Select
+                            value={filters.status}
+                            onValueChange={(value) => handleFilterChange("status", value)}
+                        >
                             <SelectTrigger className="w-[180px]">
-                                <SelectValue placeholder="Filter campaigns" />
+                                <SelectValue placeholder="Filter by status" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="active">Active Campaigns</SelectItem>
-                                <SelectItem value="inactive">Inactive Campaigns</SelectItem>
-                                <SelectItem value="all">All Campaigns</SelectItem>
+                                <SelectItem value="all">All Statuses</SelectItem>
+                                <SelectItem value="Active">Active</SelectItem>
+                                <SelectItem value="Inactive">Inactive</SelectItem>
                             </SelectContent>
                         </Select>
+
+                        {/* Campaign Name Filter */}
+                        <Select
+                            value={filters.campaignName}
+                            onValueChange={(value) => handleFilterChange("campaignName", value)}
+                        >
+                            <SelectTrigger className="w-[180px]">
+                                <SelectValue placeholder="Filter by campaign" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="all-campaigns">All Campaigns</SelectItem>
+                                {uniqueCampaignNames.map(name => (
+                                    <SelectItem key={name} value={name}>{name}</SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+
+                        {/* Reward Type Filter */}
+                        <Select
+                            value={filters.rewardType}
+                            onValueChange={(value) => handleFilterChange("rewardType", value)}
+                        >
+                            <SelectTrigger className="w-[180px]">
+                                <SelectValue placeholder="Filter by reward type" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="all">All Reward Types</SelectItem>
+                                {uniqueRewardTypes.map(type => (
+                                    <SelectItem key={type} value={type}>{type}</SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+
+                        {/* Name Search */}
+                        <div className="relative w-[180px]">
+                            <Input
+                                placeholder="Search by name"
+                                value={filters.nameSearch}
+                                onChange={(e) => handleFilterChange("nameSearch", e.target.value)}
+                            />
+                        </div>
                     </div>
                 </div>
 
@@ -145,17 +203,17 @@ export default function CampaignPortal() {
                                     <TableHead className="text-gray-600 font-medium py-3">Reward Amount</TableHead>
                                     <TableHead className="text-gray-600 font-medium py-3">Coupon</TableHead>
                                     <TableHead className="text-gray-600 font-medium py-3">Issuing Method</TableHead>
+                                    <TableHead className="text-gray-600 font-medium py-3">Qr Id</TableHead>
                                     <TableHead className="text-right text-gray-600 font-medium py-3">Actions</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {referees?.filter(reward => reward.status === 'Active')?.map((reward) => (
+                                {filteredReferees?.map((reward) => (
                                     <TableRow key={reward.id} className="border-t border-gray-100">
                                         <TableCell className="py-3">
                                             <div className="flex items-center justify-center">
                                                 <Checkbox
-                                                    checked={reward.active}
-                                                    // checked={false}
+                                                    checked={reward?.campaignStatus}
                                                     className="h-5 w-5 rounded-full border-2 border-blue-500 data-[state=checked]:bg-blue-500 data-[state=checked]:text-white"
                                                 />
                                             </div>
@@ -168,10 +226,13 @@ export default function CampaignPortal() {
                                         </TableCell>
                                         <TableCell className="py-3">{reward?.reward?.amount}</TableCell>
                                         <TableCell className="py-3">
-                                            <span className="px-2 py-1 bg-blue-50 text-blue-700 rounded-md text-sm">{reward?.reward?.coupon == 'Coupon' ? 'Coupon': 'None'}</span>
+                                            <span className="px-2 py-1 bg-blue-50 text-blue-700 rounded-md text-sm">{reward?.reward?.coupon == 'Coupon' ? 'Coupon' : 'None'}</span>
                                         </TableCell>
                                         <TableCell className="py-3">
                                             <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded-md text-sm">{reward?.reward?.method}</span>
+                                        </TableCell>
+                                        <TableCell className="py-3">
+                                            <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded-md text-sm">{reward?.qrCodeId}</span>
                                         </TableCell>
                                         <TableCell className="py-3 text-right">
                                             <DropdownMenu>
@@ -194,10 +255,8 @@ export default function CampaignPortal() {
                             </TableBody>
                         </Table>
                     </div>
-
                 </div>
             </div>
         </div>
     )
 }
-
