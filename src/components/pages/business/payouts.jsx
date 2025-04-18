@@ -18,6 +18,7 @@ import Spinner from "@/components/spinner"
 import { toast } from "react-toastify"
 import useEditableContent from "@/hooks/useEditableContent"
 import CampaignItem from "./campaign/campaign-item"
+import refereeApi from "@/api/refereeApi"
 
 export default function CampaignPortal() {
     const [open, setOpen] = useState(false)
@@ -60,6 +61,12 @@ export default function CampaignPortal() {
         enabled: !!user?.userId
     })
 
+    const { data: referees = [], isLoadings, isErrors, errors } = useQuery({
+        queryKey: ['getRefereeWithCampaignDetails', user?.userId],
+        queryFn: () => refereeApi.getRefereeWithCampaignDetails(user?.userId),
+        enabled: !!user?.userId,
+    })
+
     const filteredCampaigns = campaigns.filter((campaign) => {
         // Filter by active status
         if (filter === "active" && !campaign.active) return false;
@@ -71,30 +78,32 @@ export default function CampaignPortal() {
         return true;
     });
 
-    const [rewards, setRewards] = useState([
-        {
-          id: 1,
-          active: true,
-          campaign: "Ministry Vineyard",
-          email: "john@example.com",
-          name: "Reee",
-          rewardType: "Standard",
-          rewardAmount: "$55.00",
-          coupon: "WELCOME20",
-          issuingMethod: "Issue Yourself",
-        },
-        {
-          id: 2,
-          active: true,
-          campaign: "2354t",
-          email: "jane@example.com",
-          name: "Person Referring",
-          rewardType: "Standard",
-          rewardAmount: "Lek22.00",
-          coupon: "SUMMER10",
-          issuingMethod: "Issue Yourself",
-        },
-      ])
+    // const [rewards, setRewards] = useState([
+    //     {
+    //         id: 1,
+    //         active: true,
+    //         campaign: "Ministry Vineyard",
+    //         email: "john@example.com",
+    //         name: "Reee",
+    //         rewardType: "Standard",
+    //         rewardAmount: "$55.00",
+    //         coupon: "WELCOME20",
+    //         issuingMethod: "Issue Yourself",
+    //     },
+    //     {
+    //         id: 2,
+    //         active: true,
+    //         campaign: "2354t",
+    //         email: "jane@example.com",
+    //         name: "Person Referring",
+    //         rewardType: "Standard",
+    //         rewardAmount: "Lek22.00",
+    //         coupon: "SUMMER10",
+    //         issuingMethod: "Issue Yourself",
+    //     },
+    // ])
+
+   
 
     return (
         <div>
@@ -140,7 +149,7 @@ export default function CampaignPortal() {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {rewards.map((reward) => (
+                                {referees?.filter(reward => reward.status === 'Active')?.map((reward) => (
                                     <TableRow key={reward.id} className="border-t border-gray-100">
                                         <TableCell className="py-3">
                                             <div className="flex items-center justify-center">
@@ -151,18 +160,18 @@ export default function CampaignPortal() {
                                                 />
                                             </div>
                                         </TableCell>
-                                        <TableCell className="py-3">{reward.campaign}</TableCell>
+                                        <TableCell className="py-3">{reward.campaignName}</TableCell>
                                         <TableCell className="py-3">{reward.email}</TableCell>
                                         <TableCell className="py-3">{reward.name}</TableCell>
                                         <TableCell className="py-3">
-                                            <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded-md text-sm">{reward.rewardType}</span>
+                                            <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded-md text-sm">{reward?.reward?.rewardType}</span>
                                         </TableCell>
-                                        <TableCell className="py-3">{reward.rewardAmount}</TableCell>
+                                        <TableCell className="py-3">{reward?.reward?.amount}</TableCell>
                                         <TableCell className="py-3">
-                                            <span className="px-2 py-1 bg-blue-50 text-blue-700 rounded-md text-sm">{reward.coupon}</span>
+                                            <span className="px-2 py-1 bg-blue-50 text-blue-700 rounded-md text-sm">{reward?.reward?.coupon == 'Coupon' ? 'Coupon': 'None'}</span>
                                         </TableCell>
                                         <TableCell className="py-3">
-                                            <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded-md text-sm">{reward.issuingMethod}</span>
+                                            <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded-md text-sm">{reward?.reward?.method}</span>
                                         </TableCell>
                                         <TableCell className="py-3 text-right">
                                             <DropdownMenu>
