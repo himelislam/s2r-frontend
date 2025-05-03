@@ -117,6 +117,34 @@ export default function CampaignPortal() {
     const uniqueCampaignNames = [...new Set(referees?.map(ref => ref.campaignName))].filter(Boolean);
     const uniqueRewardTypes = [...new Set(referees?.map(ref => ref?.reward?.rewardType))].filter(Boolean);
 
+
+    const handleSendReward = (reward) => {
+        const rewardType = reward?.reward?.rewardType;
+        const method = reward?.reward?.method;
+        const hasCode = !!reward?.reward?.code;
+    
+        if (rewardType === "Coupon" || rewardType === "GiftCard") {
+            if (method === "add-later") {
+                if (!hasCode) {
+                    // Show popup to enter the coupon or gift card code
+                    // Example: setShowCodePopup(true); and setSelectedReward(reward);
+                    console.log(hasCode, "hasCOde")
+                } else {
+                    // Call backend to send reward with existing code
+                    // Example: sendRewardToBackend(reward);
+                    console.log(hasCode, "dddd")
+                }
+            } else {
+                // For other methods, directly send the reward
+                // Example: sendRewardToBackend(reward);
+                console.log(hasCode, "hasCOde2")
+            }
+        } else {
+            toast.error("Unsupported reward type or method.");
+        }
+    };
+    
+
     return (
         <div>
             <div className="container mx-auto">
@@ -197,8 +225,9 @@ export default function CampaignPortal() {
                                 <TableRow className="bg-gray-50">
                                     <TableHead className="text-gray-600 font-medium py-3">Active</TableHead>
                                     <TableHead className="text-gray-600 font-medium py-3">Campaign</TableHead>
-                                    <TableHead className="text-gray-600 font-medium py-3">Email</TableHead>
-                                    <TableHead className="text-gray-600 font-medium py-3">Name</TableHead>
+                                    <TableHead className="text-gray-600 font-medium py-3">Referrer Name</TableHead>
+                                    <TableHead className="text-gray-600 font-medium py-3">Referrer Email</TableHead>
+                                    <TableHead className="text-gray-600 font-medium py-3">Referee Name</TableHead>
                                     <TableHead className="text-gray-600 font-medium py-3">Reward Type</TableHead>
                                     <TableHead className="text-gray-600 font-medium py-3">Reward Amount</TableHead>
                                     <TableHead className="text-gray-600 font-medium py-3">Coupon</TableHead>
@@ -219,17 +248,18 @@ export default function CampaignPortal() {
                                             </div>
                                         </TableCell>
                                         <TableCell className="py-3">{reward.campaignName}</TableCell>
-                                        <TableCell className="py-3">{reward.email}</TableCell>
+                                        <TableCell className="py-3">{reward.referrerName}</TableCell>
+                                        <TableCell className="py-3">{reward.referrerEmail}</TableCell>
                                         <TableCell className="py-3">{reward.name}</TableCell>
                                         <TableCell className="py-3">
                                             <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded-md text-sm">{reward?.reward?.rewardType}</span>
                                         </TableCell>
                                         <TableCell className="py-3">{reward?.reward?.amount}</TableCell>
                                         <TableCell className="py-3">
-                                            <span className="px-2 py-1 bg-blue-50 text-blue-700 rounded-md text-sm">{reward?.reward?.coupon == 'Coupon' ? 'Coupon' : 'None'}</span>
+                                            <span className="px-2 py-1 bg-blue-50 text-blue-700 rounded-md text-sm">{reward?.reward?.rewardType == 'COUPON' ? reward?.reward?.code : 'None'}</span>
                                         </TableCell>
                                         <TableCell className="py-3">
-                                            <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded-md text-sm">{reward?.reward?.method}</span>
+                                            <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded-md text-sm">{reward?.reward?.method ? reward?.reward?.method: 'Added'}</span>
                                         </TableCell>
                                         <TableCell className="py-3">
                                             <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded-md text-sm">{reward?.qrCodeId}</span>
@@ -243,10 +273,8 @@ export default function CampaignPortal() {
                                                     </Button>
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align="end" className="w-[200px]">
-                                                    <DropdownMenuItem>Preview</DropdownMenuItem>
-                                                    <DropdownMenuItem>Edit Email Notification</DropdownMenuItem>
-                                                    <DropdownMenuItem>Edit Reward Name</DropdownMenuItem>
-                                                    <DropdownMenuItem className="text-red-500">Deactivate</DropdownMenuItem>
+                                                    <DropdownMenuItem onClick={()=> handleSendReward()} >Send reward</DropdownMenuItem>
+                                                    <DropdownMenuItem className="text-red-500">Cancel Reward</DropdownMenuItem>
                                                 </DropdownMenuContent>
                                             </DropdownMenu>
                                         </TableCell>

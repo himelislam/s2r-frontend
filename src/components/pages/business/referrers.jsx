@@ -32,7 +32,7 @@ export default function BusinessReferees() {
   // const [filter, setFilter] = useState("all");
   const [campaignStatusFilter, setCampaignStatusFilter] = useState("all");
   const [campaignNameFilter, setCampaignNameFilter] = useState("all");
-  const [dateFilter, setDateFilter] = useState(null);
+  // const [dateFilter, setDateFilter] = useState(null);
   const queryClient = useQueryClient();
 
   const { data: referrers = [], isLoading, isError, error } = useQuery({
@@ -85,13 +85,13 @@ export default function BusinessReferees() {
       referrer.campaignName === campaignNameFilter;
       
       // Date filter (sooner than selected date)
-      const matchesDate = !dateFilter || 
-        (referrer.date && isAfter(parseISO(referrer.date), dateFilter));
+      // const matchesDate = !dateFilter || 
+      //   (referrer.date && isAfter(parseISO(referrer.date), dateFilter));
       
       return matchesName && 
-             matchesCampaignStatus && matchesCampaignName && matchesDate;
+             matchesCampaignStatus && matchesCampaignName;
     });
-  }, [referrers, nameSearch, campaignStatusFilter, campaignNameFilter, dateFilter]);
+  }, [referrers, nameSearch, campaignStatusFilter, campaignNameFilter]);
 
   return (
     <div>
@@ -116,7 +116,7 @@ export default function BusinessReferees() {
               <SelectContent>
                 <SelectItem value="true">Active Campaigns</SelectItem>
                 <SelectItem value="false">Inactive Campaigns</SelectItem>
-                <SelectItem value="all">All Campaign Statuses</SelectItem>
+                <SelectItem value="all">All Statuses</SelectItem>
               </SelectContent>
             </Select>
 
@@ -134,7 +134,7 @@ export default function BusinessReferees() {
             </Select>
 
             {/* Date Filter */}
-            <Popover>
+            {/* <Popover>
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
@@ -162,7 +162,7 @@ export default function BusinessReferees() {
                   </Button>
                 </div>
               </PopoverContent>
-            </Popover>
+            </Popover> */}
           </div>
         </div>
 
