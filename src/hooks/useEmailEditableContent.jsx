@@ -41,7 +41,7 @@ const useEmailEditableContent = () => {
       },
     },
     couponCode: {
-      content: 'WELCOME50',
+      content: '{{code}}',
       styles: {
         backgroundColor: '#ffeb3b',
         fontSize: '32px',

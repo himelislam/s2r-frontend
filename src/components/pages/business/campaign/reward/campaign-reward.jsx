@@ -382,6 +382,7 @@ import { useMutation } from "@tanstack/react-query";
 import { Loader } from "@/components/pages/loader";
 import campaignApi from "@/api/campaignApi";
 import { toast } from "react-toastify";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export default function RewardSystemForm() {
     const [rewardType, setRewardType] = useState(undefined); // COUPON, GIFTCARD, or CASH
@@ -389,10 +390,10 @@ export default function RewardSystemForm() {
     const [codes, setCodes] = useState([]); // Array of codes for GIFTCARD
     const [amount, setAmount] = useState(0); // Amount for GIFTCARD or CASH
     const [currency, setCurrency] = useState(""); // Currency for GIFTCARD or CASH
-    const [couponMethod, setCouponMethod] = useState(""); // Add now or add later for COUPON
-    const [giftCardMethod, setGiftCardMethod] = useState(""); // Bulk import or add later for GIFTCARD
+    const [giftCardMethod, setGiftCardMethod] = useState(""); // Bulk import or add later
     const [bulkImportMethod, setBulkImportMethod] = useState("add-now"); // Add now or upload CSV
     const [csvFile, setCsvFile] = useState(null); // Uploaded CSV file
+    const [addCouponLater, setAddCouponLater] = useState(false); // For coupon add later option
     const navigate = useNavigate();
     const { campaignId } = useParams();
     const [campaign, setCampaign] = useState(null);
@@ -400,11 +401,11 @@ export default function RewardSystemForm() {
     const handleSaveRewardSettings = () => {
         const rewardData = {
             rewardType,
-            code: rewardType === "COUPON" && couponMethod === "add-now" ? code : undefined,
+            code: rewardType === "COUPON" && !addCouponLater ? code : undefined,
             codes: rewardType === "GIFTCARD" && giftCardMethod === "bulk-import" ? codes : undefined,
             amount: rewardType !== "COUPON" ? amount : undefined,
             currency: rewardType !== "COUPON" ? currency : undefined,
-            method: rewardType === "COUPON" ? couponMethod : 
+            method: rewardType === "COUPON" ? (addCouponLater ? "add-later" : "added") : 
                    rewardType === "GIFTCARD" ? giftCardMethod : undefined,
         };
         console.log("Reward Data:", rewardData);
@@ -472,10 +473,6 @@ export default function RewardSystemForm() {
         reader.readAsText(file);
     };
 
-    const handleCouponMethodChange = (value) => {
-        setCouponMethod(value);
-    };
-
     const handleGiftCardMethodChange = (value) => {
         setGiftCardMethod(value);
     };
@@ -483,10 +480,8 @@ export default function RewardSystemForm() {
     useEffect(() => {
         if (rewardType === "GIFTCARD") {
             handleGiftCardMethodChange(giftCardMethod);
-        } else if (rewardType === "COUPON") {
-            handleCouponMethodChange(couponMethod);
         }
-    }, [rewardType, giftCardMethod, couponMethod]);
+    }, [rewardType, giftCardMethod]);
 
     const getCampaignbyIdMutation = useMutation({
         mutationFn: campaignApi.getCampaignById,
@@ -498,8 +493,8 @@ export default function RewardSystemForm() {
                 setCodes(data.reward.codes || []);
                 setAmount(data.reward.amount || 0);
                 setCurrency(data.reward.currency || "");
-                setCouponMethod(data.reward.method || "add-later");
                 setGiftCardMethod(data.reward.method || "add-later");
+                setAddCouponLater(data.reward.method === "add-later" && data.reward.rewardType === "COUPON");
             }
         },
         onError: (err) => {
@@ -599,29 +594,16 @@ export default function RewardSystemForm() {
 
                     {rewardType === "COUPON" && (
                         <div className="space-y-4 pt-2">
-                            <div className="grid gap-2">
-                                <Label className="text-base">Coupon Setup Method</Label>
-                                <RadioGroup
-                                    value={couponMethod}
-                                    onValueChange={handleCouponMethodChange}
-                                    className="grid gap-3"
-                                >
-                                    <div className="flex items-center space-x-2 rounded-md border p-3">
-                                        <RadioGroupItem value="add-now" id="coupon-add-now" />
-                                        <Label htmlFor="coupon-add-now" className="flex-1 cursor-pointer">
-                                            Add Coupon Code Now
-                                        </Label>
-                                    </div>
-                                    <div className="flex items-center space-x-2 rounded-md border p-3">
-                                        <RadioGroupItem value="add-later" id="coupon-add-later" />
-                                        <Label htmlFor="coupon-add-later" className="flex-1 cursor-pointer">
-                                            Add Coupon Code Later
-                                        </Label>
-                                    </div>
-                                </RadioGroup>
+                            <div className="flex items-center space-x-2">
+                                <Checkbox
+                                    id="add-coupon-later"
+                                    checked={addCouponLater}
+                                    onCheckedChange={(checked) => setAddCouponLater(checked)}
+                                />
+                                <Label htmlFor="add-coupon-later">Add coupon code later</Label>
                             </div>
 
-                            {couponMethod === "add-now" && (
+                            {!addCouponLater && (
                                 <div className="space-y-3">
                                     <Label htmlFor="coupon-code">Coupon Code</Label>
                                     <Input
@@ -636,7 +618,7 @@ export default function RewardSystemForm() {
                                 </div>
                             )}
 
-                            {couponMethod === "add-later" && (
+                            {addCouponLater && (
                                 <div className="space-y-3">
                                     <p className="text-sm text-muted-foreground">
                                         You've chosen to add coupon codes later. You can add them from the reward management dashboard
@@ -652,9 +634,10 @@ export default function RewardSystemForm() {
                             <div className="grid gap-2">
                                 <Label className="text-base">Gift Card Setup Method</Label>
                                 <RadioGroup
+                                    name="gift-card-method"
+                                    className="grid gap-3"
                                     value={giftCardMethod}
                                     onValueChange={handleGiftCardMethodChange}
-                                    className="grid gap-3"
                                 >
                                     <div className="flex items-center space-x-2 rounded-md border p-3">
                                         <RadioGroupItem value="bulk-import" id="bulk-import" />
@@ -676,9 +659,10 @@ export default function RewardSystemForm() {
                                     <div className="grid gap-2">
                                         <Label className="text-base">Bulk Import Method</Label>
                                         <RadioGroup
+                                            name="bulk-import-method"
+                                            className="grid gap-3"
                                             value={bulkImportMethod}
                                             onValueChange={handleBulkImportMethodChange}
-                                            className="grid gap-3"
                                         >
                                             <div className="flex items-center space-x-2 rounded-md border p-3">
                                                 <RadioGroupItem value="add-now" id="add-now" />
