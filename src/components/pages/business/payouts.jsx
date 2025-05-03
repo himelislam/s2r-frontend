@@ -122,7 +122,7 @@
 //         const rewardType = reward?.reward?.rewardType;
 //         const method = reward?.reward?.method;
 //         const hasCode = !!reward?.reward?.code;
-    
+
 //         if (rewardType === "Coupon" || rewardType === "GiftCard") {
 //             if (method === "add-later") {
 //                 if (!hasCode) {
@@ -143,7 +143,7 @@
 //             toast.error("Unsupported reward type or method.");
 //         }
 //     };
-    
+
 
 //     return (
 //         <div>
@@ -378,7 +378,7 @@ export default function CampaignPortal() {
         if (filters.status !== "all" && reward.status !== filters.status) return false;
 
         // Filter by campaign name
-        if (filters.campaignName && filters.campaignName !== "all-campaigns" && 
+        if (filters.campaignName && filters.campaignName !== "all-campaigns" &&
             !reward.campaignName?.toLowerCase().includes(filters.campaignName.toLowerCase())) {
             return false;
         }
@@ -413,10 +413,7 @@ export default function CampaignPortal() {
     const uniqueRewardTypes = [...new Set(referees?.map(ref => ref?.reward?.rewardType))].filter(Boolean);
 
     const sendRewardMutation = useMutation({
-        mutationFn: (data) => {
-            // Add your API call to send the reward here
-            // return refereeApi.sendReward(data);
-        },
+        mutationFn: refereeApi.sendRewardEmailToRefereer,
         onSuccess: () => {
             toast.success("Reward sent successfully");
             setCodeDialogOpen(false);
@@ -430,7 +427,7 @@ export default function CampaignPortal() {
 
     const handleSendReward = (reward) => {
         setCurrentReward(reward);
-        
+
         // Check reward type
         if (reward?.reward?.rewardType === 'COUPON' || reward?.reward?.rewardType === 'GIFTCARD') {
             // Check if method is 'add-later' and code is not present
@@ -439,15 +436,20 @@ export default function CampaignPortal() {
             } else {
                 // Code already exists or method is not 'add-later', send to backend
                 sendRewardMutation.mutate({
-                    rewardId: reward._id,
+                    businessId: user?.userId,
+                    campaignId: reward.campaignId,
+                    refereeId: reward._id,
+                    referrerName: reward.referrerName,
+                    referrerEmail: reward.referrerEmail,
                     code: reward?.reward?.code
                 });
             }
         } else {
             // For other reward types, just send to backend
-            sendRewardMutation.mutate({
-                rewardId: reward._id
-            });
+            // sendRewardMutation.mutate({
+            //     rewardId: reward._id
+            // });
+            alert("Nothing now")
         }
     };
 
@@ -456,10 +458,14 @@ export default function CampaignPortal() {
             toast.error("Please enter a valid code");
             return;
         }
-        
+
         // Send the reward with the entered code
         sendRewardMutation.mutate({
-            rewardId: currentReward._id,
+            businessId: user?.userId,
+            campaignId: currentReward.campaignId,
+            refereeId: currentReward._id,
+            referrerName: currentReward.referrerName,
+            referrerEmail: currentReward.referrerEmail,
             code: couponCode
         });
     };
@@ -578,7 +584,7 @@ export default function CampaignPortal() {
                                             <span className="px-2 py-1 bg-blue-50 text-blue-700 rounded-md text-sm">{reward?.reward?.rewardType == 'COUPON' || reward?.reward?.rewardType === 'GiftCard' ? reward?.reward?.code || 'Not added' : 'None'}</span>
                                         </TableCell>
                                         <TableCell className="py-3">
-                                            <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded-md text-sm">{reward?.reward?.method ? reward?.reward?.method: 'Added'}</span>
+                                            <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded-md text-sm">{reward?.reward?.method ? reward?.reward?.method : 'Added'}</span>
                                         </TableCell>
                                         <TableCell className="py-3">
                                             <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded-md text-sm">{reward?.qrCodeId}</span>
