@@ -64,13 +64,25 @@ const getRefereeWithCampaignDetails = async (businessId) => {
     return response.data;
 }
 
+const sendRewardEmailToRefereer = async(data) => {
+    const user = JSON.parse(localStorage.getItem('user'))
+    const response = await axios.post (API_URL + '/sendRewardEmailToRefereer', data, {
+        headers: {
+            Authorization: `Bearer ${user?.token}`
+        }
+    } )
+
+    return response.data;
+}
+
 const refereeApi = {
     createReferee,
     getRefeeeList,
     getRefereeBusinessById,
     getRefereeByReferrerId,
     updateRefereeStatus,
-    getRefereeWithCampaignDetails
+    getRefereeWithCampaignDetails,
+    sendRewardEmailToRefereer
 };
 
 export default refereeApi;

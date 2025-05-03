@@ -85,7 +85,8 @@ export default function EmailBuilder() {
   const renderContent = (content) => {
     return content
       .replace(/{{referrerName}}/g, 'Referrer')
-      .replace(/{{businessName}}/g, 'Business');
+      .replace(/{{businessName}}/g, 'Business')
+      .replace(/{{code}}/g, campaign?.reward?.method == 'added' ? campaign?.reward?.code : 'Code' );
   };
 
   if (getCampaignbyIdMutation.isPending) {
