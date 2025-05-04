@@ -17,7 +17,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Calendar } from "@/components/ui/calendar"
 import { cn } from "@/lib/utils"
 import { format } from "date-fns"
-import EditableText from "./builder/editable-text"
+import EditableText from "./editable-text"
 import useEditableContent from "@/hooks/useEditableContent"
 import campaignApi from "@/api/campaignApi"
 import { useMutation } from "@tanstack/react-query"
@@ -26,7 +26,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
 import { Slider } from "@/components/ui/slider"
-import { Loader } from "../../loader"
+import { Loader } from "../../../loader"
 
 const steps = [
   "Campaign",
