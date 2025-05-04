@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Monitor, Tablet, Smartphone, PenSquare, Wrench, Share2, ChevronLeft, ChevronRight, Plus, Trash2, Mail, QrCode, CalendarIcon } from 'lucide-react'
+import { Monitor, Tablet, Smartphone, PenSquare, Wrench, Share2, ChevronLeft, ChevronRight, Plus, Trash2, Mail, QrCode, CalendarIcon, Save, ScanEye } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -269,17 +269,13 @@ export default function CampaignBuilder() {
               </TooltipProvider>
             </div>
             <div className="flex items-center space-x-2">
-              <Button variant="outline" className="gap-2">
-                <PenSquare className="h-4 w-4" />
-                Design
+              <Button variant="outline" onClick={handleSave} className="gap-2">
+                <Save className="h-4 w-4" />
+                Save
               </Button>
               <Button variant="outline" className="gap-2">
-                <Wrench className="h-4 w-4" />
-                Build
-              </Button>
-              <Button variant="outline" className="gap-2">
-                <Share2 className="h-4 w-4" />
-                Share
+                <ScanEye className="h-4 w-4" />
+                Preview
               </Button>
             </div>
           </div>
@@ -374,12 +370,12 @@ export default function CampaignBuilder() {
                   </div>
                 </div>
 
-                <div className="flex justify-between">
+                {/* <div className="flex justify-between">
                   <Button variant="outline" onClick={handleSave}>
                     Save
                   </Button>
                   <Button variant="outline">Preview</Button>
-                </div>
+                </div> */}
               </div>
             </div>
 
