@@ -44,6 +44,7 @@
     "react-dom": "^18.3.1",
     "react-helmet": "^6.1.0",
     "react-hook-form": "^7.54.2",
+    "react-resizable-panels": "^3.0.1",
     "react-router-dom": "^6.28.0",
     "react-share-social": "^0.1.60",
     "react-spinners": "^0.15.0",
