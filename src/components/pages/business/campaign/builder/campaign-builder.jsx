@@ -1015,57 +1015,3692 @@
 //   )
 // }
 
-import React, { useEffect, useState } from "react"
-import { Monitor, Tablet, Smartphone, ChevronLeft, ChevronRight, Save, ScanEye, Trash2 } from 'lucide-react'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent } from "@/components/ui/card"
+// import React, { useEffect, useState } from "react"
+// import { Monitor, Tablet, Smartphone, ChevronLeft, ChevronRight, Save, ScanEye, Trash2 } from 'lucide-react'
+// import { Button } from "@/components/ui/button"
+// import { Input } from "@/components/ui/input"
+// import { Label } from "@/components/ui/label"
+// import { Card, CardContent } from "@/components/ui/card"
+// import {
+//   Tooltip,
+//   TooltipContent,
+//   TooltipProvider,
+//   TooltipTrigger,
+// } from "@/components/ui/tooltip"
+// import { useNavigate, useParams } from "react-router-dom"
+// import EditableText from "./editable-text"
+// import useEditableContent from "@/hooks/useEditableContent"
+// import campaignApi from "@/api/campaignApi"
+// import { useMutation } from "@tanstack/react-query"
+// import { toast } from "react-toastify"
+// import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+// import { Switch } from "@/components/ui/switch"
+// import { Slider } from "@/components/ui/slider"
+// import { Loader } from "../../../loader"
+// import {
+//   ResizableHandle,
+//   ResizablePanel,
+//   ResizablePanelGroup,
+// } from "@/components/ui/resizable"
+// import { Separator } from "@/components/ui/separator"
+// import { Badge } from "@/components/ui/badge"
+// import { X } from "lucide-react"
+
+// const builderSteps = [
+//   "Person Referring",
+//   "Person Being Referred"
+// ]
+
+// export default function CampaignBuilder() {
+//   const [currentBuilderStep, setCurrentBuilderStep] = useState(0)
+//   const [deviceView, setDeviceView] = useState("desktop")
+//   const navigate = useNavigate();
+//   const { campaignId } = useParams();
+//   const [campaign, setCampaign] = useState(null);
+//   const referrerName = 'Referrer'
+//   const businessName = "Business"
+//   const [selectedElement, setSelectedElement] = useState(null);
+//   const [sidebarOpen, setSidebarOpen] = useState(false);
+//   const {
+//     content,
+//     updateContent,
+//     updateStyles,
+//     setContent,
+//     addFormField,
+//     updateFormField,
+//     deleteFormField
+//   } = useEditableContent();
+
+//   const getCampaignbyIdMutation = useMutation({
+//     mutationFn: campaignApi.getCampaignById,
+//     onSuccess: (data) => {
+//       const parsedData = JSON.parse(data.refereeJSON)
+//       setContent(parsedData);
+//       setCampaign(data)
+//     },
+//     onError: (err) => {
+//       console.log(err, "get Err");
+//     }
+//   })
+
+//   useEffect(() => {
+//     getCampaignbyIdMutation.mutate({
+//       campaignId: campaignId
+//     })
+//   }, [])
+
+//   const updateCampaignStateMutation = useMutation({
+//     mutationFn: campaignApi.updateCampaignState,
+//     onSuccess: (data) => {
+//       toast.success(data.message)
+//     },
+//     onError: (err) => {
+//       console.log(err, "err");
+//     }
+//   })
+
+//   const handleSave = () => {
+//     updateCampaignStateMutation.mutate({
+//       state: JSON.stringify(content),
+//       campaignId: campaignId
+//     })
+//   };
+
+//   const renderContent = (content) => {
+//     return content
+//       .replace(/{{referrerName}}/g, referrerName)
+//       .replace(/{{businessName}}/g, businessName);
+//   };
+
+//   const [uploadedImage, setUploadedImage] = useState(null);
+
+//   const uploadLogoMutation = useMutation({
+//     mutationFn: campaignApi.uploadImage,
+//     onSuccess: (data) => {
+//       setUploadedImage(data.url);
+//       updateContent('logo', data.url);
+//       toast.success('Image uploaded successfully')
+//     },
+//     onError: (err) => {
+//       toast.error('Unable to upload image.')
+//     }
+//   })
+
+//   const handleImageUpload = (e) => {
+//     const file = e.target.files[0];
+//     if (file) {
+//       const formData = new FormData();
+//       formData.append('image', file);
+//       uploadLogoMutation.mutate(formData);
+//     }
+//   };
+
+//   const getDeviceWidth = () => {
+//     switch (deviceView) {
+//       case "desktop": return "100%"
+//       case "tablet": return "768px"
+//       case "mobile": return "375px"
+//       default: return "100%"
+//     }
+//   }
+
+//   const handleElementClick = (elementName) => {
+//     setSelectedElement(elementName);
+//     setSidebarOpen(true);
+//   };
+
+//   const closeSidebar = () => {
+//     setSidebarOpen(false);
+//     setSelectedElement(null);
+//   };
+
+//   if (getCampaignbyIdMutation.isPending) {
+//     return <Loader />
+//   }
+
+//   return (
+//     <div className="flex h-screen bg-muted/40">
+//       {/* Main Content */}
+//       <div className="flex-1 flex flex-col overflow-hidden">
+//         {/* Header */}
+//         <div className="bg-background border-b p-4">
+//           <div className="flex items-center justify-between">
+//             <div>
+//               <h1 className="text-xl font-bold">{campaign?.campaignName}</h1>
+//               <div className="flex items-center space-x-2 mt-1">
+//                 {builderSteps.map((step, index) => (
+//                   <React.Fragment key={step}>
+//                     <Badge 
+//                       variant={currentBuilderStep === index ? "default" : "secondary"}
+//                       className="cursor-pointer"
+//                       onClick={() => setCurrentBuilderStep(index)}
+//                     >
+//                       {step}
+//                     </Badge>
+//                     {index < builderSteps.length - 1 && (
+//                       <ChevronRight className="h-4 w-4 text-muted-foreground" />
+//                     )}
+//                   </React.Fragment>
+//                 ))}
+//               </div>
+//             </div>
+
+//             <div className="flex items-center space-x-2">
+//               <Button variant="outline" onClick={handleSave} className="gap-2">
+//                 <Save className="h-4 w-4" />
+//                 Save
+//               </Button>
+//               <Button variant="outline" className="gap-2">
+//                 <ScanEye className="h-4 w-4" />
+//                 Preview
+//               </Button>
+//             </div>
+//           </div>
+//         </div>
+
+//         {/* Main Content Area */}
+//         <ResizablePanelGroup direction="horizontal" className="flex-1">
+//           {/* Editor Panel - Always visible */}
+//           <ResizablePanel defaultSize={sidebarOpen ? 70 : 100} minSize={50}>
+//             <div className="h-full flex flex-col">
+//               {/* Toolbar */}
+//               <div className="bg-background border-b p-2 flex items-center justify-between">
+//                 <div className="flex items-center space-x-2">
+//                   <span className="text-sm text-muted-foreground">
+//                     {builderSteps[currentBuilderStep]}
+//                   </span>
+//                 </div>
+
+//                 <div className="flex items-center space-x-1">
+//                   <TooltipProvider>
+//                     <Tooltip>
+//                       <TooltipTrigger asChild>
+//                         <Button
+//                           variant={deviceView === "desktop" ? "default" : "outline"}
+//                           size="icon"
+//                           onClick={() => setDeviceView("desktop")}
+//                         >
+//                           <Monitor className="h-4 w-4" />
+//                         </Button>
+//                       </TooltipTrigger>
+//                       <TooltipContent>Desktop View</TooltipContent>
+//                     </Tooltip>
+//                   </TooltipProvider>
+//                   <TooltipProvider>
+//                     <Tooltip>
+//                       <TooltipTrigger asChild>
+//                         <Button
+//                           variant={deviceView === "tablet" ? "default" : "outline"}
+//                           size="icon"
+//                           onClick={() => setDeviceView("tablet")}
+//                         >
+//                           <Tablet className="h-4 w-4" />
+//                         </Button>
+//                       </TooltipTrigger>
+//                       <TooltipContent>Tablet View</TooltipContent>
+//                     </Tooltip>
+//                   </TooltipProvider>
+//                   <TooltipProvider>
+//                     <Tooltip>
+//                       <TooltipTrigger asChild>
+//                         <Button
+//                           variant={deviceView === "mobile" ? "default" : "outline"}
+//                           size="icon"
+//                           onClick={() => setDeviceView("mobile")}
+//                         >
+//                           <Smartphone className="h-4 w-4" />
+//                         </Button>
+//                       </TooltipTrigger>
+//                       <TooltipContent>Mobile View</TooltipContent>
+//                     </Tooltip>
+//                   </TooltipProvider>
+//                 </div>
+//               </div>
+
+//               {/* Preview Area */}
+//               <div className="flex-1 overflow-auto p-4 bg-muted/20">
+//                 <div 
+//                   className="mx-auto bg-background rounded-lg shadow-sm border"
+//                   style={{
+//                     width: getDeviceWidth(),
+//                     maxWidth: "100%",
+//                     transition: "width 0.2s ease",
+//                     margin: "0 auto"
+//                   }}
+//                 >
+//                   <div className="p-6">
+//                     <div className="items-center mb-4">
+//                       {/* Editable Image */}
+//                       <img
+//                         src={content.logo.content}
+//                         style={content.logo.styles}
+//                         alt=""
+//                         className="w-40 h-40 mx-auto cursor-pointer hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out"
+//                         onClick={() => handleElementClick('logo')}
+//                       />
+
+//                       {/* Editable Header */}
+//                       <EditableText
+//                         value={content.header.content}
+//                         onChange={(value) => updateContent('header', value)}
+//                         className="text-center text-xl hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out cursor-pointer"
+//                         styles={content.header.styles}
+//                         elementName="header"
+//                         setSelectedElement={handleElementClick}
+//                         renderContent={renderContent}
+//                       />
+//                     </div>
+
+//                     {/* Editable Description 1 */}
+//                     <EditableText
+//                       value={content.description1.content}
+//                       onChange={(value) => updateContent('description1', value)}
+//                       className="text-md text-gray-800 dark:text-gray-200 mb-4 text-center hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out cursor-pointer"
+//                       styles={content.description1.styles}
+//                       elementName="description1"
+//                       setSelectedElement={handleElementClick}
+//                       renderContent={renderContent}
+//                     />
+
+//                     {/* Editable Description 2 */}
+//                     <EditableText
+//                       value={content.description2.content}
+//                       onChange={(value) => updateContent('description2', value)}
+//                       className="text-md text-gray-800 dark:text-gray-200 mb-4 text-center hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out cursor-pointer"
+//                       styles={content.description2.styles}
+//                       elementName="description2"
+//                       setSelectedElement={handleElementClick}
+//                       renderContent={renderContent}
+//                     />
+
+//                     <Card 
+//                       className="mx-auto cursor-pointer hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out"
+//                       onClick={() => handleElementClick('form')}
+//                     >
+//                       <CardContent>
+//                         <form disabled>
+//                           <div className="grid gap-4 mt-4">
+//                             {content?.form?.fields?.map((field) => (
+//                               <div key={field.id} className="grid gap-2">
+//                                 <Label htmlFor={field.id} style={field.styles}>
+//                                   {field.label}
+//                                 </Label>
+//                                 <Input
+//                                   id={field.id}
+//                                   type={field.type}
+//                                   placeholder={field.placeholder}
+//                                   required={field.required}
+//                                   style={field.styles}
+//                                   disabled
+//                                 />
+//                               </div>
+//                             ))}
+//                             <Button type="submit" className="w-full" disabled>
+//                               Submit
+//                             </Button>
+//                           </div>
+//                         </form>
+//                       </CardContent>
+//                     </Card>
+//                   </div>
+//                 </div>
+//               </div>
+//             </div>
+//           </ResizablePanel>
+
+//           {/* Sidebar Panel - Only shown when an element is selected */}
+//           {sidebarOpen && (
+//             <>
+//               <ResizableHandle withHandle />
+//               <ResizablePanel defaultSize={30} minSize={25}>
+//                 <div className="h-full overflow-auto p-4 bg-background border-l relative">
+//                   <Button 
+//                     variant="ghost" 
+//                     size="icon" 
+//                     className="absolute top-2 right-2 h-8 w-8"
+//                     onClick={closeSidebar}
+//                   >
+//                     <X className="h-4 w-4" />
+//                   </Button>
+
+//                   <div className="space-y-6">
+//                     <h2 className="text-lg font-semibold">
+//                       {selectedElement?.charAt(0).toUpperCase() + selectedElement?.slice(1)} Settings
+//                     </h2>
+
+//                     <Separator />
+
+//                     {selectedElement === 'header' && (
+//                       <div className="space-y-4">
+//                         <div className="space-y-2">
+//                           <Label>Text Content</Label>
+//                           <Input
+//                             value={content.header.content}
+//                             onChange={(e) => updateContent('header', e.target.value)}
+//                           />
+//                         </div>
+
+//                         <Accordion type="single" collapsible>
+//                           <AccordionItem value="styles">
+//                             <AccordionTrigger>Styles</AccordionTrigger>
+//                             <AccordionContent className="space-y-4">
+//                               <div className="space-y-2">
+//                                 <Label>Text Color</Label>
+//                                 <Input
+//                                   type="color"
+//                                   value={content.header.styles.color}
+//                                   onChange={(e) =>
+//                                     updateStyles('header', {
+//                                       ...content.header.styles,
+//                                       color: e.target.value,
+//                                     })
+//                                   }
+//                                 />
+//                               </div>
+
+//                               <div className="space-y-2">
+//                                 <Label>Font Size: {content.header.styles.fontSize}</Label>
+//                                 <Slider
+//                                   min={12}
+//                                   max={48}
+//                                   step={1}
+//                                   value={[parseInt(content.header.styles.fontSize)]}
+//                                   onValueChange={(value) =>
+//                                     updateStyles('header', {
+//                                       ...content.header.styles,
+//                                       fontSize: `${value[0]}px`,
+//                                     })
+//                                   }
+//                                 />
+//                               </div>
+//                             </AccordionContent>
+//                           </AccordionItem>
+//                         </Accordion>
+//                       </div>
+//                     )}
+
+//                     {selectedElement === 'description1' && (
+//                       <div className="space-y-4">
+//                         <div className="space-y-2">
+//                           <Label>Text Content</Label>
+//                           <Input
+//                             value={content.description1.content}
+//                             onChange={(e) => updateContent('description1', e.target.value)}
+//                           />
+//                         </div>
+
+//                         <Accordion type="single" collapsible>
+//                           <AccordionItem value="styles">
+//                             <AccordionTrigger>Styles</AccordionTrigger>
+//                             <AccordionContent className="space-y-4">
+//                               <div className="space-y-2">
+//                                 <Label>Text Color</Label>
+//                                 <Input
+//                                   type="color"
+//                                   value={content.description1.styles.color}
+//                                   onChange={(e) =>
+//                                     updateStyles('description1', {
+//                                       ...content.description1.styles,
+//                                       color: e.target.value,
+//                                     })
+//                                   }
+//                                 />
+//                               </div>
+
+//                               <div className="space-y-2">
+//                                 <Label>Font Size: {content.description1.styles.fontSize}</Label>
+//                                 <Slider
+//                                   min={12}
+//                                   max={48}
+//                                   step={1}
+//                                   value={[parseInt(content.description1.styles.fontSize)]}
+//                                   onValueChange={(value) =>
+//                                     updateStyles('description1', {
+//                                       ...content.description1.styles,
+//                                       fontSize: `${value[0]}px`,
+//                                     })
+//                                   }
+//                                 />
+//                               </div>
+//                             </AccordionContent>
+//                           </AccordionItem>
+//                         </Accordion>
+//                       </div>
+//                     )}
+
+//                     {selectedElement === 'description2' && (
+//                       <div className="space-y-4">
+//                         <div className="space-y-2">
+//                           <Label>Text Content</Label>
+//                           <Input
+//                             value={content.description2.content}
+//                             onChange={(e) => updateContent('description2', e.target.value)}
+//                           />
+//                         </div>
+
+//                         <Accordion type="single" collapsible>
+//                           <AccordionItem value="styles">
+//                             <AccordionTrigger>Styles</AccordionTrigger>
+//                             <AccordionContent className="space-y-4">
+//                               <div className="space-y-2">
+//                                 <Label>Text Color</Label>
+//                                 <Input
+//                                   type="color"
+//                                   value={content.description2.styles.color}
+//                                   onChange={(e) =>
+//                                     updateStyles('description2', {
+//                                       ...content.description2.styles,
+//                                       color: e.target.value,
+//                                     })
+//                                   }
+//                                 />
+//                               </div>
+
+//                               <div className="space-y-2">
+//                                 <Label>Font Size: {content.description2.styles.fontSize}</Label>
+//                                 <Slider
+//                                   min={12}
+//                                   max={48}
+//                                   step={1}
+//                                   value={[parseInt(content.description2.styles.fontSize)]}
+//                                   onValueChange={(value) =>
+//                                     updateStyles('description2', {
+//                                       ...content.description2.styles,
+//                                       fontSize: `${value[0]}px`,
+//                                     })
+//                                   }
+//                                 />
+//                               </div>
+//                             </AccordionContent>
+//                           </AccordionItem>
+//                         </Accordion>
+//                       </div>
+//                     )}
+
+//                     {selectedElement === 'logo' && (
+//                       <div className="space-y-4">
+//                         <div className="space-y-2">
+//                           <Label>Upload Logo</Label>
+//                           <Input
+//                             type="file"
+//                             accept="image/*"
+//                             onChange={handleImageUpload}
+//                             className="cursor-pointer"
+//                           />
+//                           {uploadedImage && (
+//                             <div className="mt-2">
+//                               <img
+//                                 src={uploadedImage}
+//                                 alt="Uploaded Logo"
+//                                 className="w-32 h-32 object-contain border rounded"
+//                               />
+//                             </div>
+//                           )}
+//                         </div>
+
+//                         <Accordion type="single" collapsible>
+//                           <AccordionItem value="styles">
+//                             <AccordionTrigger>Styles</AccordionTrigger>
+//                             <AccordionContent className="space-y-4">
+//                               <div className="space-y-2">
+//                                 <Label>Width: {content.logo.styles.width}</Label>
+//                                 <Slider
+//                                   min={50}
+//                                   max={300}
+//                                   step={5}
+//                                   value={[parseInt(content.logo.styles.width)]}
+//                                   onValueChange={(value) =>
+//                                     updateStyles('logo', {
+//                                       ...content.logo.styles,
+//                                       width: `${value[0]}px`,
+//                                     })
+//                                   }
+//                                 />
+//                               </div>
+
+//                               <div className="space-y-2">
+//                                 <Label>Height: {content.logo.styles.height}</Label>
+//                                 <Slider
+//                                   min={50}
+//                                   max={300}
+//                                   step={5}
+//                                   value={[parseInt(content.logo.styles.height)]}
+//                                   onValueChange={(value) =>
+//                                     updateStyles('logo', {
+//                                       ...content.logo.styles,
+//                                       height: `${value[0]}px`,
+//                                     })
+//                                   }
+//                                 />
+//                               </div>
+//                             </AccordionContent>
+//                           </AccordionItem>
+//                         </Accordion>
+//                       </div>
+//                     )}
+
+//                     {selectedElement === 'form' && (
+//                       <div className="space-y-4">
+//                         <div className="grid grid-cols-2 gap-2">
+//                           <Button
+//                             variant="outline"
+//                             size="sm"
+//                             onClick={() => addFormField('phone')}
+//                             disabled={content.form.fields.some(f => f.id === 'phone')}
+//                           >
+//                             Add Phone
+//                           </Button>
+//                           <Button
+//                             variant="outline"
+//                             size="sm"
+//                             onClick={() => addFormField('date')}
+//                             disabled={content.form.fields.some(f => f.id === 'date')}
+//                           >
+//                             Add Date
+//                           </Button>
+//                         </div>
+
+//                         <div className="space-y-4">
+//                           {content.form.fields.map((field) => (
+//                             <Card key={field.id} className="p-4">
+//                               <div className="flex justify-between items-center mb-3">
+//                                 <h4 className="font-medium">{field.label || 'Field'}</h4>
+//                                 {!['name', 'email'].includes(field.id) && (
+//                                   <Button
+//                                     variant="ghost"
+//                                     size="sm"
+//                                     onClick={() => deleteFormField(field.id)}
+//                                   >
+//                                     <Trash2 className="h-4 w-4 text-destructive" />
+//                                   </Button>
+//                                 )}
+//                               </div>
+
+//                               <div className="space-y-3">
+//                                 <div className="space-y-2">
+//                                   <Label>Label</Label>
+//                                   <Input
+//                                     value={field.label}
+//                                     onChange={(e) =>
+//                                       updateFormField(field.id, {
+//                                         ...field,
+//                                         label: e.target.value,
+//                                       })
+//                                     }
+//                                   />
+//                                 </div>
+
+//                                 <div className="space-y-2">
+//                                   <Label>Placeholder</Label>
+//                                   <Input
+//                                     value={field.placeholder}
+//                                     onChange={(e) =>
+//                                       updateFormField(field.id, {
+//                                         ...field,
+//                                         placeholder: e.target.value,
+//                                       })
+//                                     }
+//                                   />
+//                                 </div>
+
+//                                 <div className="flex items-center space-x-2">
+//                                   <Switch
+//                                     id={`required-${field.id}`}
+//                                     checked={field.required}
+//                                     onCheckedChange={(checked) =>
+//                                       updateFormField(field.id, {
+//                                         ...field,
+//                                         required: checked,
+//                                       })
+//                                     }
+//                                   />
+//                                   <Label htmlFor={`required-${field.id}`}>Required</Label>
+//                                 </div>
+//                               </div>
+//                             </Card>
+//                           ))}
+//                         </div>
+//                       </div>
+//                     )}
+//                   </div>
+//                 </div>
+//               </ResizablePanel>
+//             </>
+//           )}
+//         </ResizablePanelGroup>
+
+//         {/* Footer */}
+//         <div className="bg-background border-t p-4 flex justify-between">
+//           <Button 
+//             variant="outline" 
+//             onClick={() => navigate('/b/dashboard/campaign-portal')}
+//           >
+//             Back
+//           </Button>
+//           <div className="flex space-x-2">
+//             <Button 
+//               variant="outline"
+//               disabled={currentBuilderStep === 0}
+//               onClick={() => setCurrentBuilderStep(0)}
+//             >
+//               Previous Step
+//             </Button>
+//             <Button 
+//               onClick={() => {
+//                 if (currentBuilderStep < builderSteps.length - 1) {
+//                   setCurrentBuilderStep(currentBuilderStep + 1)
+//                 } else {
+//                   navigate(`/b/dashboard/campaign-portal/reward/${campaignId}`)
+//                 }
+//               }}
+//               className="bg-amber-500 hover:bg-amber-600"
+//             >
+//               {currentBuilderStep < builderSteps.length - 1 ? 'Next Step' : 'Next: Reward Settings'}
+//             </Button>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   )
+// }
+
+
+// import React, { useEffect, useState } from "react";
+// import { Monitor, Tablet, Smartphone, ChevronLeft, ChevronRight, Save, ScanEye, Trash2 } from 'lucide-react';
+// import { Button } from "@/components/ui/button";
+// import { Input } from "@/components/ui/input";
+// import { Label } from "@/components/ui/label";
+// import { Card, CardContent } from "@/components/ui/card";
+// import {
+//   Tooltip,
+//   TooltipContent,
+//   TooltipProvider,
+//   TooltipTrigger,
+// } from "@/components/ui/tooltip";
+// import { useNavigate, useParams } from "react-router-dom";
+// import EditableText from "./editable-text";
+// import useEditableContent from "@/hooks/useEditableContent";
+// import campaignApi from "@/api/campaignApi";
+// import { useMutation } from "@tanstack/react-query";
+// import { toast } from "react-toastify";
+// import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+// import { Switch } from "@/components/ui/switch";
+// import { Slider } from "@/components/ui/slider";
+// import { Loader } from "../../../loader";
+// import {
+//   ResizableHandle,
+//   ResizablePanel,
+//   ResizablePanelGroup,
+// } from "@/components/ui/resizable";
+// import { Separator } from "@/components/ui/separator";
+// import { Badge } from "@/components/ui/badge";
+// import { X } from "lucide-react";
+
+// const builderSteps = [
+//   "Campaign Page",
+//   "Thank You Page"
+// ];
+
+// export default function CampaignBuilder() {
+//   const [deviceView, setDeviceView] = useState("desktop");
+//   const navigate = useNavigate();
+//   const { campaignId } = useParams();
+//   const [campaign, setCampaign] = useState(null);
+//   const referrerName = 'Referrer';
+//   const businessName = "Business";
+//   const [selectedElement, setSelectedElement] = useState(null);
+//   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+//   const {
+//     content,
+//     currentStep,
+//     setCurrentStep,
+//     updateContent,
+//     updateStyles,
+//     setContent,
+//     addFormField,
+//     updateFormField,
+//     deleteFormField
+//   } = useEditableContent();
+
+//   const getCampaignbyIdMutation = useMutation({
+//     mutationFn: campaignApi.getCampaignById,
+//     onSuccess: (data) => {
+//       const parsedData = JSON.parse(data.refereeJSON);
+//       setContent(parsedData);
+//       setCampaign(data);
+//     },
+//     onError: (err) => {
+//       console.log(err, "get Err");
+//     }
+//   });
+
+//   useEffect(() => {
+//     getCampaignbyIdMutation.mutate({
+//       campaignId: campaignId
+//     });
+//   }, []);
+
+//   const updateCampaignStateMutation = useMutation({
+//     mutationFn: campaignApi.updateCampaignState,
+//     onSuccess: (data) => {
+//       toast.success(data.message);
+//     },
+//     onError: (err) => {
+//       console.log(err, "err");
+//     }
+//   });
+
+//   const handleSave = () => {
+//     updateCampaignStateMutation.mutate({
+//       state: JSON.stringify(content),
+//       campaignId: campaignId
+//     });
+//   };
+
+//   const renderContent = (content) => {
+//     return content
+//       .replace(/{{referrerName}}/g, referrerName)
+//       .replace(/{{businessName}}/g, businessName);
+//   };
+
+//   const [uploadedImage, setUploadedImage] = useState(null);
+
+//   const uploadLogoMutation = useMutation({
+//     mutationFn: campaignApi.uploadImage,
+//     onSuccess: (data) => {
+//       setUploadedImage(data.url);
+//       updateContent('logo', data.url);
+//       toast.success('Image uploaded successfully');
+//     },
+//     onError: (err) => {
+//       toast.error('Unable to upload image.');
+//     }
+//   });
+
+//   const handleImageUpload = (e) => {
+//     const file = e.target.files[0];
+//     if (file) {
+//       const formData = new FormData();
+//       formData.append('image', file);
+//       uploadLogoMutation.mutate(formData);
+//     }
+//   };
+
+//   const getDeviceWidth = () => {
+//     switch (deviceView) {
+//       case "desktop": return "100%";
+//       case "tablet": return "768px";
+//       case "mobile": return "375px";
+//       default: return "100%";
+//     }
+//   };
+
+//   const handleElementClick = (elementName) => {
+//     setSelectedElement(elementName);
+//     setSidebarOpen(true);
+//   };
+
+//   const closeSidebar = () => {
+//     setSidebarOpen(false);
+//     setSelectedElement(null);
+//   };
+
+//   if (getCampaignbyIdMutation.isPending) {
+//     return <Loader />;
+//   }
+
+//   const renderMainContent = () => (
+//     <div className="p-6">
+//       <div className="items-center mb-4">
+//         <img
+//           src={content.logo.content}
+//           style={content.logo.styles[deviceView]}
+//           alt=""
+//           className="mx-auto cursor-pointer hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out"
+//           onClick={() => handleElementClick('logo')}
+//         />
+
+//         <EditableText
+//           value={content.header.content}
+//           onChange={(value) => updateContent('header', value)}
+//           className="text-center hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out cursor-pointer"
+//           styles={content.header.styles}
+//           elementName="header"
+//           setSelectedElement={handleElementClick}
+//           renderContent={renderContent}
+//           deviceView={deviceView}
+//         />
+//       </div>
+
+//       <EditableText
+//         value={content.description1.content}
+//         onChange={(value) => updateContent('description1', value)}
+//         className="text-gray-800 dark:text-gray-200 mb-4 text-center hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out cursor-pointer"
+//         styles={content.description1.styles}
+//         elementName="description1"
+//         setSelectedElement={handleElementClick}
+//         renderContent={renderContent}
+//         deviceView={deviceView}
+//       />
+
+//       <EditableText
+//         value={content.description2.content}
+//         onChange={(value) => updateContent('description2', value)}
+//         className="text-gray-800 dark:text-gray-200 mb-4 text-center hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out cursor-pointer"
+//         styles={content.description2.styles}
+//         elementName="description2"
+//         setSelectedElement={handleElementClick}
+//         renderContent={renderContent}
+//         deviceView={deviceView}
+//       />
+
+//       <Card 
+//         className="mx-auto cursor-pointer hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out"
+//         onClick={() => handleElementClick('form')}
+//       >
+//         <CardContent>
+//           <form disabled>
+//             <div className="grid gap-4 mt-4">
+//               {content?.form?.fields?.map((field) => (
+//                 <div key={field.id} className="grid gap-2">
+//                   <Label htmlFor={field.id} style={field.styles[deviceView]}>
+//                     {field.label}
+//                   </Label>
+//                   <Input
+//                     id={field.id}
+//                     type={field.type}
+//                     placeholder={field.placeholder}
+//                     required={field.required}
+//                     style={field.styles[deviceView]}
+//                     disabled
+//                   />
+//                 </div>
+//               ))}
+//               <Button type="submit" className="w-full" disabled>
+//                 Submit
+//               </Button>
+//             </div>
+//           </form>
+//         </CardContent>
+//       </Card>
+//     </div>
+//   );
+
+//   const renderThankYouPage = () => (
+//     <div className="p-6 flex flex-col items-center justify-center h-full">
+//       <EditableText
+//         value={content.thankYouPage.content}
+//         onChange={(value) => updateContent('thankYouPage', value)}
+//         className="text-center hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out cursor-pointer"
+//         styles={content.thankYouPage.styles}
+//         elementName="thankYouPage"
+//         setSelectedElement={handleElementClick}
+//         renderContent={renderContent}
+//         deviceView={deviceView}
+//       />
+//       <Button 
+//         onClick={() => setCurrentStep(0)}
+//         className="mt-8"
+//       >
+//         Back to Campaign
+//       </Button>
+//     </div>
+//   );
+
+//   return (
+//     <div className="flex h-screen bg-muted/40">
+//       <div className="flex-1 flex flex-col overflow-hidden">
+//         <div className="bg-background border-b p-4">
+//           <div className="flex items-center justify-between">
+//             <div>
+//               <h1 className="text-xl font-bold">{campaign?.campaignName}</h1>
+//               <div className="flex items-center space-x-2 mt-1">
+//                 {builderSteps.map((step, index) => (
+//                   <React.Fragment key={step}>
+//                     <Badge 
+//                       variant={currentStep === index ? "default" : "secondary"}
+//                       className="cursor-pointer"
+//                       onClick={() => setCurrentStep(index)}
+//                     >
+//                       {step}
+//                     </Badge>
+//                     {index < builderSteps.length - 1 && (
+//                       <ChevronRight className="h-4 w-4 text-muted-foreground" />
+//                     )}
+//                   </React.Fragment>
+//                 ))}
+//               </div>
+//             </div>
+
+//             <div className="flex items-center space-x-2">
+//               <Button variant="outline" onClick={handleSave} className="gap-2">
+//                 <Save className="h-4 w-4" />
+//                 Save
+//               </Button>
+//               <Button variant="outline" className="gap-2">
+//                 <ScanEye className="h-4 w-4" />
+//                 Preview
+//               </Button>
+//             </div>
+//           </div>
+//         </div>
+
+//         <ResizablePanelGroup direction="horizontal" className="flex-1">
+//           <ResizablePanel defaultSize={sidebarOpen ? 70 : 100} minSize={50}>
+//             <div className="h-full flex flex-col">
+//               <div className="bg-background border-b p-2 flex items-center justify-between">
+//                 <div className="flex items-center space-x-2">
+//                   <span className="text-sm text-muted-foreground">
+//                     {builderSteps[currentStep]}
+//                   </span>
+//                 </div>
+
+//                 <div className="flex items-center space-x-1">
+//                   <TooltipProvider>
+//                     <Tooltip>
+//                       <TooltipTrigger asChild>
+//                         <Button
+//                           variant={deviceView === "desktop" ? "default" : "outline"}
+//                           size="icon"
+//                           onClick={() => setDeviceView("desktop")}
+//                         >
+//                           <Monitor className="h-4 w-4" />
+//                         </Button>
+//                       </TooltipTrigger>
+//                       <TooltipContent>Desktop View</TooltipContent>
+//                     </Tooltip>
+//                   </TooltipProvider>
+//                   <TooltipProvider>
+//                     <Tooltip>
+//                       <TooltipTrigger asChild>
+//                         <Button
+//                           variant={deviceView === "tablet" ? "default" : "outline"}
+//                           size="icon"
+//                           onClick={() => setDeviceView("tablet")}
+//                         >
+//                           <Tablet className="h-4 w-4" />
+//                         </Button>
+//                       </TooltipTrigger>
+//                       <TooltipContent>Tablet View</TooltipContent>
+//                     </Tooltip>
+//                   </TooltipProvider>
+//                   <TooltipProvider>
+//                     <Tooltip>
+//                       <TooltipTrigger asChild>
+//                         <Button
+//                           variant={deviceView === "mobile" ? "default" : "outline"}
+//                           size="icon"
+//                           onClick={() => setDeviceView("mobile")}
+//                         >
+//                           <Smartphone className="h-4 w-4" />
+//                         </Button>
+//                       </TooltipTrigger>
+//                       <TooltipContent>Mobile View</TooltipContent>
+//                     </Tooltip>
+//                   </TooltipProvider>
+//                 </div>
+//               </div>
+
+//               <div className="flex-1 overflow-auto p-4 bg-muted/20">
+//                 <div 
+//                   className="mx-auto bg-background rounded-lg shadow-sm border"
+//                   style={{
+//                     width: getDeviceWidth(),
+//                     maxWidth: "100%",
+//                     transition: "width 0.2s ease",
+//                     margin: "0 auto",
+//                     // height: "100%",
+//                     minHeight: "500px"
+//                   }}
+//                 >
+//                   {currentStep === 0 ? renderMainContent() : renderThankYouPage()}
+//                 </div>
+//               </div>
+//             </div>
+//           </ResizablePanel>
+
+//           {sidebarOpen && (
+//             <>
+//               <ResizableHandle withHandle />
+//               <ResizablePanel defaultSize={30} minSize={25}>
+//                 <div className="h-full overflow-auto p-4 bg-background border-l relative">
+//                   <Button 
+//                     variant="ghost" 
+//                     size="icon" 
+//                     className="absolute top-2 right-2 h-8 w-8"
+//                     onClick={closeSidebar}
+//                   >
+//                     <X className="h-4 w-4" />
+//                   </Button>
+
+//                   <div className="space-y-6">
+//                     <h2 className="text-lg font-semibold">
+//                       {selectedElement?.charAt(0).toUpperCase() + selectedElement?.slice(1)} Settings
+//                     </h2>
+
+//                     <Separator />
+
+//                     <div className="space-y-2">
+//                       <Label>Viewport</Label>
+//                       <Select 
+//                         value={deviceView}
+//                         onValueChange={setDeviceView}
+//                       >
+//                         <SelectTrigger>
+//                           <SelectValue placeholder="Select viewport" />
+//                         </SelectTrigger>
+//                         <SelectContent>
+//                           <SelectItem value="desktop">Desktop</SelectItem>
+//                           <SelectItem value="tablet">Tablet</SelectItem>
+//                           <SelectItem value="mobile">Mobile</SelectItem>
+//                         </SelectContent>
+//                       </Select>
+//                     </div>
+
+//                     {['header', 'description1', 'description2', 'thankYouPage'].includes(selectedElement) && (
+//                       <div className="space-y-4">
+//                         <div className="space-y-2">
+//                           <Label>Text Content</Label>
+//                           <Input
+//                             value={content[selectedElement].content}
+//                             onChange={(e) => updateContent(selectedElement, e.target.value)}
+//                           />
+//                         </div>
+
+//                         <Accordion type="single" collapsible>
+//                           <AccordionItem value="styles">
+//                             <AccordionTrigger>Styles</AccordionTrigger>
+//                             <AccordionContent className="space-y-4">
+//                               <div className="space-y-2">
+//                                 <Label>Text Color</Label>
+//                                 <Input
+//                                   type="color"
+//                                   value={content[selectedElement].styles[deviceView].color || '#000000'}
+//                                   onChange={(e) =>
+//                                     updateStyles(selectedElement, deviceView, {
+//                                       color: e.target.value,
+//                                     })
+//                                   }
+//                                 />
+//                               </div>
+
+//                               <div className="space-y-2">
+//                                 <Label>Font Size</Label>
+//                                 <Slider
+//                                   min={12}
+//                                   max={48}
+//                                   step={1}
+//                                   value={[parseInt(content[selectedElement].styles[deviceView].fontSize || '16px')]}
+//                                   onValueChange={(value) =>
+//                                     updateStyles(selectedElement, deviceView, {
+//                                       fontSize: `${value[0]}px`,
+//                                     })
+//                                   }
+//                                 />
+//                               </div>
+
+//                               <div className="space-y-2">
+//                                 <Label>Background Color</Label>
+//                                 <Input
+//                                   type="color"
+//                                   value={content[selectedElement].styles[deviceView].backgroundColor || 'transparent'}
+//                                   onChange={(e) =>
+//                                     updateStyles(selectedElement, deviceView, {
+//                                       backgroundColor: e.target.value,
+//                                     })
+//                                   }
+//                                 />
+//                               </div>
+
+//                               <div className="space-y-2">
+//                                 <Label>Padding</Label>
+//                                 <Slider
+//                                   min={0}
+//                                   max={40}
+//                                   step={1}
+//                                   value={[parseInt(content[selectedElement].styles[deviceView].padding || '0px')]}
+//                                   onValueChange={(value) =>
+//                                     updateStyles(selectedElement, deviceView, {
+//                                       padding: `${value[0]}px`,
+//                                     })
+//                                   }
+//                                 />
+//                               </div>
+
+//                               <div className="space-y-2">
+//                                 <Label>Border Radius</Label>
+//                                 <Slider
+//                                   min={0}
+//                                   max={20}
+//                                   step={1}
+//                                   value={[parseInt(content[selectedElement].styles[deviceView].borderRadius || '0px')]}
+//                                   onValueChange={(value) =>
+//                                     updateStyles(selectedElement, deviceView, {
+//                                       borderRadius: `${value[0]}px`,
+//                                     })
+//                                   }
+//                                 />
+//                               </div>
+//                             </AccordionContent>
+//                           </AccordionItem>
+//                         </Accordion>
+//                       </div>
+//                     )}
+
+//                     {selectedElement === 'logo' && (
+//                       <div className="space-y-4">
+//                         <div className="space-y-2">
+//                           <Label>Upload Logo</Label>
+//                           <Input
+//                             type="file"
+//                             accept="image/*"
+//                             onChange={handleImageUpload}
+//                             className="cursor-pointer"
+//                           />
+//                           {content.logo.content && (
+//                             <div className="mt-2">
+//                               <img
+//                                 src={content.logo.content}
+//                                 alt="Uploaded Logo"
+//                                 className="w-32 h-32 object-contain border rounded"
+//                               />
+//                             </div>
+//                           )}
+//                         </div>
+
+//                         <Accordion type="single" collapsible>
+//                           <AccordionItem value="styles">
+//                             <AccordionTrigger>Styles</AccordionTrigger>
+//                             <AccordionContent className="space-y-4">
+//                               <div className="space-y-2">
+//                                 <Label>Width</Label>
+//                                 <Slider
+//                                   min={50}
+//                                   max={300}
+//                                   step={5}
+//                                   value={[parseInt(content.logo.styles[deviceView].width || '200px')]}
+//                                   onValueChange={(value) =>
+//                                     updateStyles('logo', deviceView, {
+//                                       width: `${value[0]}px`,
+//                                     })
+//                                   }
+//                                 />
+//                               </div>
+
+//                               <div className="space-y-2">
+//                                 <Label>Height</Label>
+//                                 <Slider
+//                                   min={50}
+//                                   max={300}
+//                                   step={5}
+//                                   value={[parseInt(content.logo.styles[deviceView].height || '200px')]}
+//                                   onValueChange={(value) =>
+//                                     updateStyles('logo', deviceView, {
+//                                       height: `${value[0]}px`,
+//                                     })
+//                                   }
+//                                 />
+//                               </div>
+//                             </AccordionContent>
+//                           </AccordionItem>
+//                         </Accordion>
+//                       </div>
+//                     )}
+
+//                     {selectedElement === 'form' && (
+//                       <div className="space-y-4">
+//                         <div className="grid grid-cols-2 gap-2">
+//                           <Button
+//                             variant="outline"
+//                             size="sm"
+//                             onClick={() => addFormField('phone')}
+//                             disabled={content.form.fields.some(f => f.id === 'phone')}
+//                           >
+//                             Add Phone
+//                           </Button>
+//                           <Button
+//                             variant="outline"
+//                             size="sm"
+//                             onClick={() => addFormField('date')}
+//                             disabled={content.form.fields.some(f => f.id === 'date')}
+//                           >
+//                             Add Date
+//                           </Button>
+//                         </div>
+
+//                         <div className="space-y-4">
+//                           {content.form.fields.map((field) => (
+//                             <Card key={field.id} className="p-4">
+//                               <div className="flex justify-between items-center mb-3">
+//                                 <h4 className="font-medium">{field.label || 'Field'}</h4>
+//                                 {!['name', 'email'].includes(field.id) && (
+//                                   <Button
+//                                     variant="ghost"
+//                                     size="sm"
+//                                     onClick={() => deleteFormField(field.id)}
+//                                   >
+//                                     <Trash2 className="h-4 w-4 text-destructive" />
+//                                   </Button>
+//                                 )}
+//                               </div>
+
+//                               <div className="space-y-3">
+//                                 <div className="space-y-2">
+//                                   <Label>Label</Label>
+//                                   <Input
+//                                     value={field.label}
+//                                     onChange={(e) =>
+//                                       updateFormField(field.id, deviceView, {
+//                                         label: e.target.value,
+//                                       })
+//                                     }
+//                                   />
+//                                 </div>
+
+//                                 <div className="space-y-2">
+//                                   <Label>Placeholder</Label>
+//                                   <Input
+//                                     value={field.placeholder}
+//                                     onChange={(e) =>
+//                                       updateFormField(field.id, deviceView, {
+//                                         placeholder: e.target.value,
+//                                       })
+//                                     }
+//                                   />
+//                                 </div>
+
+//                                 <div className="space-y-2">
+//                                   <Label>Font Size</Label>
+//                                   <Slider
+//                                     min={10}
+//                                     max={24}
+//                                     step={1}
+//                                     value={[parseInt(field.styles[deviceView].fontSize || '16px')]}
+//                                     onValueChange={(value) =>
+//                                       updateFormField(field.id, deviceView, {
+//                                         styles: {
+//                                           ...field.styles,
+//                                           [deviceView]: {
+//                                             ...field.styles[deviceView],
+//                                             fontSize: `${value[0]}px`
+//                                           }
+//                                         }
+//                                       })
+//                                     }
+//                                   />
+//                                 </div>
+
+//                                 <div className="flex items-center space-x-2">
+//                                   <Switch
+//                                     id={`required-${field.id}`}
+//                                     checked={field.required}
+//                                     onCheckedChange={(checked) =>
+//                                       updateFormField(field.id, deviceView, {
+//                                         required: checked,
+//                                       })
+//                                     }
+//                                   />
+//                                   <Label htmlFor={`required-${field.id}`}>Required</Label>
+//                                 </div>
+//                               </div>
+//                             </Card>
+//                           ))}
+//                         </div>
+//                       </div>
+//                     )}
+//                   </div>
+//                 </div>
+//               </ResizablePanel>
+//             </>
+//           )}
+//         </ResizablePanelGroup>
+
+//         <div className="bg-background border-t p-4 flex justify-between">
+//           <Button 
+//             variant="outline" 
+//             onClick={() => navigate('/b/dashboard/campaign-portal')}
+//           >
+//             Back
+//           </Button>
+//           <div className="flex space-x-2">
+//             <Button 
+//               variant="outline"
+//               disabled={currentStep === 0}
+//               onClick={() => setCurrentStep(currentStep - 1)}
+//             >
+//               Previous Step
+//             </Button>
+//             <Button 
+//               onClick={() => {
+//                 if (currentStep < builderSteps.length - 1) {
+//                   setCurrentStep(currentStep + 1);
+//                 } else {
+//                   navigate(`/b/dashboard/campaign-portal/reward/${campaignId}`);
+//                 }
+//               }}
+//               className="bg-amber-500 hover:bg-amber-600"
+//             >
+//               {currentStep < builderSteps.length - 1 ? 'Next Step' : 'Next: Reward Settings'}
+//             </Button>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+
+
+// import React, { useEffect, useState } from "react";
+// import { Monitor, Tablet, Smartphone, ChevronLeft, ChevronRight, Save, ScanEye, Trash2, Image as ImageIcon } from 'lucide-react';
+// import { Button } from "@/components/ui/button";
+// import { Input } from "@/components/ui/input";
+// import { Label } from "@/components/ui/label";
+// import { Card, CardContent } from "@/components/ui/card";
+// import {
+//   Tooltip,
+//   TooltipContent,
+//   TooltipProvider,
+//   TooltipTrigger,
+// } from "@/components/ui/tooltip";
+// import { useNavigate, useParams } from "react-router-dom";
+// import EditableText from "./editable-text";
+// import useEditableContent from "@/hooks/useEditableContent";
+// import campaignApi from "@/api/campaignApi";
+// import { useMutation } from "@tanstack/react-query";
+// import { toast } from "react-toastify";
+// import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+// import { Switch } from "@/components/ui/switch";
+// import { Slider } from "@/components/ui/slider";
+// import { Loader } from "../../../loader";
+// import {
+//   ResizableHandle,
+//   ResizablePanel,
+//   ResizablePanelGroup,
+// } from "@/components/ui/resizable";
+// import { Separator } from "@/components/ui/separator";
+// import { Badge } from "@/components/ui/badge";
+// import { X } from "lucide-react";
+
+// const builderSteps = [
+//   "Campaign Page",
+//   "Thank You Page"
+// ];
+
+// export default function CampaignBuilder() {
+//   const [deviceView, setDeviceView] = useState("desktop");
+//   const navigate = useNavigate();
+//   const { campaignId } = useParams();
+//   const [campaign, setCampaign] = useState(null);
+//   const referrerName = 'Referrer';
+//   const businessName = "Business";
+//   const [selectedElement, setSelectedElement] = useState(null);
+//   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+//   const {
+//     content,
+//     currentStep,
+//     setCurrentStep,
+//     updateContent,
+//     updateStyles,
+//     updateBackground,
+//     updateBackgroundStyles,
+//     setContent,
+//     addFormField,
+//     updateFormField,
+//     deleteFormField
+//   } = useEditableContent();
+
+//   const getCampaignbyIdMutation = useMutation({
+//     mutationFn: campaignApi.getCampaignById,
+//     onSuccess: (data) => {
+//       const parsedData = JSON.parse(data.refereeJSON);
+//       setContent(parsedData);
+//       setCampaign(data);
+//     },
+//     onError: (err) => {
+//       console.log(err, "get Err");
+//     }
+//   });
+
+//   useEffect(() => {
+//     getCampaignbyIdMutation.mutate({
+//       campaignId: campaignId
+//     });
+//   }, []);
+
+//   const updateCampaignStateMutation = useMutation({
+//     mutationFn: campaignApi.updateCampaignState,
+//     onSuccess: (data) => {
+//       toast.success(data.message);
+//     },
+//     onError: (err) => {
+//       console.log(err, "err");
+//     }
+//   });
+
+//   const handleSave = () => {
+//     updateCampaignStateMutation.mutate({
+//       state: JSON.stringify(content),
+//       campaignId: campaignId
+//     });
+//   };
+
+//   const renderContent = (content) => {
+//     return content
+//       .replace(/{{referrerName}}/g, referrerName)
+//       .replace(/{{businessName}}/g, businessName);
+//   };
+
+//   const [uploadedImage, setUploadedImage] = useState(null);
+//   const [uploadedBackground, setUploadedBackground] = useState(null);
+//   const [uploadedThankYouBackground, setUploadedThankYouBackground] = useState(null);
+
+//   const uploadImageMutation = useMutation({
+//     mutationFn: campaignApi.uploadImage,
+//     onSuccess: (data) => {
+//       return data.url; // Return URL for chaining
+//     },
+//     onError: (err) => {
+//       toast.error('Unable to upload image.');
+//       throw err;
+//     }
+//   });
+
+//   const handleImageUpload = async (e, type) => {
+//     const file = e.target.files[0];
+//     if (file) {
+//       try {
+//         const formData = new FormData();
+//         formData.append('image', file);
+//         const url = await uploadImageMutation.mutateAsync(formData);
+
+//         if (type === 'logo') {
+//           setUploadedImage(url);
+//           updateContent('logo', url);
+//           toast.success('Logo uploaded successfully');
+//         } else if (type === 'background') {
+//           setUploadedBackground(url);
+//           updateBackground('background', 'image', url);
+//           toast.success('Background image uploaded successfully');
+//         } else if (type === 'thankYouBackground') {
+//           setUploadedThankYouBackground(url);
+//           updateBackground('thankYouPage', 'image', url);
+//           toast.success('Thank You page background uploaded successfully');
+//         }
+//       } catch (err) {
+//         console.error(err);
+//       }
+//     }
+//   };
+
+//   const getDeviceWidth = () => {
+//     switch (deviceView) {
+//       case "desktop": return "100%";
+//       case "tablet": return "768px";
+//       case "mobile": return "375px";
+//       default: return "100%";
+//     }
+//   };
+
+//   const handleElementClick = (elementName) => {
+//     setSelectedElement(elementName);
+//     setSidebarOpen(true);
+//   };
+
+//   const closeSidebar = () => {
+//     setSidebarOpen(false);
+//     setSelectedElement(null);
+//   };
+
+//   const getBackgroundStyle = (page) => {
+//     const bg = content[page]?.background || content.background;
+//     const viewportStyles = bg.styles[deviceView] || {};
+
+//     return {
+//       backgroundColor: bg.color,
+//       backgroundImage: bg.image ? `url(${bg.image})` : 'none',
+//       backgroundRepeat: bg.repeat,
+//       backgroundSize: bg.size,
+//       backgroundPosition: bg.position,
+//       ...viewportStyles
+//     };
+//   };
+
+//   if (getCampaignbyIdMutation.isPending) {
+//     return <Loader />;
+//   }
+
+//   const renderMainContent = () => (
+//     <div className="p-6" style={getBackgroundStyle('background')}>
+//       <div className="items-center mb-4">
+//         <img
+//           src={content.logo.content}
+//           style={content.logo.styles[deviceView]}
+//           alt=""
+//           className="mx-auto cursor-pointer hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out"
+//           onClick={() => handleElementClick('logo')}
+//         />
+
+
+
+//         <div
+//           className="absolute inset-0 cursor-pointer border-2 border-transparent hover:border-dashed hover:border-primary"
+//           onClick={() => handleElementClick(currentStep === 0 ? 'background' : 'thankYouPageBackground')}
+//           style={getBackgroundStyle(currentStep === 0 ? 'background' : 'thankYouPage')}
+//         />
+
+
+//         <EditableText
+//           value={content.header.content}
+//           onChange={(value) => updateContent('header', value)}
+//           className="text-center hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out cursor-pointer"
+//           styles={content.header.styles}
+//           elementName="header"
+//           setSelectedElement={handleElementClick}
+//           renderContent={renderContent}
+//           deviceView={deviceView}
+//         />
+//       </div>
+
+//       <EditableText
+//         value={content.description1.content}
+//         onChange={(value) => updateContent('description1', value)}
+//         className="text-gray-800 dark:text-gray-200 mb-4 text-center hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out cursor-pointer"
+//         styles={content.description1.styles}
+//         elementName="description1"
+//         setSelectedElement={handleElementClick}
+//         renderContent={renderContent}
+//         deviceView={deviceView}
+//       />
+
+//       <EditableText
+//         value={content.description2.content}
+//         onChange={(value) => updateContent('description2', value)}
+//         className="text-gray-800 dark:text-gray-200 mb-4 text-center hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out cursor-pointer"
+//         styles={content.description2.styles}
+//         elementName="description2"
+//         setSelectedElement={handleElementClick}
+//         renderContent={renderContent}
+//         deviceView={deviceView}
+//       />
+
+//       <Card
+//         className="mx-auto cursor-pointer hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out"
+//         onClick={() => handleElementClick('form')}
+//       >
+//         <CardContent>
+//           <form disabled>
+//             <div className="grid gap-4 mt-4">
+//               {content?.form?.fields?.map((field) => (
+//                 <div key={field.id} className="grid gap-2">
+//                   <Label htmlFor={field.id} style={field.styles[deviceView]}>
+//                     {field.label}
+//                   </Label>
+//                   <Input
+//                     id={field.id}
+//                     type={field.type}
+//                     placeholder={field.placeholder}
+//                     required={field.required}
+//                     style={field.styles[deviceView]}
+//                     disabled
+//                   />
+//                 </div>
+//               ))}
+//               <Button type="submit" className="w-full" disabled>
+//                 Submit
+//               </Button>
+//             </div>
+//           </form>
+//         </CardContent>
+//       </Card>
+//     </div>
+//   );
+
+//   const renderThankYouPage = () => (
+//     <div
+//       className="p-6 flex flex-col items-center justify-center h-full"
+//       style={getBackgroundStyle('thankYouPage')}
+//     >
+//       <EditableText
+//         value={content.thankYouPage.content}
+//         onChange={(value) => updateContent('thankYouPage', value)}
+//         className="text-center hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out cursor-pointer"
+//         styles={content.thankYouPage.styles}
+//         elementName="thankYouPage"
+//         setSelectedElement={handleElementClick}
+//         renderContent={renderContent}
+//         deviceView={deviceView}
+//       />
+
+//       <div
+//         className="absolute inset-0 cursor-pointer border-2 border-transparent hover:border-dashed hover:border-primary"
+//         onClick={() => handleElementClick(currentStep === 0 ? 'background' : 'thankYouPageBackground')}
+//         style={getBackgroundStyle(currentStep === 0 ? 'background' : 'thankYouPage')}
+//       />
+//       <Button
+//         onClick={() => setCurrentStep(0)}
+//         className="mt-8"
+//       >
+//         Back to Campaign
+//       </Button>
+//     </div>
+//   );
+
+//   return (
+//     <div className="flex h-screen bg-muted/40">
+//       <div className="flex-1 flex flex-col overflow-hidden">
+//         <div className="bg-background border-b p-4">
+//           <div className="flex items-center justify-between">
+//             <div>
+//               <h1 className="text-xl font-bold">{campaign?.campaignName}</h1>
+//               <div className="flex items-center space-x-2 mt-1">
+//                 {builderSteps.map((step, index) => (
+//                   <React.Fragment key={step}>
+//                     <Badge
+//                       variant={currentStep === index ? "default" : "secondary"}
+//                       className="cursor-pointer"
+//                       onClick={() => setCurrentStep(index)}
+//                     >
+//                       {step}
+//                     </Badge>
+//                     {index < builderSteps.length - 1 && (
+//                       <ChevronRight className="h-4 w-4 text-muted-foreground" />
+//                     )}
+//                   </React.Fragment>
+//                 ))}
+//               </div>
+//             </div>
+
+//             <div className="flex items-center space-x-2">
+//               <Button variant="outline" onClick={handleSave} className="gap-2">
+//                 <Save className="h-4 w-4" />
+//                 Save
+//               </Button>
+//               <Button variant="outline" className="gap-2">
+//                 <ScanEye className="h-4 w-4" />
+//                 Preview
+//               </Button>
+//             </div>
+//           </div>
+//         </div>
+
+//         <ResizablePanelGroup direction="horizontal" className="flex-1">
+//           <ResizablePanel defaultSize={sidebarOpen ? 70 : 100} minSize={50}>
+//             <div className="h-full flex flex-col">
+//               <div className="bg-background border-b p-2 flex items-center justify-between">
+//                 <div className="flex items-center space-x-2">
+//                   <span className="text-sm text-muted-foreground">
+//                     {builderSteps[currentStep]}
+//                   </span>
+//                 </div>
+
+//                 <div className="flex items-center space-x-1">
+//                   <TooltipProvider>
+//                     <Tooltip>
+//                       <TooltipTrigger asChild>
+//                         <Button
+//                           variant={deviceView === "desktop" ? "default" : "outline"}
+//                           size="icon"
+//                           onClick={() => setDeviceView("desktop")}
+//                         >
+//                           <Monitor className="h-4 w-4" />
+//                         </Button>
+//                       </TooltipTrigger>
+//                       <TooltipContent>Desktop View</TooltipContent>
+//                     </Tooltip>
+//                   </TooltipProvider>
+//                   <TooltipProvider>
+//                     <Tooltip>
+//                       <TooltipTrigger asChild>
+//                         <Button
+//                           variant={deviceView === "tablet" ? "default" : "outline"}
+//                           size="icon"
+//                           onClick={() => setDeviceView("tablet")}
+//                         >
+//                           <Tablet className="h-4 w-4" />
+//                         </Button>
+//                       </TooltipTrigger>
+//                       <TooltipContent>Tablet View</TooltipContent>
+//                     </Tooltip>
+//                   </TooltipProvider>
+//                   <TooltipProvider>
+//                     <Tooltip>
+//                       <TooltipTrigger asChild>
+//                         <Button
+//                           variant={deviceView === "mobile" ? "default" : "outline"}
+//                           size="icon"
+//                           onClick={() => setDeviceView("mobile")}
+//                         >
+//                           <Smartphone className="h-4 w-4" />
+//                         </Button>
+//                       </TooltipTrigger>
+//                       <TooltipContent>Mobile View</TooltipContent>
+//                     </Tooltip>
+//                   </TooltipProvider>
+//                 </div>
+//               </div>
+
+//               <div className="flex-1 overflow-auto p-4 bg-muted/20">
+//                 <div
+//                   className="mx-auto bg-background rounded-lg shadow-sm border"
+//                   style={{
+//                     width: getDeviceWidth(),
+//                     maxWidth: "100%",
+//                     transition: "width 0.2s ease",
+//                     margin: "0 auto",
+//                     height: "100%",
+//                     minHeight: "500px",
+//                     overflow: 'hidden'
+//                   }}
+//                 >
+//                   {currentStep === 0 ? renderMainContent() : renderThankYouPage()}
+//                 </div>
+//               </div>
+//             </div>
+//           </ResizablePanel>
+
+//           {sidebarOpen && (
+//             <>
+//               <ResizableHandle withHandle />
+//               <ResizablePanel defaultSize={30} minSize={25}>
+//                 <div className="h-full overflow-auto p-4 bg-background border-l relative">
+//                   <Button
+//                     variant="ghost"
+//                     size="icon"
+//                     className="absolute top-2 right-2 h-8 w-8"
+//                     onClick={closeSidebar}
+//                   >
+//                     <X className="h-4 w-4" />
+//                   </Button>
+
+//                   <div className="space-y-6">
+//                     <h2 className="text-lg font-semibold">
+//                       {selectedElement?.charAt(0).toUpperCase() + selectedElement?.slice(1)} Settings
+//                     </h2>
+
+//                     <Separator />
+
+//                     <div className="space-y-2">
+//                       <Label>Viewport</Label>
+//                       <Select
+//                         value={deviceView}
+//                         onValueChange={setDeviceView}
+//                       >
+//                         <SelectTrigger>
+//                           <SelectValue placeholder="Select viewport" />
+//                         </SelectTrigger>
+//                         <SelectContent>
+//                           <SelectItem value="desktop">Desktop</SelectItem>
+//                           <SelectItem value="tablet">Tablet</SelectItem>
+//                           <SelectItem value="mobile">Mobile</SelectItem>
+//                         </SelectContent>
+//                       </Select>
+//                     </div>
+
+//                     {/* {['header', 'description1', 'description2', 'thankYouPage'].includes(selectedElement) && (
+//                       <div className="space-y-4">
+//                         <div className="space-y-2">
+//                           <Label>Text Content</Label>
+//                           <Input
+//                             value={content[selectedElement].content}
+//                             onChange={(e) => updateContent(selectedElement, e.target.value)}
+//                           />
+//                         </div>
+
+//                         <Accordion type="single" collapsible>
+//                           <AccordionItem value="styles">
+//                             <AccordionTrigger>Styles</AccordionTrigger>
+//                             <AccordionContent className="space-y-4">
+//                               <div className="space-y-2">
+//                                 <Label>Text Color</Label>
+//                                 <Input
+//                                   type="color"
+//                                   value={content[selectedElement].styles[deviceView].color || '#000000'}
+//                                   onChange={(e) =>
+//                                     updateStyles(selectedElement, deviceView, {
+//                                       color: e.target.value,
+//                                     })
+//                                   }
+//                                 />
+//                               </div>
+
+//                               <div className="space-y-2">
+//                                 <Label>Font Size</Label>
+//                                 <Slider
+//                                   min={12}
+//                                   max={48}
+//                                   step={1}
+//                                   value={[parseInt(content[selectedElement].styles[deviceView].fontSize || '16px')]}
+//                                   onValueChange={(value) =>
+//                                     updateStyles(selectedElement, deviceView, {
+//                                       fontSize: `${value[0]}px`,
+//                                     })
+//                                   }
+//                                 />
+//                               </div>
+
+//                               <div className="space-y-2">
+//                                 <Label>Background Color</Label>
+//                                 <Input
+//                                   type="color"
+//                                   value={content[selectedElement].styles[deviceView].backgroundColor || 'transparent'}
+//                                   onChange={(e) =>
+//                                     updateStyles(selectedElement, deviceView, {
+//                                       backgroundColor: e.target.value,
+//                                     })
+//                                   }
+//                                 />
+//                               </div>
+
+//                               <div className="space-y-2">
+//                                 <Label>Padding</Label>
+//                                 <Slider
+//                                   min={0}
+//                                   max={40}
+//                                   step={1}
+//                                   value={[parseInt(content[selectedElement].styles[deviceView].padding || '0px')]}
+//                                   onValueChange={(value) =>
+//                                     updateStyles(selectedElement, deviceView, {
+//                                       padding: `${value[0]}px`,
+//                                     })
+//                                   }
+//                                 />
+//                               </div>
+
+//                               <div className="space-y-2">
+//                                 <Label>Border Radius</Label>
+//                                 <Slider
+//                                   min={0}
+//                                   max={20}
+//                                   step={1}
+//                                   value={[parseInt(content[selectedElement].styles[deviceView].borderRadius || '0px')]}
+//                                   onValueChange={(value) =>
+//                                     updateStyles(selectedElement, deviceView, {
+//                                       borderRadius: `${value[0]}px`,
+//                                     })
+//                                   }
+//                                 />
+//                               </div>
+//                             </AccordionContent>
+//                           </AccordionItem>
+//                         </Accordion>
+//                       </div>
+//                     )} */}
+
+//                     {['logo', 'header', 'description1', 'description2', 'thankYouPage'].includes(selectedElement) && (
+//                       <div className="space-y-4">
+//                         {/* ... existing content controls ... */}
+
+//                         <AccordionItem value="dimensions">
+//                           <AccordionTrigger>Dimensions</AccordionTrigger>
+//                           <AccordionContent className="space-y-4">
+//                             <div className="grid grid-cols-2 gap-4">
+//                               <div className="space-y-2">
+//                                 <Label>Width</Label>
+//                                 <div className="flex items-center gap-2">
+//                                   <Slider
+//                                     min={50}
+//                                     max={800}
+//                                     step={5}
+//                                     value={[parseInt(content[selectedElement].styles[deviceView].width || '200')]}
+//                                     onValueChange={(value) =>
+//                                       updateStyles(selectedElement, deviceView, {
+//                                         width: `${value[0]}px`,
+//                                       })
+//                                     }
+//                                   />
+//                                   <Input
+//                                     className="w-20"
+//                                     value={content[selectedElement].styles[deviceView].width}
+//                                     onChange={(e) =>
+//                                       updateStyles(selectedElement, deviceView, {
+//                                         width: e.target.value.includes('px') ? e.target.value : `${e.target.value}px`,
+//                                       })
+//                                     }
+//                                   />
+//                                 </div>
+//                               </div>
+//                               <div className="space-y-2">
+//                                 <Label>Height</Label>
+//                                 <div className="flex items-center gap-2">
+//                                   <Slider
+//                                     min={20}
+//                                     max={500}
+//                                     step={5}
+//                                     value={[parseInt(content[selectedElement].styles[deviceView].height || '100')]}
+//                                     onValueChange={(value) =>
+//                                       updateStyles(selectedElement, deviceView, {
+//                                         height: `${value[0]}px`,
+//                                       })
+//                                     }
+//                                   />
+//                                   <Input
+//                                     className="w-20"
+//                                     value={content[selectedElement].styles[deviceView].height}
+//                                     onChange={(e) =>
+//                                       updateStyles(selectedElement, deviceView, {
+//                                         height: e.target.value.includes('px') ? e.target.value : `${e.target.value}px`,
+//                                       })
+//                                     }
+//                                   />
+//                                 </div>
+//                               </div>
+//                             </div>
+//                           </AccordionContent>
+//                         </AccordionItem>
+//                       </div>
+//                     )}
+
+//                     {selectedElement === 'logo' && (
+//                       <div className="space-y-4">
+//                         <div className="space-y-2">
+//                           <Label>Upload Logo</Label>
+//                           <Input
+//                             type="file"
+//                             accept="image/*"
+//                             onChange={(e) => handleImageUpload(e, 'logo')}
+//                             className="cursor-pointer"
+//                           />
+//                           {content.logo.content && (
+//                             <div className="mt-2">
+//                               <img
+//                                 src={content.logo.content}
+//                                 alt="Uploaded Logo"
+//                                 className="w-32 h-32 object-contain border rounded"
+//                               />
+//                             </div>
+//                           )}
+//                         </div>
+
+//                         <Accordion type="single" collapsible>
+//                           <AccordionItem value="styles">
+//                             <AccordionTrigger>Styles</AccordionTrigger>
+//                             <AccordionContent className="space-y-4">
+//                               <div className="space-y-2">
+//                                 <Label>Width</Label>
+//                                 <Slider
+//                                   min={50}
+//                                   max={300}
+//                                   step={5}
+//                                   value={[parseInt(content.logo.styles[deviceView].width || '200px')]}
+//                                   onValueChange={(value) =>
+//                                     updateStyles('logo', deviceView, {
+//                                       width: `${value[0]}px`,
+//                                     })
+//                                   }
+//                                 />
+//                               </div>
+
+//                               <div className="space-y-2">
+//                                 <Label>Height</Label>
+//                                 <Slider
+//                                   min={50}
+//                                   max={300}
+//                                   step={5}
+//                                   value={[parseInt(content.logo.styles[deviceView].height || '200px')]}
+//                                   onValueChange={(value) =>
+//                                     updateStyles('logo', deviceView, {
+//                                       height: `${value[0]}px`,
+//                                     })
+//                                   }
+//                                 />
+//                               </div>
+//                             </AccordionContent>
+//                           </AccordionItem>
+//                         </Accordion>
+//                       </div>
+//                     )}
+//                     {/* 
+//                     {selectedElement === 'background' && (
+//                       <div className="space-y-4">
+//                         <div className="space-y-2">
+//                           <Label>Background Color</Label>
+//                           <Input
+//                             type="color"
+//                             value={content.background.color}
+//                             onChange={(e) => updateBackground('background', 'color', e.target.value)}
+//                           />
+//                         </div>
+
+//                         <div className="space-y-2">
+//                           <Label>Background Image</Label>
+//                           <div className="flex items-center gap-2">
+//                             <Input
+//                               type="file"
+//                               accept="image/*"
+//                               onChange={(e) => handleImageUpload(e, 'background')}
+//                               className="cursor-pointer"
+//                             />
+//                             {content.background.image && (
+//                               <Button
+//                                 variant="outline"
+//                                 size="sm"
+//                                 onClick={() => updateBackground('background', 'image', '')}
+//                               >
+//                                 Remove
+//                               </Button>
+//                             )}
+//                           </div>
+//                           {content.background.image && (
+//                             <div className="mt-2">
+//                               <img
+//                                 src={content.background.image}
+//                                 alt="Background Preview"
+//                                 className="w-full h-32 object-cover rounded"
+//                               />
+//                             </div>
+//                           )}
+//                         </div>
+
+//                         {content.background.image && (
+//                           <>
+//                             <div className="space-y-2">
+//                               <Label>Background Repeat</Label>
+//                               <Select
+//                                 value={content.background.repeat}
+//                                 onValueChange={(value) => updateBackground('background', 'repeat', value)}
+//                               >
+//                                 <SelectTrigger>
+//                                   <SelectValue placeholder="Select repeat style" />
+//                                 </SelectTrigger>
+//                                 <SelectContent>
+//                                   <SelectItem value="no-repeat">No Repeat</SelectItem>
+//                                   <SelectItem value="repeat">Repeat</SelectItem>
+//                                   <SelectItem value="repeat-x">Repeat X</SelectItem>
+//                                   <SelectItem value="repeat-y">Repeat Y</SelectItem>
+//                                 </SelectContent>
+//                               </Select>
+//                             </div>
+
+//                             <div className="space-y-2">
+//                               <Label>Background Size</Label>
+//                               <Select
+//                                 value={content.background.size}
+//                                 onValueChange={(value) => updateBackground('background', 'size', value)}
+//                               >
+//                                 <SelectTrigger>
+//                                   <SelectValue placeholder="Select size" />
+//                                 </SelectTrigger>
+//                                 <SelectContent>
+//                                   <SelectItem value="cover">Cover</SelectItem>
+//                                   <SelectItem value="contain">Contain</SelectItem>
+//                                   <SelectItem value="auto">Auto</SelectItem>
+//                                 </SelectContent>
+//                               </Select>
+//                             </div>
+
+//                             <div className="space-y-2">
+//                               <Label>Background Position</Label>
+//                               <Select
+//                                 value={content.background.position}
+//                                 onValueChange={(value) => updateBackground('background', 'position', value)}
+//                               >
+//                                 <SelectTrigger>
+//                                   <SelectValue placeholder="Select position" />
+//                                 </SelectTrigger>
+//                                 <SelectContent>
+//                                   <SelectItem value="center">Center</SelectItem>
+//                                   <SelectItem value="top">Top</SelectItem>
+//                                   <SelectItem value="bottom">Bottom</SelectItem>
+//                                   <SelectItem value="left">Left</SelectItem>
+//                                   <SelectItem value="right">Right</SelectItem>
+//                                 </SelectContent>
+//                               </Select>
+//                             </div>
+//                           </>
+//                         )}
+
+//                         <Accordion type="single" collapsible>
+//                           <AccordionItem value="viewport-styles">
+//                             <AccordionTrigger>Viewport Specific Styles</AccordionTrigger>
+//                             <AccordionContent className="space-y-4">
+//                               <div className="space-y-2">
+//                                 <Label>Background Opacity</Label>
+//                                 <Slider
+//                                   min={0}
+//                                   max={100}
+//                                   step={1}
+//                                   value={[parseInt(content.background.styles[deviceView]?.opacity || '100')]}
+//                                   onValueChange={(value) =>
+//                                     updateBackgroundStyles('background', deviceView, {
+//                                       opacity: `${value[0]}%`,
+//                                     })
+//                                   }
+//                                 />
+//                               </div>
+//                             </AccordionContent>
+//                           </AccordionItem>
+//                         </Accordion>
+//                       </div>
+//                     )} */}
+
+//                     {(selectedElement === 'background' || selectedElement === 'thankYouPageBackground') && (
+//                       <div className="space-y-4">
+//                         <div className="space-y-2">
+//                           <Label>Background Type</Label>
+//                           <Select
+//                             value={content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background?.image ? 'image' : 'color'}
+//                             onValueChange={(value) => {
+//                               const prop = selectedElement === 'background' ? 'background' : 'thankYouPage';
+//                               if (value === 'color') {
+//                                 updateBackground(prop, 'image', '');
+//                               }
+//                             }}
+//                           >
+//                             <SelectTrigger>
+//                               <SelectValue placeholder="Select background type" />
+//                             </SelectTrigger>
+//                             <SelectContent>
+//                               <SelectItem value="color">Color</SelectItem>
+//                               <SelectItem value="image">Image</SelectItem>
+//                             </SelectContent>
+//                           </Select>
+//                         </div>
+
+//                         {!content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background?.image ? (
+//                           <div className="space-y-2">
+//                             <Label>Background Color</Label>
+//                             <Input
+//                               type="color"
+//                               value={content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background?.color}
+//                               onChange={(e) =>
+//                                 updateBackground(
+//                                   selectedElement === 'background' ? 'background' : 'thankYouPage',
+//                                   'color',
+//                                   e.target.value
+//                                 )
+//                               }
+//                             />
+//                           </div>
+//                         ) : (
+//                           <>
+//                             <div className="space-y-2">
+//                               <Label>Background Image</Label>
+//                               <Input
+//                                 type="file"
+//                                 accept="image/*"
+//                                 onChange={(e) => handleImageUpload(
+//                                   e,
+//                                   selectedElement === 'background' ? 'background' : 'thankYouBackground'
+//                                 )}
+//                                 className="cursor-pointer"
+//                               />
+//                             </div>
+//                             {/* ... existing background image controls ... */}
+//                           </>
+//                         )}
+
+//                         <Accordion type="multiple">
+//                           <AccordionItem value="viewport-styles">
+//                             <AccordionTrigger>Viewport Specific Styles</AccordionTrigger>
+//                             <AccordionContent className="space-y-4">
+//                               <div className="space-y-2">
+//                                 <Label>Opacity</Label>
+//                                 <Slider
+//                                   min={0}
+//                                   max={100}
+//                                   step={1}
+//                                   value={[parseInt(content[
+//                                     selectedElement === 'background' ? 'background' : 'thankYouPage'
+//                                   ].background?.styles[deviceView]?.opacity || '100')]}
+//                                   onValueChange={(value) =>
+//                                     updateBackgroundStyles(
+//                                       selectedElement === 'background' ? 'background' : 'thankYouPage',
+//                                       deviceView,
+//                                       { opacity: `${value[0]}%` }
+//                                     )
+//                                   }
+//                                 />
+//                               </div>
+//                             </AccordionContent>
+//                           </AccordionItem>
+//                         </Accordion>
+//                       </div>
+//                     )}
+
+//                     {/* {selectedElement === 'thankYouPageBackground' && (
+//                       <div className="space-y-4">
+//                         <div className="space-y-2">
+//                           <Label>Background Color</Label>
+//                           <Input
+//                             type="color"
+//                             value={content.thankYouPage.background.color}
+//                             onChange={(e) => updateBackground('thankYouPage', 'color', e.target.value)}
+//                           />
+//                         </div>
+
+//                         <div className="space-y-2">
+//                           <Label>Background Image</Label>
+//                           <div className="flex items-center gap-2">
+//                             <Input
+//                               type="file"
+//                               accept="image/*"
+//                               onChange={(e) => handleImageUpload(e, 'thankYouBackground')}
+//                               className="cursor-pointer"
+//                             />
+//                             {content.thankYouPage.background.image && (
+//                               <Button
+//                                 variant="outline"
+//                                 size="sm"
+//                                 onClick={() => updateBackground('thankYouPage', 'image', '')}
+//                               >
+//                                 Remove
+//                               </Button>
+//                             )}
+//                           </div>
+//                           {content.thankYouPage.background.image && (
+//                             <div className="mt-2">
+//                               <img
+//                                 src={content.thankYouPage.background.image}
+//                                 alt="Thank You Background Preview"
+//                                 className="w-full h-32 object-cover rounded"
+//                               />
+//                             </div>
+//                           )}
+//                         </div>
+
+//                         {content.thankYouPage.background.image && (
+//                           <>
+//                             <div className="space-y-2">
+//                               <Label>Background Repeat</Label>
+//                               <Select
+//                                 value={content.thankYouPage.background.repeat}
+//                                 onValueChange={(value) => updateBackground('thankYouPage', 'repeat', value)}
+//                               >
+//                                 <SelectTrigger>
+//                                   <SelectValue placeholder="Select repeat style" />
+//                                 </SelectTrigger>
+//                                 <SelectContent>
+//                                   <SelectItem value="no-repeat">No Repeat</SelectItem>
+//                                   <SelectItem value="repeat">Repeat</SelectItem>
+//                                   <SelectItem value="repeat-x">Repeat X</SelectItem>
+//                                   <SelectItem value="repeat-y">Repeat Y</SelectItem>
+//                                 </SelectContent>
+//                               </Select>
+//                             </div>
+
+//                             <div className="space-y-2">
+//                               <Label>Background Size</Label>
+//                               <Select
+//                                 value={content.thankYouPage.background.size}
+//                                 onValueChange={(value) => updateBackground('thankYouPage', 'size', value)}
+//                               >
+//                                 <SelectTrigger>
+//                                   <SelectValue placeholder="Select size" />
+//                                 </SelectTrigger>
+//                                 <SelectContent>
+//                                   <SelectItem value="cover">Cover</SelectItem>
+//                                   <SelectItem value="contain">Contain</SelectItem>
+//                                   <SelectItem value="auto">Auto</SelectItem>
+//                                 </SelectContent>
+//                               </Select>
+//                             </div>
+
+//                             <div className="space-y-2">
+//                               <Label>Background Position</Label>
+//                               <Select
+//                                 value={content.thankYouPage.background.position}
+//                                 onValueChange={(value) => updateBackground('thankYouPage', 'position', value)}
+//                               >
+//                                 <SelectTrigger>
+//                                   <SelectValue placeholder="Select position" />
+//                                 </SelectTrigger>
+//                                 <SelectContent>
+//                                   <SelectItem value="center">Center</SelectItem>
+//                                   <SelectItem value="top">Top</SelectItem>
+//                                   <SelectItem value="bottom">Bottom</SelectItem>
+//                                   <SelectItem value="left">Left</SelectItem>
+//                                   <SelectItem value="right">Right</SelectItem>
+//                                 </SelectContent>
+//                               </Select>
+//                             </div>
+//                           </>
+//                         )}
+
+//                         <Accordion type="single" collapsible>
+//                           <AccordionItem value="viewport-styles">
+//                             <AccordionTrigger>Viewport Specific Styles</AccordionTrigger>
+//                             <AccordionContent className="space-y-4">
+//                               <div className="space-y-2">
+//                                 <Label>Background Opacity</Label>
+//                                 <Slider
+//                                   min={0}
+//                                   max={100}
+//                                   step={1}
+//                                   value={[parseInt(content.thankYouPage.background.styles[deviceView]?.opacity || '100')]}
+//                                   onValueChange={(value) =>
+//                                     updateBackgroundStyles('thankYouPage', deviceView, {
+//                                       opacity: `${value[0]}%`,
+//                                     })
+//                                   }
+//                                 />
+//                               </div>
+//                             </AccordionContent>
+//                           </AccordionItem>
+//                         </Accordion>
+//                       </div>
+//                     )} */}
+
+//                     {selectedElement === 'form' && (
+//                       <div className="space-y-4">
+//                         <div className="grid grid-cols-2 gap-2">
+//                           <Button
+//                             variant="outline"
+//                             size="sm"
+//                             onClick={() => addFormField('phone')}
+//                             disabled={content.form.fields.some(f => f.id === 'phone')}
+//                           >
+//                             Add Phone
+//                           </Button>
+//                           <Button
+//                             variant="outline"
+//                             size="sm"
+//                             onClick={() => addFormField('date')}
+//                             disabled={content.form.fields.some(f => f.id === 'date')}
+//                           >
+//                             Add Date
+//                           </Button>
+//                         </div>
+
+//                         <div className="space-y-4">
+//                           {content.form.fields.map((field) => (
+//                             <Card key={field.id} className="p-4">
+//                               <div className="flex justify-between items-center mb-3">
+//                                 <h4 className="font-medium">{field.label || 'Field'}</h4>
+//                                 {!['name', 'email'].includes(field.id) && (
+//                                   <Button
+//                                     variant="ghost"
+//                                     size="sm"
+//                                     onClick={() => deleteFormField(field.id)}
+//                                   >
+//                                     <Trash2 className="h-4 w-4 text-destructive" />
+//                                   </Button>
+//                                 )}
+//                               </div>
+
+//                               <div className="space-y-3">
+//                                 <div className="space-y-2">
+//                                   <Label>Label</Label>
+//                                   <Input
+//                                     value={field.label}
+//                                     onChange={(e) =>
+//                                       updateFormField(field.id, deviceView, {
+//                                         label: e.target.value,
+//                                       })
+//                                     }
+//                                   />
+//                                 </div>
+
+//                                 <div className="space-y-2">
+//                                   <Label>Placeholder</Label>
+//                                   <Input
+//                                     value={field.placeholder}
+//                                     onChange={(e) =>
+//                                       updateFormField(field.id, deviceView, {
+//                                         placeholder: e.target.value,
+//                                       })
+//                                     }
+//                                   />
+//                                 </div>
+
+//                                 <div className="grid grid-cols-2 gap-4">
+//                                   <div className="space-y-2">
+//                                     <Label>Width</Label>
+//                                     <Slider
+//                                       min={50}
+//                                       max={500}
+//                                       step={5}
+//                                       value={[parseInt(field.styles[deviceView].width.replace('%', '').replace('px', '') || '100')]}
+//                                       onValueChange={(value) =>
+//                                         updateFormField(field.id, deviceView, {
+//                                           styles: {
+//                                             ...field.styles,
+//                                             [deviceView]: {
+//                                               ...field.styles[deviceView],
+//                                               width: `${value[0]}%`
+//                                             }
+//                                           }
+//                                         })
+//                                       }
+//                                     />
+//                                   </div>
+
+//                                   <div className="space-y-2">
+//                                     <Label>Height</Label>
+//                                     <Slider
+//                                       min={20}
+//                                       max={100}
+//                                       step={2}
+//                                       value={[parseInt(field.styles[deviceView].height.replace('px', '') || '40')]}
+//                                       onValueChange={(value) =>
+//                                         updateFormField(field.id, deviceView, {
+//                                           styles: {
+//                                             ...field.styles,
+//                                             [deviceView]: {
+//                                               ...field.styles[deviceView],
+//                                               height: `${value[0]}px`
+//                                             }
+//                                           }
+//                                         })
+//                                       }
+//                                     />
+//                                   </div>
+//                                 </div>
+
+//                                 <div className="space-y-2">
+//                                   <Label>Font Size</Label>
+//                                   <Slider
+//                                     min={10}
+//                                     max={24}
+//                                     step={1}
+//                                     value={[parseInt(field.styles[deviceView].fontSize.replace('px', '') || '16')]}
+//                                     onValueChange={(value) =>
+//                                       updateFormField(field.id, deviceView, {
+//                                         styles: {
+//                                           ...field.styles,
+//                                           [deviceView]: {
+//                                             ...field.styles[deviceView],
+//                                             fontSize: `${value[0]}px`
+//                                           }
+//                                         }
+//                                       })
+//                                     }
+//                                   />
+//                                 </div>
+
+//                                 <div className="flex items-center space-x-2">
+//                                   <Switch
+//                                     id={`required-${field.id}`}
+//                                     checked={field.required}
+//                                     onCheckedChange={(checked) =>
+//                                       updateFormField(field.id, deviceView, {
+//                                         required: checked,
+//                                       })
+//                                     }
+//                                   />
+//                                   <Label htmlFor={`required-${field.id}`}>Required</Label>
+//                                 </div>
+//                               </div>
+//                             </Card>
+//                           ))}
+//                         </div>
+//                       </div>
+//                     )}
+//                   </div>
+//                 </div>
+//               </ResizablePanel>
+//             </>
+//           )}
+//         </ResizablePanelGroup>
+
+//         <div className="bg-background border-t p-4 flex justify-between">
+//           <Button
+//             variant="outline"
+//             onClick={() => navigate('/b/dashboard/campaign-portal')}
+//           >
+//             Back
+//           </Button>
+//           <div className="flex space-x-2">
+//             <Button
+//               variant="outline"
+//               disabled={currentStep === 0}
+//               onClick={() => setCurrentStep(currentStep - 1)}
+//             >
+//               Previous Step
+//             </Button>
+//             <Button
+//               onClick={() => {
+//                 if (currentStep < builderSteps.length - 1) {
+//                   setCurrentStep(currentStep + 1);
+//                 } else {
+//                   navigate(`/b/dashboard/campaign-portal/reward/${campaignId}`);
+//                 }
+//               }}
+//               className="bg-amber-500 hover:bg-amber-600"
+//             >
+//               {currentStep < builderSteps.length - 1 ? 'Next Step' : 'Next: Reward Settings'}
+//             </Button>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+
+
+// import React, { useEffect, useState } from "react";
+// import { Monitor, Tablet, Smartphone, ChevronLeft, ChevronRight, Save, ScanEye, Trash2, Image as ImageIcon } from 'lucide-react';
+// import { Button } from "@/components/ui/button";
+// import { Input } from "@/components/ui/input";
+// import { Label } from "@/components/ui/label";
+// import { Card, CardContent } from "@/components/ui/card";
+// import {
+//   Tooltip,
+//   TooltipContent,
+//   TooltipProvider,
+//   TooltipTrigger,
+// } from "@/components/ui/tooltip";
+// import { useNavigate, useParams } from "react-router-dom";
+// import EditableText from "./editable-text";
+// import useEditableContent from "@/hooks/useEditableContent";
+// import campaignApi from "@/api/campaignApi";
+// import { useMutation } from "@tanstack/react-query";
+// import { toast } from "react-toastify";
+// import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+// import { Switch } from "@/components/ui/switch";
+// import { Slider } from "@/components/ui/slider";
+// import { Loader } from "../../../loader";
+// import {
+//   ResizableHandle,
+//   ResizablePanel,
+//   ResizablePanelGroup,
+// } from "@/components/ui/resizable";
+// import { Separator } from "@/components/ui/separator";
+// import { Badge } from "@/components/ui/badge";
+// import { X } from "lucide-react";
+
+// const builderSteps = [
+//   "Campaign Page",
+//   "Thank You Page"
+// ];
+
+// export default function CampaignBuilder() {
+//   const [deviceView, setDeviceView] = useState("desktop");
+//   const navigate = useNavigate();
+//   const { campaignId } = useParams();
+//   const [campaign, setCampaign] = useState(null);
+//   const referrerName = 'Referrer';
+//   const businessName = "Business";
+//   const [selectedElement, setSelectedElement] = useState(null);
+//   const [sidebarOpen, setSidebarOpen] = useState(false);
+  
+//   const {
+//     content,
+//     currentStep,
+//     setCurrentStep,
+//     updateContent,
+//     updateStyles,
+//     updateBackground,
+//     updateBackgroundStyles,
+//     setContent,
+//     addFormField,
+//     updateFormField,
+//     deleteFormField
+//   } = useEditableContent();
+
+//   const getCampaignbyIdMutation = useMutation({
+//     mutationFn: campaignApi.getCampaignById,
+//     onSuccess: (data) => {
+//       const parsedData = JSON.parse(data.refereeJSON);
+//       setContent(parsedData);
+//       setCampaign(data);
+//     },
+//     onError: (err) => {
+//       console.log(err, "get Err");
+//     }
+//   });
+
+//   useEffect(() => {
+//     getCampaignbyIdMutation.mutate({
+//       campaignId: campaignId
+//     });
+//   }, []);
+
+//   const updateCampaignStateMutation = useMutation({
+//     mutationFn: campaignApi.updateCampaignState,
+//     onSuccess: (data) => {
+//       toast.success(data.message);
+//     },
+//     onError: (err) => {
+//       console.log(err, "err");
+//     }
+//   });
+
+//   const handleSave = () => {
+//     updateCampaignStateMutation.mutate({
+//       state: JSON.stringify(content),
+//       campaignId: campaignId
+//     });
+//   };
+
+//   const renderContent = (content) => {
+//     return content
+//       .replace(/{{referrerName}}/g, referrerName)
+//       .replace(/{{businessName}}/g, businessName);
+//   };
+
+//   const [uploadedImage, setUploadedImage] = useState(null);
+//   const [uploadedBackground, setUploadedBackground] = useState(null);
+//   const [uploadedThankYouBackground, setUploadedThankYouBackground] = useState(null);
+
+//   const uploadImageMutation = useMutation({
+//     mutationFn: campaignApi.uploadImage,
+//     onSuccess: (data) => {
+//       return data.url;
+//     },
+//     onError: (err) => {
+//       toast.error('Unable to upload image.');
+//       throw err;
+//     }
+//   });
+
+//   const handleImageUpload = async (e, type) => {
+//     const file = e.target.files[0];
+//     if (file) {
+//       try {
+//         const formData = new FormData();
+//         formData.append('image', file);
+//         const url = await uploadImageMutation.mutateAsync(formData);
+        
+//         if (type === 'logo') {
+//           setUploadedImage(url);
+//           updateContent('logo', url);
+//           toast.success('Logo uploaded successfully');
+//         } else if (type === 'background') {
+//           setUploadedBackground(url);
+//           updateBackground('background', 'image', url);
+//           toast.success('Background image uploaded successfully');
+//         } else if (type === 'thankYouBackground') {
+//           setUploadedThankYouBackground(url);
+//           updateBackground('thankYouPage', 'image', url);
+//           toast.success('Thank You page background uploaded successfully');
+//         }
+//       } catch (err) {
+//         console.error(err);
+//       }
+//     }
+//   };
+
+//   const getDeviceWidth = () => {
+//     switch (deviceView) {
+//       case "desktop": return "100%";
+//       case "tablet": return "768px";
+//       case "mobile": return "375px";
+//       default: return "100%";
+//     }
+//   };
+
+//   const handleElementClick = (elementName) => {
+//     setSelectedElement(elementName);
+//     setSidebarOpen(true);
+//   };
+
+//   const closeSidebar = () => {
+//     setSidebarOpen(false);
+//     setSelectedElement(null);
+//   };
+
+//   const getBackgroundStyle = (page) => {
+//     const bg = content[page]?.background || content.background;
+//     const viewportStyles = bg.styles[deviceView] || {};
+    
+//     return {
+//       backgroundColor: bg.color,
+//       backgroundImage: bg.image ? `url(${bg.image})` : 'none',
+//       backgroundRepeat: bg.repeat,
+//       backgroundSize: bg.size,
+//       backgroundPosition: bg.position,
+//       ...viewportStyles
+//     };
+//   };
+
+//   if (getCampaignbyIdMutation.isPending) {
+//     return <Loader />;
+//   }
+
+//   const renderMainContent = () => (
+//     <div className="relative h-full">
+//       <div 
+//         className="absolute inset-0 cursor-pointer border-2 border-transparent hover:border-dashed hover:border-primary"
+//         onClick={() => handleElementClick('background')}
+//         style={getBackgroundStyle('background')}
+//       />
+//       <div className="relative p-6">
+//         <div className="items-center mb-4">
+//           <img
+//             src={content.logo.content}
+//             style={content.logo.styles[deviceView]}
+//             alt=""
+//             className="mx-auto cursor-pointer hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out"
+//             onClick={() => handleElementClick('logo')}
+//           />
+
+//           <EditableText
+//             value={content.header.content}
+//             onChange={(value) => updateContent('header', value)}
+//             className="text-center hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out cursor-pointer"
+//             styles={content.header.styles}
+//             elementName="header"
+//             setSelectedElement={handleElementClick}
+//             renderContent={renderContent}
+//             deviceView={deviceView}
+//           />
+//         </div>
+
+//         <EditableText
+//           value={content.description1.content}
+//           onChange={(value) => updateContent('description1', value)}
+//           className="text-gray-800 dark:text-gray-200 mb-4 text-center hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out cursor-pointer"
+//           styles={content.description1.styles}
+//           elementName="description1"
+//           setSelectedElement={handleElementClick}
+//           renderContent={renderContent}
+//           deviceView={deviceView}
+//         />
+
+//         <EditableText
+//           value={content.description2.content}
+//           onChange={(value) => updateContent('description2', value)}
+//           className="text-gray-800 dark:text-gray-200 mb-4 text-center hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out cursor-pointer"
+//           styles={content.description2.styles}
+//           elementName="description2"
+//           setSelectedElement={handleElementClick}
+//           renderContent={renderContent}
+//           deviceView={deviceView}
+//         />
+
+//         <Card 
+//           className="mx-auto cursor-pointer hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out"
+//           onClick={() => handleElementClick('form')}
+//         >
+//           <CardContent>
+//             <form disabled>
+//               <div className="grid gap-4 mt-4">
+//                 {content?.form?.fields?.map((field) => (
+//                   <div key={field.id} className="grid gap-2">
+//                     <Label htmlFor={field.id} style={field.styles[deviceView]}>
+//                       {field.label}
+//                     </Label>
+//                     <Input
+//                       id={field.id}
+//                       type={field.type}
+//                       placeholder={field.placeholder}
+//                       required={field.required}
+//                       style={field.styles[deviceView]}
+//                       disabled
+//                     />
+//                   </div>
+//                 ))}
+//                 <Button type="submit" className="w-full" disabled>
+//                   Submit
+//                 </Button>
+//               </div>
+//             </form>
+//           </CardContent>
+//         </Card>
+//       </div>
+//     </div>
+//   );
+
+//   const renderThankYouPage = () => (
+//     <div className="relative h-full">
+//       <div 
+//         className="absolute inset-0 cursor-pointer border-2 border-transparent hover:border-dashed hover:border-primary"
+//         onClick={() => handleElementClick('thankYouPageBackground')}
+//         style={getBackgroundStyle('thankYouPage')}
+//       />
+//       <div className="relative p-6 flex flex-col items-center justify-center h-full">
+//         <EditableText
+//           value={content.thankYouPage.content}
+//           onChange={(value) => updateContent('thankYouPage', value)}
+//           className="text-center hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out cursor-pointer"
+//           styles={content.thankYouPage.styles}
+//           elementName="thankYouPage"
+//           setSelectedElement={handleElementClick}
+//           renderContent={renderContent}
+//           deviceView={deviceView}
+//         />
+//         <Button 
+//           onClick={() => setCurrentStep(0)}
+//           className="mt-8"
+//         >
+//           Back to Campaign
+//         </Button>
+//       </div>
+//     </div>
+//   );
+
+//   return (
+//     <div className="flex h-screen bg-muted/40">
+//       <div className="flex-1 flex flex-col overflow-hidden">
+//         <div className="bg-background border-b p-4">
+//           <div className="flex items-center justify-between">
+//             <div>
+//               <h1 className="text-xl font-bold">{campaign?.campaignName}</h1>
+//               <div className="flex items-center space-x-2 mt-1">
+//                 {builderSteps.map((step, index) => (
+//                   <React.Fragment key={step}>
+//                     <Badge 
+//                       variant={currentStep === index ? "default" : "secondary"}
+//                       className="cursor-pointer"
+//                       onClick={() => setCurrentStep(index)}
+//                     >
+//                       {step}
+//                     </Badge>
+//                     {index < builderSteps.length - 1 && (
+//                       <ChevronRight className="h-4 w-4 text-muted-foreground" />
+//                     )}
+//                   </React.Fragment>
+//                 ))}
+//               </div>
+//             </div>
+            
+//             <div className="flex items-center space-x-2">
+//               <Button variant="outline" onClick={handleSave} className="gap-2">
+//                 <Save className="h-4 w-4" />
+//                 Save
+//               </Button>
+//               <Button variant="outline" className="gap-2">
+//                 <ScanEye className="h-4 w-4" />
+//                 Preview
+//               </Button>
+//             </div>
+//           </div>
+//         </div>
+
+//         <ResizablePanelGroup direction="horizontal" className="flex-1">
+//           <ResizablePanel defaultSize={sidebarOpen ? 70 : 100} minSize={50}>
+//             <div className="h-full flex flex-col">
+//               <div className="bg-background border-b p-2 flex items-center justify-between">
+//                 <div className="flex items-center space-x-2">
+//                   <span className="text-sm text-muted-foreground">
+//                     {builderSteps[currentStep]}
+//                   </span>
+//                 </div>
+                
+//                 <div className="flex items-center space-x-1">
+//                   <TooltipProvider>
+//                     <Tooltip>
+//                       <TooltipTrigger asChild>
+//                         <Button
+//                           variant={deviceView === "desktop" ? "default" : "outline"}
+//                           size="icon"
+//                           onClick={() => setDeviceView("desktop")}
+//                         >
+//                           <Monitor className="h-4 w-4" />
+//                         </Button>
+//                       </TooltipTrigger>
+//                       <TooltipContent>Desktop View</TooltipContent>
+//                     </Tooltip>
+//                   </TooltipProvider>
+//                   <TooltipProvider>
+//                     <Tooltip>
+//                       <TooltipTrigger asChild>
+//                         <Button
+//                           variant={deviceView === "tablet" ? "default" : "outline"}
+//                           size="icon"
+//                           onClick={() => setDeviceView("tablet")}
+//                         >
+//                           <Tablet className="h-4 w-4" />
+//                         </Button>
+//                       </TooltipTrigger>
+//                       <TooltipContent>Tablet View</TooltipContent>
+//                     </Tooltip>
+//                   </TooltipProvider>
+//                   <TooltipProvider>
+//                     <Tooltip>
+//                       <TooltipTrigger asChild>
+//                         <Button
+//                           variant={deviceView === "mobile" ? "default" : "outline"}
+//                           size="icon"
+//                           onClick={() => setDeviceView("mobile")}
+//                         >
+//                           <Smartphone className="h-4 w-4" />
+//                         </Button>
+//                       </TooltipTrigger>
+//                       <TooltipContent>Mobile View</TooltipContent>
+//                     </Tooltip>
+//                   </TooltipProvider>
+//                 </div>
+//               </div>
+              
+//               <div className="flex-1 overflow-auto p-4 bg-muted/20">
+//                 <div 
+//                   className="mx-auto bg-background rounded-lg shadow-sm border"
+//                   style={{
+//                     width: getDeviceWidth(),
+//                     maxWidth: "100%",
+//                     transition: "width 0.2s ease",
+//                     margin: "0 auto",
+//                     // height: "100%",
+//                     minHeight: "500px",
+//                     overflow: 'hidden'
+//                   }}
+//                 >
+//                   {currentStep === 0 ? renderMainContent() : renderThankYouPage()}
+//                 </div>
+//               </div>
+//             </div>
+//           </ResizablePanel>
+
+//           {sidebarOpen && (
+//             <>
+//               <ResizableHandle withHandle />
+//               <ResizablePanel defaultSize={30} minSize={25}>
+//                 <div className="h-full overflow-auto p-4 bg-background border-l relative">
+//                   <Button 
+//                     variant="ghost" 
+//                     size="icon" 
+//                     className="absolute top-2 right-2 h-8 w-8"
+//                     onClick={closeSidebar}
+//                   >
+//                     <X className="h-4 w-4" />
+//                   </Button>
+                  
+//                   <div className="space-y-6">
+//                     <h2 className="text-lg font-semibold">
+//                       {selectedElement?.charAt(0).toUpperCase() + selectedElement?.slice(1)} Settings
+//                     </h2>
+                    
+//                     <Separator />
+
+//                     <div className="space-y-2">
+//                       <Label>Viewport</Label>
+//                       <Select 
+//                         value={deviceView}
+//                         onValueChange={setDeviceView}
+//                       >
+//                         <SelectTrigger>
+//                           <SelectValue placeholder="Select viewport" />
+//                         </SelectTrigger>
+//                         <SelectContent>
+//                           <SelectItem value="desktop">Desktop</SelectItem>
+//                           <SelectItem value="tablet">Tablet</SelectItem>
+//                           <SelectItem value="mobile">Mobile</SelectItem>
+//                         </SelectContent>
+//                       </Select>
+//                     </div>
+
+//                     {['header', 'description1', 'description2', 'thankYouPage'].includes(selectedElement) && (
+//                       <div className="space-y-4">
+//                         <div className="space-y-2">
+//                           <Label>Text Content</Label>
+//                           <Input
+//                             value={content[selectedElement].content}
+//                             onChange={(e) => updateContent(selectedElement, e.target.value)}
+//                           />
+//                         </div>
+                        
+//                         <Accordion type="multiple">
+//                           <AccordionItem value="styles">
+//                             <AccordionTrigger>Text Styles</AccordionTrigger>
+//                             <AccordionContent className="space-y-4">
+//                               <div className="space-y-2">
+//                                 <Label>Text Color</Label>
+//                                 <Input
+//                                   type="color"
+//                                   value={content[selectedElement].styles[deviceView].color || '#000000'}
+//                                   onChange={(e) =>
+//                                     updateStyles(selectedElement, deviceView, {
+//                                       color: e.target.value,
+//                                     })
+//                                   }
+//                                 />
+//                               </div>
+
+//                               <div className="space-y-2">
+//                                 <Label>Font Size</Label>
+//                                 <Slider
+//                                   min={12}
+//                                   max={48}
+//                                   step={1}
+//                                   value={[parseInt(content[selectedElement].styles[deviceView].fontSize || '16px')]}
+//                                   onValueChange={(value) =>
+//                                     updateStyles(selectedElement, deviceView, {
+//                                       fontSize: `${value[0]}px`,
+//                                     })
+//                                   }
+//                                 />
+//                               </div>
+
+//                               <div className="space-y-2">
+//                                 <Label>Background Color</Label>
+//                                 <Input
+//                                   type="color"
+//                                   value={content[selectedElement].styles[deviceView].backgroundColor || 'transparent'}
+//                                   onChange={(e) =>
+//                                     updateStyles(selectedElement, deviceView, {
+//                                       backgroundColor: e.target.value,
+//                                     })
+//                                   }
+//                                 />
+//                               </div>
+//                             </AccordionContent>
+//                           </AccordionItem>
+
+//                           <AccordionItem value="dimensions">
+//                             <AccordionTrigger>Dimensions & Spacing</AccordionTrigger>
+//                             <AccordionContent className="space-y-4">
+//                               <div className="grid grid-cols-2 gap-4">
+//                                 <div className="space-y-2">
+//                                   <Label>Width</Label>
+//                                   <div className="flex items-center gap-2">
+//                                     <Slider
+//                                       min={50}
+//                                       max={800}
+//                                       step={5}
+//                                       value={[parseInt(content[selectedElement].styles[deviceView].width?.replace('px', '') || '200')]}
+//                                       onValueChange={(value) =>
+//                                         updateStyles(selectedElement, deviceView, {
+//                                           width: `${value[0]}px`,
+//                                         })
+//                                       }
+//                                     />
+//                                     <Input
+//                                       className="w-20"
+//                                       value={content[selectedElement].styles[deviceView].width}
+//                                       onChange={(e) =>
+//                                         updateStyles(selectedElement, deviceView, {
+//                                           width: e.target.value.includes('px') ? e.target.value : `${e.target.value}px`,
+//                                         })
+//                                       }
+//                                     />
+//                                   </div>
+//                                 </div>
+//                                 <div className="space-y-2">
+//                                   <Label>Height</Label>
+//                                   <div className="flex items-center gap-2">
+//                                     <Slider
+//                                       min={20}
+//                                       max={500}
+//                                       step={5}
+//                                       value={[parseInt(content[selectedElement].styles[deviceView].height?.replace('px', '') || '100')]}
+//                                       onValueChange={(value) =>
+//                                         updateStyles(selectedElement, deviceView, {
+//                                           height: `${value[0]}px`,
+//                                         })
+//                                       }
+//                                     />
+//                                     <Input
+//                                       className="w-20"
+//                                       value={content[selectedElement].styles[deviceView].height}
+//                                       onChange={(e) =>
+//                                         updateStyles(selectedElement, deviceView, {
+//                                           height: e.target.value.includes('px') ? e.target.value : `${e.target.value}px`,
+//                                         })
+//                                       }
+//                                     />
+//                                   </div>
+//                                 </div>
+//                               </div>
+
+//                               <div className="space-y-2">
+//                                 <Label>Padding</Label>
+//                                 <Slider
+//                                   min={0}
+//                                   max={40}
+//                                   step={1}
+//                                   value={[parseInt(content[selectedElement].styles[deviceView].padding || '0px')]}
+//                                   onValueChange={(value) =>
+//                                     updateStyles(selectedElement, deviceView, {
+//                                       padding: `${value[0]}px`,
+//                                     })
+//                                   }
+//                                 />
+//                               </div>
+
+//                               <div className="space-y-2">
+//                                 <Label>Margin</Label>
+//                                 <Slider
+//                                   min={0}
+//                                   max={40}
+//                                   step={1}
+//                                   value={[parseInt(content[selectedElement].styles[deviceView].margin?.split(' ')[0]?.replace('px', '') || '0')]}
+//                                   onValueChange={(value) =>
+//                                     updateStyles(selectedElement, deviceView, {
+//                                       margin: `${value[0]}px`,
+//                                     })
+//                                   }
+//                                 />
+//                               </div>
+
+//                               <div className="space-y-2">
+//                                 <Label>Border Radius</Label>
+//                                 <Slider
+//                                   min={0}
+//                                   max={20}
+//                                   step={1}
+//                                   value={[parseInt(content[selectedElement].styles[deviceView].borderRadius || '0px')]}
+//                                   onValueChange={(value) =>
+//                                     updateStyles(selectedElement, deviceView, {
+//                                       borderRadius: `${value[0]}px`,
+//                                     })
+//                                   }
+//                                 />
+//                               </div>
+//                             </AccordionContent>
+//                           </AccordionItem>
+//                         </Accordion>
+//                       </div>
+//                     )}
+
+//                     {selectedElement === 'logo' && (
+//                       <div className="space-y-4">
+//                         <div className="space-y-2">
+//                           <Label>Upload Logo</Label>
+//                           <Input
+//                             type="file"
+//                             accept="image/*"
+//                             onChange={(e) => handleImageUpload(e, 'logo')}
+//                             className="cursor-pointer"
+//                           />
+//                           {content.logo.content && (
+//                             <div className="mt-2">
+//                               <img
+//                                 src={content.logo.content}
+//                                 alt="Uploaded Logo"
+//                                 className="w-32 h-32 object-contain border rounded"
+//                               />
+//                             </div>
+//                           )}
+//                         </div>
+                        
+//                         <Accordion type="multiple">
+//                           <AccordionItem value="dimensions">
+//                             <AccordionTrigger>Dimensions</AccordionTrigger>
+//                             <AccordionContent className="space-y-4">
+//                               <div className="grid grid-cols-2 gap-4">
+//                                 <div className="space-y-2">
+//                                   <Label>Width</Label>
+//                                   <div className="flex items-center gap-2">
+//                                     <Slider
+//                                       min={50}
+//                                       max={300}
+//                                       step={5}
+//                                       value={[parseInt(content.logo.styles[deviceView].width || '200px')]}
+//                                       onValueChange={(value) =>
+//                                         updateStyles('logo', deviceView, {
+//                                           width: `${value[0]}px`,
+//                                         })
+//                                       }
+//                                     />
+//                                     <Input
+//                                       className="w-20"
+//                                       value={content.logo.styles[deviceView].width}
+//                                       onChange={(e) =>
+//                                         updateStyles('logo', deviceView, {
+//                                           width: e.target.value.includes('px') ? e.target.value : `${e.target.value}px`,
+//                                         })
+//                                       }
+//                                     />
+//                                   </div>
+//                                 </div>
+//                                 <div className="space-y-2">
+//                                   <Label>Height</Label>
+//                                   <div className="flex items-center gap-2">
+//                                     <Slider
+//                                       min={50}
+//                                       max={300}
+//                                       step={5}
+//                                       value={[parseInt(content.logo.styles[deviceView].height || '200px')]}
+//                                       onValueChange={(value) =>
+//                                         updateStyles('logo', deviceView, {
+//                                           height: `${value[0]}px`,
+//                                         })
+//                                       }
+//                                     />
+//                                     <Input
+//                                       className="w-20"
+//                                       value={content.logo.styles[deviceView].height}
+//                                       onChange={(e) =>
+//                                         updateStyles('logo', deviceView, {
+//                                           height: e.target.value.includes('px') ? e.target.value : `${e.target.value}px`,
+//                                         })
+//                                       }
+//                                     />
+//                                   </div>
+//                                 </div>
+//                               </div>
+//                             </AccordionContent>
+//                           </AccordionItem>
+//                         </Accordion>
+//                       </div>
+//                     )}
+
+//                     {(selectedElement === 'background' || selectedElement === 'thankYouPageBackground') && (
+//                       <div className="space-y-4">
+//                         <div className="space-y-2">
+//                           <Label>Background Type</Label>
+//                           <Select
+//                             value={content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background.image ? 'image' : 'color'}
+//                             onValueChange={(value) => {
+//                               const prop = selectedElement === 'background' ? 'background' : 'thankYouPage';
+//                               if (value === 'color') {
+//                                 updateBackground(prop, 'image', '');
+//                               }
+//                             }}
+//                           >
+//                             <SelectTrigger>
+//                               <SelectValue placeholder="Select background type" />
+//                             </SelectTrigger>
+//                             <SelectContent>
+//                               <SelectItem value="color">Color</SelectItem>
+//                               <SelectItem value="image">Image</SelectItem>
+//                             </SelectContent>
+//                           </Select>
+//                         </div>
+
+//                         {!content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background.image ? (
+//                           <div className="space-y-2">
+//                             <Label>Background Color</Label>
+//                             <Input
+//                               type="color"
+//                               value={content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background.color}
+//                               onChange={(e) => 
+//                                 updateBackground(
+//                                   selectedElement === 'background' ? 'background' : 'thankYouPage', 
+//                                   'color', 
+//                                   e.target.value
+//                                 )
+//                               }
+//                             />
+//                           </div>
+//                         ) : (
+//                           <>
+//                             <div className="space-y-2">
+//                               <Label>Background Image</Label>
+//                               <Input
+//                                 type="file"
+//                                 accept="image/*"
+//                                 onChange={(e) => handleImageUpload(
+//                                   e, 
+//                                   selectedElement === 'background' ? 'background' : 'thankYouBackground'
+//                                 )}
+//                                 className="cursor-pointer"
+//                               />
+//                               {content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background.image && (
+//                                 <div className="mt-2">
+//                                   <img
+//                                     src={content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background.image}
+//                                     alt="Background Preview"
+//                                     className="w-full h-32 object-cover rounded"
+//                                   />
+//                                 </div>
+//                               )}
+//                             </div>
+
+//                             <div className="space-y-2">
+//                               <Label>Background Repeat</Label>
+//                               <Select
+//                                 value={content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background.repeat}
+//                                 onValueChange={(value) => updateBackground(
+//                                   selectedElement === 'background' ? 'background' : 'thankYouPage',
+//                                   'repeat',
+//                                   value
+//                                 )}
+//                               >
+//                                 <SelectTrigger>
+//                                   <SelectValue placeholder="Select repeat style" />
+//                                 </SelectTrigger>
+//                                 <SelectContent>
+//                                   <SelectItem value="no-repeat">No Repeat</SelectItem>
+//                                   <SelectItem value="repeat">Repeat</SelectItem>
+//                                   <SelectItem value="repeat-x">Repeat X</SelectItem>
+//                                   <SelectItem value="repeat-y">Repeat Y</SelectItem>
+//                                 </SelectContent>
+//                               </Select>
+//                             </div>
+
+//                             <div className="space-y-2">
+//                               <Label>Background Size</Label>
+//                               <Select
+//                                 value={content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background.size}
+//                                 onValueChange={(value) => updateBackground(
+//                                   selectedElement === 'background' ? 'background' : 'thankYouPage',
+//                                   'size',
+//                                   value
+//                                 )}
+//                               >
+//                                 <SelectTrigger>
+//                                   <SelectValue placeholder="Select size" />
+//                                 </SelectTrigger>
+//                                 <SelectContent>
+//                                   <SelectItem value="cover">Cover</SelectItem>
+//                                   <SelectItem value="contain">Contain</SelectItem>
+//                                   <SelectItem value="auto">Auto</SelectItem>
+//                                 </SelectContent>
+//                               </Select>
+//                             </div>
+
+//                             <div className="space-y-2">
+//                               <Label>Background Position</Label>
+//                               <Select
+//                                 value={content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background.position}
+//                                 onValueChange={(value) => updateBackground(
+//                                   selectedElement === 'background' ? 'background' : 'thankYouPage',
+//                                   'position',
+//                                   value
+//                                 )}
+//                               >
+//                                 <SelectTrigger>
+//                                   <SelectValue placeholder="Select position" />
+//                                 </SelectTrigger>
+//                                 <SelectContent>
+//                                   <SelectItem value="center">Center</SelectItem>
+//                                   <SelectItem value="top">Top</SelectItem>
+//                                   <SelectItem value="bottom">Bottom</SelectItem>
+//                                   <SelectItem value="left">Left</SelectItem>
+//                                   <SelectItem value="right">Right</SelectItem>
+//                                 </SelectContent>
+//                               </Select>
+//                             </div>
+//                           </>
+//                         )}
+
+//                         <Accordion type="single" collapsible>
+//                           <AccordionItem value="viewport-styles">
+//                             <AccordionTrigger>Viewport Specific Styles</AccordionTrigger>
+//                             <AccordionContent className="space-y-4">
+//                               <div className="space-y-2">
+//                                 <Label>Opacity</Label>
+//                                 <Slider
+//                                   min={0}
+//                                   max={100}
+//                                   step={1}
+//                                   value={[parseInt(content[
+//                                     selectedElement === 'background' ? 'background' : 'thankYouPage'
+//                                   ].background.styles[deviceView]?.opacity || '100')]}
+//                                   onValueChange={(value) =>
+//                                     updateBackgroundStyles(
+//                                       selectedElement === 'background' ? 'background' : 'thankYouPage',
+//                                       deviceView,
+//                                       { opacity: `${value[0]}%` }
+//                                     )
+//                                   }
+//                                 />
+//                               </div>
+//                             </AccordionContent>
+//                           </AccordionItem>
+//                         </Accordion>
+//                       </div>
+//                     )}
+
+//                     {selectedElement === 'form' && (
+//                       <div className="space-y-4">
+//                         <div className="grid grid-cols-2 gap-2">
+//                           <Button
+//                             variant="outline"
+//                             size="sm"
+//                             onClick={() => addFormField('phone')}
+//                             disabled={content.form.fields.some(f => f.id === 'phone')}
+//                           >
+//                             Add Phone
+//                           </Button>
+//                           <Button
+//                             variant="outline"
+//                             size="sm"
+//                             onClick={() => addFormField('date')}
+//                             disabled={content.form.fields.some(f => f.id === 'date')}
+//                           >
+//                             Add Date
+//                           </Button>
+//                         </div>
+
+//                         <div className="space-y-4">
+//                           {content.form.fields.map((field) => (
+//                             <Card key={field.id} className="p-4">
+//                               <div className="flex justify-between items-center mb-3">
+//                                 <h4 className="font-medium">{field.label || 'Field'}</h4>
+//                                 {!['name', 'email'].includes(field.id) && (
+//                                   <Button
+//                                     variant="ghost"
+//                                     size="sm"
+//                                     onClick={() => deleteFormField(field.id)}
+//                                   >
+//                                     <Trash2 className="h-4 w-4 text-destructive" />
+//                                   </Button>
+//                                 )}
+//                               </div>
+
+//                               <div className="space-y-3">
+//                                 <div className="space-y-2">
+//                                   <Label>Label</Label>
+//                                   <Input
+//                                     value={field.label}
+//                                     onChange={(e) =>
+//                                       updateFormField(field.id, deviceView, {
+//                                         label: e.target.value,
+//                                       })
+//                                     }
+//                                   />
+//                                 </div>
+
+//                                 <div className="space-y-2">
+//                                   <Label>Placeholder</Label>
+//                                   <Input
+//                                     value={field.placeholder}
+//                                     onChange={(e) =>
+//                                       updateFormField(field.id, deviceView, {
+//                                         placeholder: e.target.value,
+//                                       })
+//                                     }
+//                                   />
+//                                 </div>
+
+//                                 <div className="grid grid-cols-2 gap-4">
+//                                   <div className="space-y-2">
+//                                     <Label>Width</Label>
+//                                     <div className="flex items-center gap-2">
+//                                       <Slider
+//                                         min={50}
+//                                         max={500}
+//                                         step={5}
+//                                         value={[parseInt(field.styles[deviceView].width.replace('%', '').replace('px', '') || '100')]}
+//                                         onValueChange={(value) =>
+//                                           updateFormField(field.id, deviceView, {
+//                                             styles: {
+//                                               ...field.styles,
+//                                               [deviceView]: {
+//                                                 ...field.styles[deviceView],
+//                                                 width: `${value[0]}%`
+//                                               }
+//                                             }
+//                                           })
+//                                         }
+//                                       />
+//                                       <Input
+//                                         className="w-20"
+//                                         value={field.styles[deviceView].width}
+//                                         onChange={(e) =>
+//                                           updateFormField(field.id, deviceView, {
+//                                             styles: {
+//                                               ...field.styles,
+//                                               [deviceView]: {
+//                                                 ...field.styles[deviceView],
+//                                                 width: e.target.value.includes('%') || e.target.value.includes('px') 
+//                                                   ? e.target.value 
+//                                                   : `${e.target.value}px`
+//                                               }
+//                                             }
+//                                           })
+//                                         }
+//                                       />
+//                                     </div>
+//                                   </div>
+
+//                                   <div className="space-y-2">
+//                                     <Label>Height</Label>
+//                                     <div className="flex items-center gap-2">
+//                                       <Slider
+//                                         min={20}
+//                                         max={100}
+//                                         step={2}
+//                                         value={[parseInt(field.styles[deviceView].height.replace('px', '') || '40')]}
+//                                         onValueChange={(value) =>
+//                                           updateFormField(field.id, deviceView, {
+//                                             styles: {
+//                                               ...field.styles,
+//                                               [deviceView]: {
+//                                                 ...field.styles[deviceView],
+//                                                 height: `${value[0]}px`
+//                                               }
+//                                             }
+//                                           })
+//                                         }
+//                                       />
+//                                       <Input
+//                                         className="w-20"
+//                                         value={field.styles[deviceView].height}
+//                                         onChange={(e) =>
+//                                           updateFormField(field.id, deviceView, {
+//                                             styles: {
+//                                               ...field.styles,
+//                                               [deviceView]: {
+//                                                 ...field.styles[deviceView],
+//                                                 height: e.target.value.includes('px') 
+//                                                   ? e.target.value 
+//                                                   : `${e.target.value}px`
+//                                               }
+//                                             }
+//                                           })
+//                                         }
+//                                       />
+//                                     </div>
+//                                   </div>
+//                                 </div>
+
+//                                 <div className="space-y-2">
+//                                   <Label>Font Size</Label>
+//                                   <Slider
+//                                     min={10}
+//                                     max={24}
+//                                     step={1}
+//                                     value={[parseInt(field.styles[deviceView].fontSize.replace('px', '') || '16')]}
+//                                     onValueChange={(value) =>
+//                                       updateFormField(field.id, deviceView, {
+//                                         styles: {
+//                                           ...field.styles,
+//                                           [deviceView]: {
+//                                             ...field.styles[deviceView],
+//                                             fontSize: `${value[0]}px`
+//                                           }
+//                                         }
+//                                       })
+//                                     }
+//                                   />
+//                                 </div>
+
+//                                 <div className="flex items-center space-x-2">
+//                                   <Switch
+//                                     id={`required-${field.id}`}
+//                                     checked={field.required}
+//                                     onCheckedChange={(checked) =>
+//                                       updateFormField(field.id, deviceView, {
+//                                         required: checked,
+//                                       })
+//                                     }
+//                                   />
+//                                   <Label htmlFor={`required-${field.id}`}>Required</Label>
+//                                 </div>
+//                               </div>
+//                             </Card>
+//                           ))}
+//                         </div>
+//                       </div>
+//                     )}
+//                   </div>
+//                 </div>
+//               </ResizablePanel>
+//             </>
+//           )}
+//         </ResizablePanelGroup>
+
+//         <div className="bg-background border-t p-4 flex justify-between">
+//           <Button 
+//             variant="outline" 
+//             onClick={() => navigate('/b/dashboard/campaign-portal')}
+//           >
+//             Back
+//           </Button>
+//           <div className="flex space-x-2">
+//             <Button 
+//               variant="outline"
+//               disabled={currentStep === 0}
+//               onClick={() => setCurrentStep(currentStep - 1)}
+//             >
+//               Previous Step
+//             </Button>
+//             <Button 
+//               onClick={() => {
+//                 if (currentStep < builderSteps.length - 1) {
+//                   setCurrentStep(currentStep + 1);
+//                 } else {
+//                   navigate(`/b/dashboard/campaign-portal/reward/${campaignId}`);
+//                 }
+//               }}
+//               className="bg-amber-500 hover:bg-amber-600"
+//             >
+//               {currentStep < builderSteps.length - 1 ? 'Next Step' : 'Next: Reward Settings'}
+//             </Button>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+import React, { useEffect, useState } from "react";
+import { Monitor, Tablet, Smartphone, ChevronLeft, ChevronRight, Save, ScanEye, Trash2, Image as ImageIcon } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip"
-import { useNavigate, useParams } from "react-router-dom"
-import EditableText from "./editable-text"
-import useEditableContent from "@/hooks/useEditableContent"
-import campaignApi from "@/api/campaignApi"
-import { useMutation } from "@tanstack/react-query"
-import { toast } from "react-toastify"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Switch } from "@/components/ui/switch"
-import { Slider } from "@/components/ui/slider"
-import { Loader } from "../../../loader"
+} from "@/components/ui/tooltip";
+import { useNavigate, useParams } from "react-router-dom";
+import EditableText from "./editable-text";
+import useEditableContent from "@/hooks/useEditableContent";
+import campaignApi from "@/api/campaignApi";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { Slider } from "@/components/ui/slider";
+import { Loader } from "../../../loader";
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
-} from "@/components/ui/resizable"
-import { Separator } from "@/components/ui/separator"
-import { Badge } from "@/components/ui/badge"
-import { X } from "lucide-react"
+} from "@/components/ui/resizable";
+import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
+import { X } from "lucide-react";
 
 const builderSteps = [
-  "Person Referring",
-  "Person Being Referred"
-]
+  "Campaign Page",
+  "Thank You Page"
+];
 
 export default function CampaignBuilder() {
-  const [currentBuilderStep, setCurrentBuilderStep] = useState(0)
-  const [deviceView, setDeviceView] = useState("desktop")
+  const [deviceView, setDeviceView] = useState("desktop");
   const navigate = useNavigate();
   const { campaignId } = useParams();
   const [campaign, setCampaign] = useState(null);
-  const referrerName = 'Referrer'
-  const businessName = "Business"
+  const referrerName = 'Referrer';
+  const businessName = "Business";
   const [selectedElement, setSelectedElement] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  
   const {
     content,
+    currentStep,
+    setCurrentStep,
     updateContent,
     updateStyles,
+    updateBackground,
+    updateBackgroundStyles,
     setContent,
     addFormField,
     updateFormField,
@@ -1075,36 +4710,36 @@ export default function CampaignBuilder() {
   const getCampaignbyIdMutation = useMutation({
     mutationFn: campaignApi.getCampaignById,
     onSuccess: (data) => {
-      const parsedData = JSON.parse(data.refereeJSON)
+      const parsedData = JSON.parse(data.refereeJSON);
       setContent(parsedData);
-      setCampaign(data)
+      setCampaign(data);
     },
     onError: (err) => {
       console.log(err, "get Err");
     }
-  })
+  });
 
   useEffect(() => {
     getCampaignbyIdMutation.mutate({
       campaignId: campaignId
-    })
-  }, [])
+    });
+  }, []);
 
   const updateCampaignStateMutation = useMutation({
     mutationFn: campaignApi.updateCampaignState,
     onSuccess: (data) => {
-      toast.success(data.message)
+      toast.success(data.message);
     },
     onError: (err) => {
       console.log(err, "err");
     }
-  })
+  });
 
   const handleSave = () => {
     updateCampaignStateMutation.mutate({
       state: JSON.stringify(content),
       campaignId: campaignId
-    })
+    });
   };
 
   const renderContent = (content) => {
@@ -1114,36 +4749,55 @@ export default function CampaignBuilder() {
   };
 
   const [uploadedImage, setUploadedImage] = useState(null);
+  const [uploadedBackground, setUploadedBackground] = useState(null);
+  const [uploadedThankYouBackground, setUploadedThankYouBackground] = useState(null);
 
-  const uploadLogoMutation = useMutation({
+  const uploadImageMutation = useMutation({
     mutationFn: campaignApi.uploadImage,
     onSuccess: (data) => {
-      setUploadedImage(data.url);
-      updateContent('logo', data.url);
-      toast.success('Image uploaded successfully')
+      return data.url;
     },
     onError: (err) => {
-      toast.error('Unable to upload image.')
+      toast.error('Unable to upload image.');
+      throw err;
     }
-  })
+  });
 
-  const handleImageUpload = (e) => {
+  const handleImageUpload = async (e, type) => {
     const file = e.target.files[0];
     if (file) {
-      const formData = new FormData();
-      formData.append('image', file);
-      uploadLogoMutation.mutate(formData);
+      try {
+        const formData = new FormData();
+        formData.append('image', file);
+        const url = await uploadImageMutation.mutateAsync(formData);
+        
+        if (type === 'logo') {
+          setUploadedImage(url);
+          updateContent('logo', url);
+          toast.success('Logo uploaded successfully');
+        } else if (type === 'background') {
+          setUploadedBackground(url);
+          updateBackground('background', 'image', url);
+          toast.success('Background image uploaded successfully');
+        } else if (type === 'thankYouBackground') {
+          setUploadedThankYouBackground(url);
+          updateBackground('thankYouPage', 'image', url);
+          toast.success('Thank You page background uploaded successfully');
+        }
+      } catch (err) {
+        console.error(err);
+      }
     }
   };
 
   const getDeviceWidth = () => {
     switch (deviceView) {
-      case "desktop": return "100%"
-      case "tablet": return "768px"
-      case "mobile": return "375px"
-      default: return "100%"
+      case "desktop": return "100%";
+      case "tablet": return "768px";
+      case "mobile": return "375px";
+      default: return "100%";
     }
-  }
+  };
 
   const handleElementClick = (elementName) => {
     setSelectedElement(elementName);
@@ -1155,15 +4809,294 @@ export default function CampaignBuilder() {
     setSelectedElement(null);
   };
 
+  const getBackgroundStyle = (page) => {
+    const bg = content[page]?.background || content.background;
+    const viewportStyles = bg.styles[deviceView] || {};
+    
+    return {
+      backgroundColor: bg.color,
+      backgroundImage: bg.image ? `url(${bg.image})` : 'none',
+      backgroundRepeat: bg.repeat,
+      backgroundSize: bg.size,
+      backgroundPosition: bg.position,
+      ...viewportStyles
+    };
+  };
+
   if (getCampaignbyIdMutation.isPending) {
-    return <Loader />
+    return <Loader />;
   }
 
+  const renderMainContent = () => (
+    <div className="relative h-full w-full">
+      {/* Clickable background overlay */}
+      <div 
+        className="absolute inset-0 cursor-pointer border-2 border-transparent hover:border-dashed hover:border-primary"
+        onClick={() => handleElementClick('background')}
+        style={getBackgroundStyle('background')}
+      />
+
+      {/* Clickable background element */}
+      <div 
+        className="absolute inset-0 cursor-pointer"
+        style={{ 
+          ...getBackgroundStyle('background'),
+          border: selectedElement === 'background' ? '2px dashed #3b82f6' : '2px solid transparent'
+        }}
+        onClick={() => {
+          handleElementClick('background');
+        }}
+      />
+      
+      <div className="relative p-6 w-full flex flex-col items-center">
+        <div className="items-center mb-4 w-full">
+          <img
+            src={content.logo.content}
+            style={content.logo.styles[deviceView]}
+            alt=""
+            className="cursor-pointer hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out"
+            onClick={() => handleElementClick('logo')}
+          />
+
+          <EditableText
+            value={content.header.content}
+            onChange={(value) => updateContent('header', value)}
+            className="hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out cursor-pointer"
+            styles={content.header.styles}
+            elementName="header"
+            setSelectedElement={handleElementClick}
+            renderContent={renderContent}
+            deviceView={deviceView}
+          />
+        </div>
+
+        <EditableText
+          value={content.description1.content}
+          onChange={(value) => updateContent('description1', value)}
+          className="text-gray-800 dark:text-gray-200 mb-4 hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out cursor-pointer"
+          styles={content.description1.styles}
+          elementName="description1"
+          setSelectedElement={handleElementClick}
+          renderContent={renderContent}
+          deviceView={deviceView}
+        />
+
+        <EditableText
+          value={content.description2.content}
+          onChange={(value) => updateContent('description2', value)}
+          className="text-gray-800 dark:text-gray-200 mb-4 hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out cursor-pointer"
+          styles={content.description2.styles}
+          elementName="description2"
+          setSelectedElement={handleElementClick}
+          renderContent={renderContent}
+          deviceView={deviceView}
+        />
+
+        <Card 
+          className="w-full max-w-[500px] cursor-pointer hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out"
+          onClick={() => handleElementClick('form')}
+        >
+          <CardContent>
+            <form disabled>
+              <div className="grid gap-4 mt-4">
+                {content?.form?.fields?.map((field) => (
+                  <div key={field.id} className="grid gap-2">
+                    <Label htmlFor={field.id} style={field.styles[deviceView]}>
+                      {field.label}
+                    </Label>
+                    <Input
+                      id={field.id}
+                      type={field.type}
+                      placeholder={field.placeholder}
+                      required={field.required}
+                      style={field.styles[deviceView]}
+                      disabled
+                    />
+                  </div>
+                ))}
+                <Button type="submit" className="w-full" disabled>
+                  Submit
+                </Button>
+              </div>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+
+  // const renderMainContent = () => (
+  //   <div className="relative h-full w-full">
+  //     {/* Single clickable background element with combined styles */}
+  //     <div 
+  //       className={`absolute inset-0 cursor-pointer ${
+  //         selectedElement === 'background' 
+  //           ? 'border-2 border-dashed border-primary' 
+  //           : 'border-2 border-transparent hover:border-dashed hover:border-primary'
+  //       }`}
+  //       onClick={() => handleElementClick('background')}
+  //       style={getBackgroundStyle('background')}
+  //     />
+      
+  //     {/* Content container with pointer events disabled when background is selected */}
+  //     <div 
+  //       className="relative p-6 w-full flex flex-col items-center"
+  //       style={{ pointerEvents: selectedElement === 'background' ? 'none' : 'auto' }}
+  //     >
+  //       <div className="items-center mb-4 w-full">
+  //         <img
+  //           src={content.logo.content}
+  //           style={content.logo.styles[deviceView]}
+  //           alt=""
+  //           className="cursor-pointer hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out"
+  //           onClick={() => handleElementClick('logo')}
+  //         />
+  
+  //         <EditableText
+  //           value={content.header.content}
+  //           onChange={(value) => updateContent('header', value)}
+  //           className="hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out cursor-pointer"
+  //           styles={content.header.styles}
+  //           elementName="header"
+  //           setSelectedElement={handleElementClick}
+  //           renderContent={renderContent}
+  //           deviceView={deviceView}
+  //         />
+  //       </div>
+  
+  //       <EditableText
+  //         value={content.description1.content}
+  //         onChange={(value) => updateContent('description1', value)}
+  //         className="text-gray-800 dark:text-gray-200 mb-4 hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out cursor-pointer"
+  //         styles={content.description1.styles}
+  //         elementName="description1"
+  //         setSelectedElement={handleElementClick}
+  //         renderContent={renderContent}
+  //         deviceView={deviceView}
+  //       />
+  
+  //       <EditableText
+  //         value={content.description2.content}
+  //         onChange={(value) => updateContent('description2', value)}
+  //         className="text-gray-800 dark:text-gray-200 mb-4 hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out cursor-pointer"
+  //         styles={content.description2.styles}
+  //         elementName="description2"
+  //         setSelectedElement={handleElementClick}
+  //         renderContent={renderContent}
+  //         deviceView={deviceView}
+  //       />
+  
+  //       <Card 
+  //         className="w-full max-w-[500px] cursor-pointer hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out"
+  //         onClick={() => handleElementClick('form')}
+  //       >
+  //         <CardContent>
+  //           <form disabled>
+  //             <div className="grid gap-4 mt-4">
+  //               {content?.form?.fields?.map((field) => (
+  //                 <div key={field.id} className="grid gap-2">
+  //                   <Label htmlFor={field.id} style={field.styles[deviceView]}>
+  //                     {field.label}
+  //                   </Label>
+  //                   <Input
+  //                     id={field.id}
+  //                     type={field.type}
+  //                     placeholder={field.placeholder}
+  //                     required={field.required}
+  //                     style={field.styles[deviceView]}
+  //                     disabled
+  //                   />
+  //                 </div>
+  //               ))}
+  //               <Button type="submit" className="w-full" disabled>
+  //                 Submit
+  //               </Button>
+  //             </div>
+  //           </form>
+  //         </CardContent>
+  //       </Card>
+  //     </div>
+  //   </div>
+  // );
+
+  const renderThankYouPage = () => (
+    <div className="relative h-full w-full">
+      {/* Clickable background overlay */}
+      <div 
+        className="absolute inset-0 cursor-pointer border-2 border-transparent hover:border-dashed hover:border-primary"
+        onClick={() => handleElementClick('thankYouPageBackground')}
+        style={getBackgroundStyle('thankYouPage')}
+      />
+
+      {/* Clickable background element */}
+      <div 
+        className="absolute inset-0 cursor-pointer"
+        style={{ 
+          ...getBackgroundStyle('thankYouPage'),
+          border: selectedElement === 'thankYouPageBackground' ? '2px dashed #3b82f6' : '2px solid transparent'
+        }}
+        onClick={() => {
+          handleElementClick('thankYouPageBackground');
+        }}
+      />
+      
+      <div className="relative p-6 w-full flex flex-col items-center justify-center h-full">
+        <EditableText
+          value={content.thankYouPage.content}
+          onChange={(value) => updateContent('thankYouPage', value)}
+          className="hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out cursor-pointer"
+          styles={content.thankYouPage.styles}
+          elementName="thankYouPage"
+          setSelectedElement={handleElementClick}
+          renderContent={renderContent}
+          deviceView={deviceView}
+        />
+        <Button 
+          onClick={() => setCurrentStep(0)}
+          className="mt-8"
+        >
+          Back to Campaign
+        </Button>
+      </div>
+    </div>
+  );
+
+  // const renderThankYouPage = () => (
+  //   <div className="relative h-full w-full">
+  //     {/* Clickable background element - now properly integrated */}
+  //     <div 
+  //       className={`absolute inset-0 cursor-pointer ${selectedElement === 'thankYouPageBackground' ? 'border-2 border-dashed border-primary' : 'border-2 border-transparent hover:border-dashed hover:border-primary'}`}
+  //       onClick={() => handleElementClick('thankYouPageBackground')}
+  //       style={getBackgroundStyle('thankYouPage')}
+  //     />
+      
+  //     {/* Content container with pointer events disabled when background is selected */}
+  //     <div 
+  //       className="relative p-6 w-full flex flex-col items-center justify-center h-full"
+  //       style={{ pointerEvents: selectedElement === 'thankYouPageBackground' ? 'none' : 'auto' }}
+  //     >
+  //       <EditableText
+  //         value={content.thankYouPage.content}
+  //         onChange={(value) => updateContent('thankYouPage', value)}
+  //         className="hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out cursor-pointer"
+  //         styles={content.thankYouPage.styles}
+  //         elementName="thankYouPage"
+  //         setSelectedElement={handleElementClick}
+  //         renderContent={renderContent}
+  //         deviceView={deviceView}
+  //       />
+  //       <Button 
+  //         onClick={() => setCurrentStep(0)}
+  //         className="mt-8"
+  //       >
+  //         Back to Campaign
+  //       </Button>
+  //     </div>
+  //   </div>
+  // );
   return (
     <div className="flex h-screen bg-muted/40">
-      {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Header */}
         <div className="bg-background border-b p-4">
           <div className="flex items-center justify-between">
             <div>
@@ -1172,9 +5105,9 @@ export default function CampaignBuilder() {
                 {builderSteps.map((step, index) => (
                   <React.Fragment key={step}>
                     <Badge 
-                      variant={currentBuilderStep === index ? "default" : "secondary"}
+                      variant={currentStep === index ? "default" : "secondary"}
                       className="cursor-pointer"
-                      onClick={() => setCurrentBuilderStep(index)}
+                      onClick={() => setCurrentStep(index)}
                     >
                       {step}
                     </Badge>
@@ -1199,16 +5132,13 @@ export default function CampaignBuilder() {
           </div>
         </div>
 
-        {/* Main Content Area */}
         <ResizablePanelGroup direction="horizontal" className="flex-1">
-          {/* Editor Panel - Always visible */}
           <ResizablePanel defaultSize={sidebarOpen ? 70 : 100} minSize={50}>
             <div className="h-full flex flex-col">
-              {/* Toolbar */}
               <div className="bg-background border-b p-2 flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <span className="text-sm text-muted-foreground">
-                    {builderSteps[currentBuilderStep]}
+                    {builderSteps[currentStep]}
                   </span>
                 </div>
                 
@@ -1258,7 +5188,6 @@ export default function CampaignBuilder() {
                 </div>
               </div>
               
-              {/* Preview Area */}
               <div className="flex-1 overflow-auto p-4 bg-muted/20">
                 <div 
                   className="mx-auto bg-background rounded-lg shadow-sm border"
@@ -1266,90 +5195,19 @@ export default function CampaignBuilder() {
                     width: getDeviceWidth(),
                     maxWidth: "100%",
                     transition: "width 0.2s ease",
-                    margin: "0 auto"
+                    margin: "0 auto",
+                    // height: "100%",
+                    minHeight: "500px",
+                    overflow: 'hidden',
+                    position: 'relative'
                   }}
                 >
-                  <div className="p-6">
-                    <div className="items-center mb-4">
-                      {/* Editable Image */}
-                      <img
-                        src={content.logo.content}
-                        style={content.logo.styles}
-                        alt=""
-                        className="w-40 h-40 mx-auto cursor-pointer hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out"
-                        onClick={() => handleElementClick('logo')}
-                      />
-
-                      {/* Editable Header */}
-                      <EditableText
-                        value={content.header.content}
-                        onChange={(value) => updateContent('header', value)}
-                        className="text-center text-xl hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out cursor-pointer"
-                        styles={content.header.styles}
-                        elementName="header"
-                        setSelectedElement={handleElementClick}
-                        renderContent={renderContent}
-                      />
-                    </div>
-
-                    {/* Editable Description 1 */}
-                    <EditableText
-                      value={content.description1.content}
-                      onChange={(value) => updateContent('description1', value)}
-                      className="text-md text-gray-800 dark:text-gray-200 mb-4 text-center hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out cursor-pointer"
-                      styles={content.description1.styles}
-                      elementName="description1"
-                      setSelectedElement={handleElementClick}
-                      renderContent={renderContent}
-                    />
-
-                    {/* Editable Description 2 */}
-                    <EditableText
-                      value={content.description2.content}
-                      onChange={(value) => updateContent('description2', value)}
-                      className="text-md text-gray-800 dark:text-gray-200 mb-4 text-center hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out cursor-pointer"
-                      styles={content.description2.styles}
-                      elementName="description2"
-                      setSelectedElement={handleElementClick}
-                      renderContent={renderContent}
-                    />
-
-                    <Card 
-                      className="mx-auto cursor-pointer hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out"
-                      onClick={() => handleElementClick('form')}
-                    >
-                      <CardContent>
-                        <form disabled>
-                          <div className="grid gap-4 mt-4">
-                            {content?.form?.fields?.map((field) => (
-                              <div key={field.id} className="grid gap-2">
-                                <Label htmlFor={field.id} style={field.styles}>
-                                  {field.label}
-                                </Label>
-                                <Input
-                                  id={field.id}
-                                  type={field.type}
-                                  placeholder={field.placeholder}
-                                  required={field.required}
-                                  style={field.styles}
-                                  disabled
-                                />
-                              </div>
-                            ))}
-                            <Button type="submit" className="w-full" disabled>
-                              Submit
-                            </Button>
-                          </div>
-                        </form>
-                      </CardContent>
-                    </Card>
-                  </div>
+                  {currentStep === 0 ? renderMainContent() : renderThankYouPage()}
                 </div>
               </div>
             </div>
           </ResizablePanel>
 
-          {/* Sidebar Panel - Only shown when an element is selected */}
           {sidebarOpen && (
             <>
               <ResizableHandle withHandle />
@@ -1371,46 +5229,172 @@ export default function CampaignBuilder() {
                     
                     <Separator />
 
-                    {selectedElement === 'header' && (
+                    <div className="space-y-2">
+                      <Label>Viewport</Label>
+                      <Select 
+                        value={deviceView}
+                        onValueChange={setDeviceView}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select viewport" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="desktop">Desktop</SelectItem>
+                          <SelectItem value="tablet">Tablet</SelectItem>
+                          <SelectItem value="mobile">Mobile</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {(selectedElement === 'background' || selectedElement === 'thankYouPageBackground') && (
                       <div className="space-y-4">
                         <div className="space-y-2">
-                          <Label>Text Content</Label>
-                          <Input
-                            value={content.header.content}
-                            onChange={(e) => updateContent('header', e.target.value)}
-                          />
+                          <Label>Background Type</Label>
+                          <Select
+                            value={content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background.image ? 'image' : 'color'}
+                            onValueChange={(value) => {
+                              const prop = selectedElement === 'background' ? 'background' : 'thankYouPage';
+                              if (value === 'color') {
+                                updateBackground(prop, 'image', '');
+                              }
+                            }}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select background type" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="color">Color</SelectItem>
+                              <SelectItem value="image">Image</SelectItem>
+                            </SelectContent>
+                          </Select>
                         </div>
-                        
+
+                        {!content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background.image ? (
+                          <div className="space-y-2">
+                            <Label>Background Color</Label>
+                            <Input
+                              type="color"
+                              value={content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background.color}
+                              onChange={(e) => 
+                                updateBackground(
+                                  selectedElement === 'background' ? 'background' : 'thankYouPage', 
+                                  'color', 
+                                  e.target.value
+                                )
+                              }
+                            />
+                          </div>
+                        ) : (
+                          <>
+                            <div className="space-y-2">
+                              <Label>Background Image</Label>
+                              <Input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => handleImageUpload(
+                                  e, 
+                                  selectedElement === 'background' ? 'background' : 'thankYouBackground'
+                                )}
+                                className="cursor-pointer"
+                              />
+                              {content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background.image && (
+                                <div className="mt-2">
+                                  <img
+                                    src={content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background.image}
+                                    alt="Background Preview"
+                                    className="w-full h-32 object-cover rounded"
+                                  />
+                                </div>
+                              )}
+                            </div>
+
+                            <div className="space-y-2">
+                              <Label>Background Repeat</Label>
+                              <Select
+                                value={content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background.repeat}
+                                onValueChange={(value) => updateBackground(
+                                  selectedElement === 'background' ? 'background' : 'thankYouPage',
+                                  'repeat',
+                                  value
+                                )}
+                              >
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select repeat style" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="no-repeat">No Repeat</SelectItem>
+                                  <SelectItem value="repeat">Repeat</SelectItem>
+                                  <SelectItem value="repeat-x">Repeat X</SelectItem>
+                                  <SelectItem value="repeat-y">Repeat Y</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+
+                            <div className="space-y-2">
+                              <Label>Background Size</Label>
+                              <Select
+                                value={content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background.size}
+                                onValueChange={(value) => updateBackground(
+                                  selectedElement === 'background' ? 'background' : 'thankYouPage',
+                                  'size',
+                                  value
+                                )}
+                              >
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select size" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="cover">Cover</SelectItem>
+                                  <SelectItem value="contain">Contain</SelectItem>
+                                  <SelectItem value="auto">Auto</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+
+                            <div className="space-y-2">
+                              <Label>Background Position</Label>
+                              <Select
+                                value={content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background.position}
+                                onValueChange={(value) => updateBackground(
+                                  selectedElement === 'background' ? 'background' : 'thankYouPage',
+                                  'position',
+                                  value
+                                )}
+                              >
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select position" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="center">Center</SelectItem>
+                                  <SelectItem value="top">Top</SelectItem>
+                                  <SelectItem value="bottom">Bottom</SelectItem>
+                                  <SelectItem value="left">Left</SelectItem>
+                                  <SelectItem value="right">Right</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          </>
+                        )}
+
                         <Accordion type="single" collapsible>
-                          <AccordionItem value="styles">
-                            <AccordionTrigger>Styles</AccordionTrigger>
+                          <AccordionItem value="viewport-styles">
+                            <AccordionTrigger>Viewport Specific Styles</AccordionTrigger>
                             <AccordionContent className="space-y-4">
                               <div className="space-y-2">
-                                <Label>Text Color</Label>
-                                <Input
-                                  type="color"
-                                  value={content.header.styles.color}
-                                  onChange={(e) =>
-                                    updateStyles('header', {
-                                      ...content.header.styles,
-                                      color: e.target.value,
-                                    })
-                                  }
-                                />
-                              </div>
-
-                              <div className="space-y-2">
-                                <Label>Font Size: {content.header.styles.fontSize}</Label>
+                                <Label>Opacity</Label>
                                 <Slider
-                                  min={12}
-                                  max={48}
+                                  min={0}
+                                  max={100}
                                   step={1}
-                                  value={[parseInt(content.header.styles.fontSize)]}
+                                  value={[parseInt(content[
+                                    selectedElement === 'background' ? 'background' : 'thankYouPage'
+                                  ].background.styles[deviceView]?.opacity || '100')]}
                                   onValueChange={(value) =>
-                                    updateStyles('header', {
-                                      ...content.header.styles,
-                                      fontSize: `${value[0]}px`,
-                                    })
+                                    updateBackgroundStyles(
+                                      selectedElement === 'background' ? 'background' : 'thankYouPage',
+                                      deviceView,
+                                      { opacity: `${value[0]}%` }
+                                    )
                                   }
                                 />
                               </div>
@@ -1420,28 +5404,27 @@ export default function CampaignBuilder() {
                       </div>
                     )}
 
-                    {selectedElement === 'description1' && (
+                    {['header', 'description1', 'description2', 'thankYouPage'].includes(selectedElement) && (
                       <div className="space-y-4">
                         <div className="space-y-2">
                           <Label>Text Content</Label>
                           <Input
-                            value={content.description1.content}
-                            onChange={(e) => updateContent('description1', e.target.value)}
+                            value={content[selectedElement].content}
+                            onChange={(e) => updateContent(selectedElement, e.target.value)}
                           />
                         </div>
                         
-                        <Accordion type="single" collapsible>
+                        <Accordion type="multiple">
                           <AccordionItem value="styles">
-                            <AccordionTrigger>Styles</AccordionTrigger>
+                            <AccordionTrigger>Text Styles</AccordionTrigger>
                             <AccordionContent className="space-y-4">
                               <div className="space-y-2">
                                 <Label>Text Color</Label>
                                 <Input
                                   type="color"
-                                  value={content.description1.styles.color}
+                                  value={content[selectedElement].styles[deviceView].color || '#000000'}
                                   onChange={(e) =>
-                                    updateStyles('description1', {
-                                      ...content.description1.styles,
+                                    updateStyles(selectedElement, deviceView, {
                                       color: e.target.value,
                                     })
                                   }
@@ -1449,65 +5432,131 @@ export default function CampaignBuilder() {
                               </div>
 
                               <div className="space-y-2">
-                                <Label>Font Size: {content.description1.styles.fontSize}</Label>
+                                <Label>Font Size</Label>
                                 <Slider
                                   min={12}
                                   max={48}
                                   step={1}
-                                  value={[parseInt(content.description1.styles.fontSize)]}
+                                  value={[parseInt(content[selectedElement].styles[deviceView].fontSize || '16px')]}
                                   onValueChange={(value) =>
-                                    updateStyles('description1', {
-                                      ...content.description1.styles,
+                                    updateStyles(selectedElement, deviceView, {
                                       fontSize: `${value[0]}px`,
+                                    })
+                                  }
+                                />
+                              </div>
+
+                              <div className="space-y-2">
+                                <Label>Background Color</Label>
+                                <Input
+                                  type="color"
+                                  value={content[selectedElement].styles[deviceView].backgroundColor || 'transparent'}
+                                  onChange={(e) =>
+                                    updateStyles(selectedElement, deviceView, {
+                                      backgroundColor: e.target.value,
                                     })
                                   }
                                 />
                               </div>
                             </AccordionContent>
                           </AccordionItem>
-                        </Accordion>
-                      </div>
-                    )}
 
-                    {selectedElement === 'description2' && (
-                      <div className="space-y-4">
-                        <div className="space-y-2">
-                          <Label>Text Content</Label>
-                          <Input
-                            value={content.description2.content}
-                            onChange={(e) => updateContent('description2', e.target.value)}
-                          />
-                        </div>
-                        
-                        <Accordion type="single" collapsible>
-                          <AccordionItem value="styles">
-                            <AccordionTrigger>Styles</AccordionTrigger>
+                          <AccordionItem value="dimensions">
+                            <AccordionTrigger>Dimensions & Spacing</AccordionTrigger>
                             <AccordionContent className="space-y-4">
+                              <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                  <Label>Width</Label>
+                                  <div className="flex items-center gap-2">
+                                    <Slider
+                                      min={50}
+                                      max={800}
+                                      step={5}
+                                      value={[parseInt(content[selectedElement].styles[deviceView].width?.replace('px', '') || '200')]}
+                                      onValueChange={(value) =>
+                                        updateStyles(selectedElement, deviceView, {
+                                          width: `${value[0]}px`,
+                                        })
+                                      }
+                                    />
+                                    <Input
+                                      className="w-20"
+                                      value={content[selectedElement].styles[deviceView].width}
+                                      onChange={(e) =>
+                                        updateStyles(selectedElement, deviceView, {
+                                          width: e.target.value.includes('px') ? e.target.value : `${e.target.value}px`,
+                                        })
+                                      }
+                                    />
+                                  </div>
+                                </div>
+                                <div className="space-y-2">
+                                  <Label>Max Width</Label>
+                                  <div className="flex items-center gap-2">
+                                    <Slider
+                                      min={100}
+                                      max={1200}
+                                      step={10}
+                                      value={[parseInt(content[selectedElement].styles[deviceView].maxWidth?.replace('px', '') || '800')]}
+                                      onValueChange={(value) =>
+                                        updateStyles(selectedElement, deviceView, {
+                                          maxWidth: `${value[0]}px`,
+                                        })
+                                      }
+                                    />
+                                    <Input
+                                      className="w-20"
+                                      value={content[selectedElement].styles[deviceView].maxWidth}
+                                      onChange={(e) =>
+                                        updateStyles(selectedElement, deviceView, {
+                                          maxWidth: e.target.value.includes('px') ? e.target.value : `${e.target.value}px`,
+                                        })
+                                      }
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+
                               <div className="space-y-2">
-                                <Label>Text Color</Label>
-                                <Input
-                                  type="color"
-                                  value={content.description2.styles.color}
-                                  onChange={(e) =>
-                                    updateStyles('description2', {
-                                      ...content.description2.styles,
-                                      color: e.target.value,
+                                <Label>Margin</Label>
+                                <Slider
+                                  min={0}
+                                  max={40}
+                                  step={1}
+                                  value={[parseInt(content[selectedElement].styles[deviceView].margin?.split(' ')[0]?.replace('px', '') || '0')]}
+                                  onValueChange={(value) =>
+                                    updateStyles(selectedElement, deviceView, {
+                                      margin: `${value[0]}px auto`,
                                     })
                                   }
                                 />
                               </div>
 
                               <div className="space-y-2">
-                                <Label>Font Size: {content.description2.styles.fontSize}</Label>
+                                <Label>Padding</Label>
                                 <Slider
-                                  min={12}
-                                  max={48}
+                                  min={0}
+                                  max={40}
                                   step={1}
-                                  value={[parseInt(content.description2.styles.fontSize)]}
+                                  value={[parseInt(content[selectedElement].styles[deviceView].padding || '0px')]}
                                   onValueChange={(value) =>
-                                    updateStyles('description2', {
-                                      ...content.description2.styles,
-                                      fontSize: `${value[0]}px`,
+                                    updateStyles(selectedElement, deviceView, {
+                                      padding: `${value[0]}px`,
+                                    })
+                                  }
+                                />
+                              </div>
+
+                              <div className="space-y-2">
+                                <Label>Border Radius</Label>
+                                <Slider
+                                  min={0}
+                                  max={20}
+                                  step={1}
+                                  value={[parseInt(content[selectedElement].styles[deviceView].borderRadius || '0px')]}
+                                  onValueChange={(value) =>
+                                    updateStyles(selectedElement, deviceView, {
+                                      borderRadius: `${value[0]}px`,
                                     })
                                   }
                                 />
@@ -1525,13 +5574,13 @@ export default function CampaignBuilder() {
                           <Input
                             type="file"
                             accept="image/*"
-                            onChange={handleImageUpload}
+                            onChange={(e) => handleImageUpload(e, 'logo')}
                             className="cursor-pointer"
                           />
-                          {uploadedImage && (
+                          {content.logo.content && (
                             <div className="mt-2">
                               <img
-                                src={uploadedImage}
+                                src={content.logo.content}
                                 alt="Uploaded Logo"
                                 className="w-32 h-32 object-contain border rounded"
                               />
@@ -1539,40 +5588,61 @@ export default function CampaignBuilder() {
                           )}
                         </div>
                         
-                        <Accordion type="single" collapsible>
-                          <AccordionItem value="styles">
-                            <AccordionTrigger>Styles</AccordionTrigger>
+                        <Accordion type="multiple">
+                          <AccordionItem value="dimensions">
+                            <AccordionTrigger>Dimensions</AccordionTrigger>
                             <AccordionContent className="space-y-4">
-                              <div className="space-y-2">
-                                <Label>Width: {content.logo.styles.width}</Label>
-                                <Slider
-                                  min={50}
-                                  max={300}
-                                  step={5}
-                                  value={[parseInt(content.logo.styles.width)]}
-                                  onValueChange={(value) =>
-                                    updateStyles('logo', {
-                                      ...content.logo.styles,
-                                      width: `${value[0]}px`,
-                                    })
-                                  }
-                                />
-                              </div>
-
-                              <div className="space-y-2">
-                                <Label>Height: {content.logo.styles.height}</Label>
-                                <Slider
-                                  min={50}
-                                  max={300}
-                                  step={5}
-                                  value={[parseInt(content.logo.styles.height)]}
-                                  onValueChange={(value) =>
-                                    updateStyles('logo', {
-                                      ...content.logo.styles,
-                                      height: `${value[0]}px`,
-                                    })
-                                  }
-                                />
+                              <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                  <Label>Width</Label>
+                                  <div className="flex items-center gap-2">
+                                    <Slider
+                                      min={50}
+                                      max={300}
+                                      step={5}
+                                      value={[parseInt(content.logo.styles[deviceView].width || '200px')]}
+                                      onValueChange={(value) =>
+                                        updateStyles('logo', deviceView, {
+                                          width: `${value[0]}px`,
+                                        })
+                                      }
+                                    />
+                                    <Input
+                                      className="w-20"
+                                      value={content.logo.styles[deviceView].width}
+                                      onChange={(e) =>
+                                        updateStyles('logo', deviceView, {
+                                          width: e.target.value.includes('px') ? e.target.value : `${e.target.value}px`,
+                                        })
+                                      }
+                                    />
+                                  </div>
+                                </div>
+                                <div className="space-y-2">
+                                  <Label>Height</Label>
+                                  <div className="flex items-center gap-2">
+                                    <Slider
+                                      min={50}
+                                      max={300}
+                                      step={5}
+                                      value={[parseInt(content.logo.styles[deviceView].height || '200px')]}
+                                      onValueChange={(value) =>
+                                        updateStyles('logo', deviceView, {
+                                          height: `${value[0]}px`,
+                                        })
+                                      }
+                                    />
+                                    <Input
+                                      className="w-20"
+                                      value={content.logo.styles[deviceView].height}
+                                      onChange={(e) =>
+                                        updateStyles('logo', deviceView, {
+                                          height: e.target.value.includes('px') ? e.target.value : `${e.target.value}px`,
+                                        })
+                                      }
+                                    />
+                                  </div>
+                                </div>
                               </div>
                             </AccordionContent>
                           </AccordionItem>
@@ -1623,8 +5693,7 @@ export default function CampaignBuilder() {
                                   <Input
                                     value={field.label}
                                     onChange={(e) =>
-                                      updateFormField(field.id, {
-                                        ...field,
+                                      updateFormField(field.id, deviceView, {
                                         label: e.target.value,
                                       })
                                     }
@@ -1636,9 +5705,193 @@ export default function CampaignBuilder() {
                                   <Input
                                     value={field.placeholder}
                                     onChange={(e) =>
-                                      updateFormField(field.id, {
-                                        ...field,
+                                      updateFormField(field.id, deviceView, {
                                         placeholder: e.target.value,
+                                      })
+                                    }
+                                  />
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-4">
+                                  <div className="space-y-2">
+                                    <Label>Width</Label>
+                                    <div className="flex items-center gap-2">
+                                      <Slider
+                                        min={50}
+                                        max={500}
+                                        step={5}
+                                        value={[parseInt(field.styles[deviceView].width.replace('%', '').replace('px', '') || '100')]}
+                                        onValueChange={(value) =>
+                                          updateFormField(field.id, deviceView, {
+                                            styles: {
+                                              ...field.styles,
+                                              [deviceView]: {
+                                                ...field.styles[deviceView],
+                                                width: `${value[0]}%`
+                                              }
+                                            }
+                                          })
+                                        }
+                                      />
+                                      <Input
+                                        className="w-20"
+                                        value={field.styles[deviceView].width}
+                                        onChange={(e) =>
+                                          updateFormField(field.id, deviceView, {
+                                            styles: {
+                                              ...field.styles,
+                                              [deviceView]: {
+                                                ...field.styles[deviceView],
+                                                width: e.target.value.includes('%') || e.target.value.includes('px') 
+                                                  ? e.target.value 
+                                                  : `${e.target.value}px`
+                                              }
+                                            }
+                                          })
+                                        }
+                                      />
+                                    </div>
+                                  </div>
+
+                                  <div className="space-y-2">
+                                    <Label>Max Width</Label>
+                                    <div className="flex items-center gap-2">
+                                      <Slider
+                                        min={100}
+                                        max={800}
+                                        step={10}
+                                        value={[parseInt(field.styles[deviceView].maxWidth?.replace('px', '') || '500')]}
+                                        onValueChange={(value) =>
+                                          updateFormField(field.id, deviceView, {
+                                            styles: {
+                                              ...field.styles,
+                                              [deviceView]: {
+                                                ...field.styles[deviceView],
+                                                maxWidth: `${value[0]}px`
+                                              }
+                                            }
+                                          })
+                                        }
+                                      />
+                                      <Input
+                                        className="w-20"
+                                        value={field.styles[deviceView].maxWidth}
+                                        onChange={(e) =>
+                                          updateFormField(field.id, deviceView, {
+                                            styles: {
+                                              ...field.styles,
+                                              [deviceView]: {
+                                                ...field.styles[deviceView],
+                                                maxWidth: e.target.value.includes('px') 
+                                                  ? e.target.value 
+                                                  : `${e.target.value}px`
+                                              }
+                                            }
+                                          })
+                                        }
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-4">
+                                  <div className="space-y-2">
+                                    <Label>Height</Label>
+                                    <div className="flex items-center gap-2">
+                                      <Slider
+                                        min={20}
+                                        max={100}
+                                        step={2}
+                                        value={[parseInt(field.styles[deviceView].height.replace('px', '') || '40')]}
+                                        onValueChange={(value) =>
+                                          updateFormField(field.id, deviceView, {
+                                            styles: {
+                                              ...field.styles,
+                                              [deviceView]: {
+                                                ...field.styles[deviceView],
+                                                height: `${value[0]}px`
+                                              }
+                                            }
+                                          })
+                                        }
+                                      />
+                                      <Input
+                                        className="w-20"
+                                        value={field.styles[deviceView].height}
+                                        onChange={(e) =>
+                                          updateFormField(field.id, deviceView, {
+                                            styles: {
+                                              ...field.styles,
+                                              [deviceView]: {
+                                                ...field.styles[deviceView],
+                                                height: e.target.value.includes('px') 
+                                                  ? e.target.value 
+                                                  : `${e.target.value}px`
+                                              }
+                                            }
+                                          })
+                                        }
+                                      />
+                                    </div>
+                                  </div>
+
+                                  <div className="space-y-2">
+                                    <Label>Margin</Label>
+                                    <div className="flex items-center gap-2">
+                                      <Slider
+                                        min={0}
+                                        max={40}
+                                        step={1}
+                                        value={[parseInt(field.styles[deviceView].margin?.split(' ')[0]?.replace('px', '') || '8')]}
+                                        onValueChange={(value) =>
+                                          updateFormField(field.id, deviceView, {
+                                            styles: {
+                                              ...field.styles,
+                                              [deviceView]: {
+                                                ...field.styles[deviceView],
+                                                margin: `${value[0]}px auto`
+                                              }
+                                            }
+                                          })
+                                        }
+                                      />
+                                      <Input
+                                        className="w-20"
+                                        value={field.styles[deviceView].margin}
+                                        onChange={(e) =>
+                                          updateFormField(field.id, deviceView, {
+                                            styles: {
+                                              ...field.styles,
+                                              [deviceView]: {
+                                                ...field.styles[deviceView],
+                                                margin: e.target.value.includes('px') 
+                                                  ? e.target.value 
+                                                  : `${e.target.value}px auto`
+                                              }
+                                            }
+                                          })
+                                        }
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                  <Label>Font Size</Label>
+                                  <Slider
+                                    min={10}
+                                    max={24}
+                                    step={1}
+                                    value={[parseInt(field.styles[deviceView].fontSize.replace('px', '') || '16')]}
+                                    onValueChange={(value) =>
+                                      updateFormField(field.id, deviceView, {
+                                        styles: {
+                                          ...field.styles,
+                                          [deviceView]: {
+                                            ...field.styles[deviceView],
+                                            fontSize: `${value[0]}px`
+                                          }
+                                        }
                                       })
                                     }
                                   />
@@ -1649,8 +5902,7 @@ export default function CampaignBuilder() {
                                     id={`required-${field.id}`}
                                     checked={field.required}
                                     onCheckedChange={(checked) =>
-                                      updateFormField(field.id, {
-                                        ...field,
+                                      updateFormField(field.id, deviceView, {
                                         required: checked,
                                       })
                                     }
@@ -1670,7 +5922,6 @@ export default function CampaignBuilder() {
           )}
         </ResizablePanelGroup>
 
-        {/* Footer */}
         <div className="bg-background border-t p-4 flex justify-between">
           <Button 
             variant="outline" 
@@ -1681,26 +5932,26 @@ export default function CampaignBuilder() {
           <div className="flex space-x-2">
             <Button 
               variant="outline"
-              disabled={currentBuilderStep === 0}
-              onClick={() => setCurrentBuilderStep(0)}
+              disabled={currentStep === 0}
+              onClick={() => setCurrentStep(currentStep - 1)}
             >
               Previous Step
             </Button>
             <Button 
               onClick={() => {
-                if (currentBuilderStep < builderSteps.length - 1) {
-                  setCurrentBuilderStep(currentBuilderStep + 1)
+                if (currentStep < builderSteps.length - 1) {
+                  setCurrentStep(currentStep + 1);
                 } else {
-                  navigate(`/b/dashboard/campaign-portal/reward/${campaignId}`)
+                  navigate(`/b/dashboard/campaign-portal/reward/${campaignId}`);
                 }
               }}
               className="bg-amber-500 hover:bg-amber-600"
             >
-              {currentBuilderStep < builderSteps.length - 1 ? 'Next Step' : 'Next: Reward Settings'}
+              {currentStep < builderSteps.length - 1 ? 'Next Step' : 'Next: Reward Settings'}
             </Button>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
