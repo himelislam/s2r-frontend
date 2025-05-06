@@ -1160,7 +1160,7 @@ const useEditableContent = () => {
   const [content, setContent] = useState({
     background: {
       color: '#ffffff',
-      image: '',
+      image: 'https://marketplace.canva.com/EAFaFUz4aKo/2/0/1600w/canva-yellow-abstract-cooking-fire-free-logo-JmYWTjUsE-Q.jpg',
       repeat: 'no-repeat',
       size: 'cover',
       position: 'center',
@@ -1171,7 +1171,7 @@ const useEditableContent = () => {
       }
     },
     logo: {
-      content: '',
+      content: 'https://marketplace.canva.com/EAFaFUz4aKo/2/0/1600w/canva-yellow-abstract-cooking-fire-free-logo-JmYWTjUsE-Q.jpg',
       styles: {
         desktop: { 
           width: '200px', 
@@ -1389,7 +1389,7 @@ const useEditableContent = () => {
       },
       background: {
         color: '#ffffff',
-        image: '',
+        image: 'https://marketplace.canva.com/EAFaFUz4aKo/2/0/1600w/canva-yellow-abstract-cooking-fire-free-logo-JmYWTjUsE-Q.jpg',
         repeat: 'no-repeat',
         size: 'cover',
         position: 'center',
@@ -1418,9 +1418,9 @@ const useEditableContent = () => {
       [section]: {
         ...prev[section],
         styles: {
-          ...prev[section].styles,
+          ...prev[section]?.styles,
           [viewport]: {
-            ...prev[section].styles[viewport],
+            ...prev[section]?.styles[viewport],
             ...newStyles
           }
         }
@@ -1434,7 +1434,7 @@ const useEditableContent = () => {
       [page]: {
         ...prev[page],
         background: {
-          ...prev[page].background,
+          ...prev[page]?.background,
           [property]: value
         }
       }
@@ -1447,11 +1447,11 @@ const useEditableContent = () => {
       [page]: {
         ...prev[page],
         background: {
-          ...prev[page].background,
+          ...prev[page]?.background,
           styles: {
-            ...prev[page].background.styles,
+            ...prev[page].background?.styles,
             [viewport]: {
-              ...prev[page].background.styles[viewport],
+              ...prev[page].background?.styles?.[viewport],
               ...newStyles
             }
           }
@@ -1542,6 +1542,7 @@ const useEditableContent = () => {
   };
 
   const updateFormField = (fieldId, viewport, updatedField) => {
+    console.log(fieldId, viewport, updatedField, "from update form ")
     setContent(prev => ({
       ...prev,
       form: {
@@ -1550,11 +1551,14 @@ const useEditableContent = () => {
           field.id === fieldId 
             ? { 
                 ...field, 
+                // Update top-level properties (like label)
+                ...(updatedField.styles ? {} : updatedField),
                 styles: { 
                   ...field.styles, 
                   [viewport]: { 
-                    ...field.styles[viewport], 
-                    ...updatedField 
+                    ...field.styles?.[viewport], 
+                    // Update style properties (either from updatedField directly or from updatedField.styles)
+                    ...(updatedField.styles || updatedField)
                   } 
                 } 
               } 

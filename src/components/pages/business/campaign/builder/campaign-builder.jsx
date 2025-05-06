@@ -3620,7 +3620,7 @@
 //   const businessName = "Business";
 //   const [selectedElement, setSelectedElement] = useState(null);
 //   const [sidebarOpen, setSidebarOpen] = useState(false);
-  
+
 //   const {
 //     content,
 //     currentStep,
@@ -3698,7 +3698,7 @@
 //         const formData = new FormData();
 //         formData.append('image', file);
 //         const url = await uploadImageMutation.mutateAsync(formData);
-        
+
 //         if (type === 'logo') {
 //           setUploadedImage(url);
 //           updateContent('logo', url);
@@ -3740,7 +3740,7 @@
 //   const getBackgroundStyle = (page) => {
 //     const bg = content[page]?.background || content.background;
 //     const viewportStyles = bg.styles[deviceView] || {};
-    
+
 //     return {
 //       backgroundColor: bg.color,
 //       backgroundImage: bg.image ? `url(${bg.image})` : 'none',
@@ -3891,7 +3891,7 @@
 //                 ))}
 //               </div>
 //             </div>
-            
+
 //             <div className="flex items-center space-x-2">
 //               <Button variant="outline" onClick={handleSave} className="gap-2">
 //                 <Save className="h-4 w-4" />
@@ -3914,7 +3914,7 @@
 //                     {builderSteps[currentStep]}
 //                   </span>
 //                 </div>
-                
+
 //                 <div className="flex items-center space-x-1">
 //                   <TooltipProvider>
 //                     <Tooltip>
@@ -3960,7 +3960,7 @@
 //                   </TooltipProvider>
 //                 </div>
 //               </div>
-              
+
 //               <div className="flex-1 overflow-auto p-4 bg-muted/20">
 //                 <div 
 //                   className="mx-auto bg-background rounded-lg shadow-sm border"
@@ -3993,12 +3993,12 @@
 //                   >
 //                     <X className="h-4 w-4" />
 //                   </Button>
-                  
+
 //                   <div className="space-y-6">
 //                     <h2 className="text-lg font-semibold">
 //                       {selectedElement?.charAt(0).toUpperCase() + selectedElement?.slice(1)} Settings
 //                     </h2>
-                    
+
 //                     <Separator />
 
 //                     <div className="space-y-2">
@@ -4027,7 +4027,7 @@
 //                             onChange={(e) => updateContent(selectedElement, e.target.value)}
 //                           />
 //                         </div>
-                        
+
 //                         <Accordion type="multiple">
 //                           <AccordionItem value="styles">
 //                             <AccordionTrigger>Text Styles</AccordionTrigger>
@@ -4201,7 +4201,7 @@
 //                             </div>
 //                           )}
 //                         </div>
-                        
+
 //                         <Accordion type="multiple">
 //                           <AccordionItem value="dimensions">
 //                             <AccordionTrigger>Dimensions</AccordionTrigger>
@@ -4692,7 +4692,7 @@ export default function CampaignBuilder() {
   const businessName = "Business";
   const [selectedElement, setSelectedElement] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  
+
   const {
     content,
     currentStep,
@@ -4769,11 +4769,12 @@ export default function CampaignBuilder() {
       try {
         const formData = new FormData();
         formData.append('image', file);
-        const url = await uploadImageMutation.mutateAsync(formData);
-        
+        const { url } = await uploadImageMutation.mutateAsync(formData);
+
         if (type === 'logo') {
           setUploadedImage(url);
           updateContent('logo', url);
+          console.log(url, "url")
           toast.success('Logo uploaded successfully');
         } else if (type === 'background') {
           setUploadedBackground(url);
@@ -4811,14 +4812,14 @@ export default function CampaignBuilder() {
 
   const getBackgroundStyle = (page) => {
     const bg = content[page]?.background || content.background;
-    const viewportStyles = bg.styles[deviceView] || {};
-    
+    const viewportStyles = bg?.styles?.[deviceView] || {};
+
     return {
-      backgroundColor: bg.color,
-      backgroundImage: bg.image ? `url(${bg.image})` : 'none',
-      backgroundRepeat: bg.repeat,
-      backgroundSize: bg.size,
-      backgroundPosition: bg.position,
+      backgroundColor: bg?.color,
+      backgroundImage: bg?.image ? `url(${bg.image})` : 'none',
+      backgroundRepeat: bg?.repeat,
+      backgroundSize: bg?.size,
+      backgroundPosition: bg?.position,
       ...viewportStyles
     };
   };
@@ -4830,24 +4831,25 @@ export default function CampaignBuilder() {
   const renderMainContent = () => (
     <div className="relative h-full w-full">
       {/* Clickable background overlay */}
-      <div 
+      {/* <div
         className="absolute inset-0 cursor-pointer border-2 border-transparent hover:border-dashed hover:border-primary"
         onClick={() => handleElementClick('background')}
         style={getBackgroundStyle('background')}
-      />
+      /> */}
 
       {/* Clickable background element */}
-      <div 
-        className="absolute inset-0 cursor-pointer"
-        style={{ 
+      {/* <div
+        className="absolute inset-0 cursor-pointer border-2 border-transparent hover:border-dashed hover:border-primary"
+        style={{
           ...getBackgroundStyle('background'),
           border: selectedElement === 'background' ? '2px dashed #3b82f6' : '2px solid transparent'
         }}
         onClick={() => {
           handleElementClick('background');
         }}
-      />
-      
+      > */}
+
+
       <div className="relative p-6 w-full flex flex-col items-center">
         <div className="items-center mb-4 w-full">
           <img
@@ -4892,7 +4894,7 @@ export default function CampaignBuilder() {
           deviceView={deviceView}
         />
 
-        <Card 
+        <Card
           className="w-full max-w-[500px] cursor-pointer hover:border-2 hover:border-dashed hover:border-primary transition duration-200 ease-in-out"
           onClick={() => handleElementClick('form')}
         >
@@ -4922,30 +4924,35 @@ export default function CampaignBuilder() {
           </CardContent>
         </Card>
       </div>
+
+      {/* </div> */}
+
+
     </div>
   );
 
   const renderThankYouPage = () => (
     <div className="relative h-full w-full">
       {/* Clickable background overlay */}
-      <div 
+      {/* <div 
         className="absolute inset-0 cursor-pointer border-2 border-transparent hover:border-dashed hover:border-primary"
         onClick={() => handleElementClick('thankYouPageBackground')}
         style={getBackgroundStyle('thankYouPage')}
-      />
+      /> */}
+
+      {/* Will check later */}
 
       {/* Clickable background element */}
-      <div 
-        className="absolute inset-0 cursor-pointer"
-        style={{ 
+      {/* <div
+        className="absolute inset-0 cursor-pointer border-2 border-transparent hover:border-dashed hover:border-primary"
+        style={{
           ...getBackgroundStyle('thankYouPage'),
           border: selectedElement === 'thankYouPageBackground' ? '2px dashed #3b82f6' : '2px solid transparent'
         }}
         onClick={() => {
           handleElementClick('thankYouPageBackground');
         }}
-      />
-      
+      > */}
       <div className="relative p-6 w-full flex flex-col items-center justify-center h-full">
         <EditableText
           value={content.thankYouPage.content}
@@ -4957,27 +4964,77 @@ export default function CampaignBuilder() {
           renderContent={renderContent}
           deviceView={deviceView}
         />
-        <Button 
+        <Button
           onClick={() => setCurrentStep(0)}
           className="mt-8"
         >
           Back to Campaign
         </Button>
       </div>
+
+
+      {/* </div> */}
+
+
     </div>
   );
 
   return (
     <div className="flex h-screen bg-muted/40">
       <div className="flex-1 flex flex-col overflow-hidden">
-        <div className="bg-background border-b p-4">
+        <div className="bg-background border-b ">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-xl font-bold">{campaign?.campaignName}</h1>
-              <div className="flex items-center space-x-2 mt-1">
+              <h1 className="text-xl font-bold mb-2">{campaign?.campaignName}</h1>
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center space-x-2">
+                  <div
+                    className="text-sm  text-orange-500 font-medium cursor-pointer hover:underline"
+                    onClick={() => navigate(`/b/dashboard/campaign-portal/builder/${campaignId}`)}
+                  >
+                    Campaign
+                  </div>
+                  <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                  <div
+                    className="text-sm text-muted-foreground font-medium cursor-pointer hover:underline"
+                    onClick={() => navigate(`/b/dashboard/campaign-portal/reward/${campaignId}`)}
+                  >
+                    Reward
+                  </div>
+                  <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                  <div
+                    className="text-sm text-muted-foreground cursor-pointer hover:underline"
+                    onClick={() => navigate(`/b/dashboard/campaign-portal/settings/${campaignId}`)}
+                  >
+                    Settings
+                  </div>
+                  <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                  <div
+                    className="text-sm text-muted-foreground  cursor-pointer hover:underline"
+                    onClick={() => navigate(`/b/dashboard/campaign-portal/email-builder/${campaignId}`)}
+                  >
+                    Email
+                  </div>
+                  <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                  <div
+                    className="text-sm text-muted-foreground cursor-pointer hover:underline"
+                    onClick={() => navigate(`/b/dashboard/campaign-portal/integration/${campaignId}`)}
+                  >
+                    Integration
+                  </div>
+                  <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                  <div
+                    className="text-sm text-muted-foreground cursor-pointer hover:underline"
+                    onClick={() => navigate(`/b/dashboard/campaign-portal/promotes/${campaignId}`)}
+                  >
+                    Promotes
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center space-x-2 mt-1 mb-4">
                 {builderSteps.map((step, index) => (
                   <React.Fragment key={step}>
-                    <Badge 
+                    <Badge
                       variant={currentStep === index ? "default" : "secondary"}
                       className="cursor-pointer"
                       onClick={() => setCurrentStep(index)}
@@ -4991,7 +5048,7 @@ export default function CampaignBuilder() {
                 ))}
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-2">
               <Button variant="outline" onClick={handleSave} className="gap-2">
                 <Save className="h-4 w-4" />
@@ -5014,7 +5071,7 @@ export default function CampaignBuilder() {
                     {builderSteps[currentStep]}
                   </span>
                 </div>
-                
+
                 <div className="flex items-center space-x-1">
                   <TooltipProvider>
                     <Tooltip>
@@ -5060,9 +5117,9 @@ export default function CampaignBuilder() {
                   </TooltipProvider>
                 </div>
               </div>
-              
+
               <div className="flex-1 overflow-auto p-4 bg-muted/20">
-                <div 
+                <div
                   className="mx-auto bg-background rounded-lg shadow-sm border"
                   style={{
                     width: getDeviceWidth(),
@@ -5086,25 +5143,25 @@ export default function CampaignBuilder() {
               <ResizableHandle withHandle />
               <ResizablePanel defaultSize={30} minSize={25}>
                 <div className="h-full overflow-auto p-4 bg-background border-l relative">
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     className="absolute top-2 right-2 h-8 w-8"
                     onClick={closeSidebar}
                   >
                     <X className="h-4 w-4" />
                   </Button>
-                  
+
                   <div className="space-y-6">
                     <h2 className="text-lg font-semibold">
                       {selectedElement?.charAt(0).toUpperCase() + selectedElement?.slice(1)} Settings
                     </h2>
-                    
+
                     <Separator />
 
                     <div className="space-y-2">
                       <Label>Viewport</Label>
-                      <Select 
+                      <Select
                         value={deviceView}
                         onValueChange={setDeviceView}
                       >
@@ -5124,7 +5181,7 @@ export default function CampaignBuilder() {
                         <div className="space-y-2">
                           <Label>Background Type</Label>
                           <Select
-                            value={content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background.image ? 'image' : 'color'}
+                            value={content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background?.image ? 'image' : 'color'}
                             onValueChange={(value) => {
                               const prop = selectedElement === 'background' ? 'background' : 'thankYouPage';
                               if (value === 'color') {
@@ -5142,16 +5199,16 @@ export default function CampaignBuilder() {
                           </Select>
                         </div>
 
-                        {!content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background.image ? (
+                        {!content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background?.image ? (
                           <div className="space-y-2">
                             <Label>Background Color</Label>
                             <Input
                               type="color"
-                              value={content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background.color}
-                              onChange={(e) => 
+                              value={content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background?.color}
+                              onChange={(e) =>
                                 updateBackground(
-                                  selectedElement === 'background' ? 'background' : 'thankYouPage', 
-                                  'color', 
+                                  selectedElement === 'background' ? 'background' : 'thankYouPage',
+                                  'color',
                                   e.target.value
                                 )
                               }
@@ -5165,15 +5222,15 @@ export default function CampaignBuilder() {
                                 type="file"
                                 accept="image/*"
                                 onChange={(e) => handleImageUpload(
-                                  e, 
+                                  e,
                                   selectedElement === 'background' ? 'background' : 'thankYouBackground'
                                 )}
                                 className="cursor-pointer"
                               />
-                              {content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background.image && (
+                              {content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background?.image && (
                                 <div className="mt-2">
                                   <img
-                                    src={content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background.image}
+                                    src={content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background?.image}
                                     alt="Background Preview"
                                     className="w-full h-32 object-cover rounded"
                                   />
@@ -5184,7 +5241,7 @@ export default function CampaignBuilder() {
                             <div className="space-y-2">
                               <Label>Background Repeat</Label>
                               <Select
-                                value={content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background.repeat}
+                                value={content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background?.repeat}
                                 onValueChange={(value) => updateBackground(
                                   selectedElement === 'background' ? 'background' : 'thankYouPage',
                                   'repeat',
@@ -5206,7 +5263,7 @@ export default function CampaignBuilder() {
                             <div className="space-y-2">
                               <Label>Background Size</Label>
                               <Select
-                                value={content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background.size}
+                                value={content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background?.size}
                                 onValueChange={(value) => updateBackground(
                                   selectedElement === 'background' ? 'background' : 'thankYouPage',
                                   'size',
@@ -5227,7 +5284,7 @@ export default function CampaignBuilder() {
                             <div className="space-y-2">
                               <Label>Background Position</Label>
                               <Select
-                                value={content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background.position}
+                                value={content[selectedElement === 'background' ? 'background' : 'thankYouPage'].background?.position}
                                 onValueChange={(value) => updateBackground(
                                   selectedElement === 'background' ? 'background' : 'thankYouPage',
                                   'position',
@@ -5261,7 +5318,7 @@ export default function CampaignBuilder() {
                                   step={1}
                                   value={[parseInt(content[
                                     selectedElement === 'background' ? 'background' : 'thankYouPage'
-                                  ].background.styles[deviceView]?.opacity || '100')]}
+                                  ].background?.styles?.[deviceView]?.opacity || '100')]}
                                   onValueChange={(value) =>
                                     updateBackgroundStyles(
                                       selectedElement === 'background' ? 'background' : 'thankYouPage',
@@ -5286,7 +5343,7 @@ export default function CampaignBuilder() {
                             onChange={(e) => updateContent(selectedElement, e.target.value)}
                           />
                         </div>
-                        
+
                         <Accordion type="multiple">
                           <AccordionItem value="styles">
                             <AccordionTrigger>Text Styles</AccordionTrigger>
@@ -5460,7 +5517,7 @@ export default function CampaignBuilder() {
                             </div>
                           )}
                         </div>
-                        
+
                         <Accordion type="multiple">
                           <AccordionItem value="dimensions">
                             <AccordionTrigger>Dimensions</AccordionTrigger>
@@ -5567,7 +5624,7 @@ export default function CampaignBuilder() {
                                     value={field.label}
                                     onChange={(e) =>
                                       updateFormField(field.id, deviceView, {
-                                        label: e.target.value,
+                                        label: e.target.value
                                       })
                                     }
                                   />
@@ -5596,13 +5653,7 @@ export default function CampaignBuilder() {
                                         value={[parseInt(field.styles[deviceView].width.replace('%', '').replace('px', '') || '100')]}
                                         onValueChange={(value) =>
                                           updateFormField(field.id, deviceView, {
-                                            styles: {
-                                              ...field.styles,
-                                              [deviceView]: {
-                                                ...field.styles[deviceView],
-                                                width: `${value[0]}%`
-                                              }
-                                            }
+                                            width: `${value[0]}%`
                                           })
                                         }
                                       />
@@ -5611,15 +5662,9 @@ export default function CampaignBuilder() {
                                         value={field.styles[deviceView].width}
                                         onChange={(e) =>
                                           updateFormField(field.id, deviceView, {
-                                            styles: {
-                                              ...field.styles,
-                                              [deviceView]: {
-                                                ...field.styles[deviceView],
-                                                width: e.target.value.includes('%') || e.target.value.includes('px') 
-                                                  ? e.target.value 
-                                                  : `${e.target.value}px`
-                                              }
-                                            }
+                                            width: e.target.value.includes('%') || e.target.value.includes('px')
+                                              ? e.target.value
+                                              : `${e.target.value}px`
                                           })
                                         }
                                       />
@@ -5636,13 +5681,7 @@ export default function CampaignBuilder() {
                                         value={[parseInt(field.styles[deviceView].maxWidth?.replace('px', '') || '500')]}
                                         onValueChange={(value) =>
                                           updateFormField(field.id, deviceView, {
-                                            styles: {
-                                              ...field.styles,
-                                              [deviceView]: {
-                                                ...field.styles[deviceView],
-                                                maxWidth: `${value[0]}px`
-                                              }
-                                            }
+                                            maxWidth: `${value[0]}px`
                                           })
                                         }
                                       />
@@ -5651,15 +5690,9 @@ export default function CampaignBuilder() {
                                         value={field.styles[deviceView].maxWidth}
                                         onChange={(e) =>
                                           updateFormField(field.id, deviceView, {
-                                            styles: {
-                                              ...field.styles,
-                                              [deviceView]: {
-                                                ...field.styles[deviceView],
-                                                maxWidth: e.target.value.includes('px') 
-                                                  ? e.target.value 
-                                                  : `${e.target.value}px`
-                                              }
-                                            }
+                                            maxWidth: e.target.value.includes('px')
+                                              ? e.target.value
+                                              : `${e.target.value}px`
                                           })
                                         }
                                       />
@@ -5678,13 +5711,7 @@ export default function CampaignBuilder() {
                                         value={[parseInt(field.styles[deviceView].height.replace('px', '') || '40')]}
                                         onValueChange={(value) =>
                                           updateFormField(field.id, deviceView, {
-                                            styles: {
-                                              ...field.styles,
-                                              [deviceView]: {
-                                                ...field.styles[deviceView],
-                                                height: `${value[0]}px`
-                                              }
-                                            }
+                                            height: `${value[0]}px`
                                           })
                                         }
                                       />
@@ -5693,15 +5720,9 @@ export default function CampaignBuilder() {
                                         value={field.styles[deviceView].height}
                                         onChange={(e) =>
                                           updateFormField(field.id, deviceView, {
-                                            styles: {
-                                              ...field.styles,
-                                              [deviceView]: {
-                                                ...field.styles[deviceView],
-                                                height: e.target.value.includes('px') 
-                                                  ? e.target.value 
-                                                  : `${e.target.value}px`
-                                              }
-                                            }
+                                            height: e.target.value.includes('px')
+                                              ? e.target.value
+                                              : `${e.target.value}px`
                                           })
                                         }
                                       />
@@ -5718,13 +5739,7 @@ export default function CampaignBuilder() {
                                         value={[parseInt(field.styles[deviceView].margin?.split(' ')[0]?.replace('px', '') || '8')]}
                                         onValueChange={(value) =>
                                           updateFormField(field.id, deviceView, {
-                                            styles: {
-                                              ...field.styles,
-                                              [deviceView]: {
-                                                ...field.styles[deviceView],
-                                                margin: `${value[0]}px auto`
-                                              }
-                                            }
+                                            margin: `${value[0]}px auto`
                                           })
                                         }
                                       />
@@ -5733,15 +5748,9 @@ export default function CampaignBuilder() {
                                         value={field.styles[deviceView].margin}
                                         onChange={(e) =>
                                           updateFormField(field.id, deviceView, {
-                                            styles: {
-                                              ...field.styles,
-                                              [deviceView]: {
-                                                ...field.styles[deviceView],
-                                                margin: e.target.value.includes('px') 
-                                                  ? e.target.value 
-                                                  : `${e.target.value}px auto`
-                                              }
-                                            }
+                                            margin: e.target.value.includes('px')
+                                              ? e.target.value
+                                              : `${e.target.value}px auto`
                                           })
                                         }
                                       />
@@ -5758,13 +5767,7 @@ export default function CampaignBuilder() {
                                     value={[parseInt(field.styles[deviceView].fontSize.replace('px', '') || '16')]}
                                     onValueChange={(value) =>
                                       updateFormField(field.id, deviceView, {
-                                        styles: {
-                                          ...field.styles,
-                                          [deviceView]: {
-                                            ...field.styles[deviceView],
-                                            fontSize: `${value[0]}px`
-                                          }
-                                        }
+                                        fontSize: `${value[0]}px`
                                       })
                                     }
                                   />
@@ -5796,21 +5799,21 @@ export default function CampaignBuilder() {
         </ResizablePanelGroup>
 
         <div className="bg-background border-t p-4 flex justify-between">
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             onClick={() => navigate('/b/dashboard/campaign-portal')}
           >
             Back
           </Button>
           <div className="flex space-x-2">
-            <Button 
+            <Button
               variant="outline"
               disabled={currentStep === 0}
               onClick={() => setCurrentStep(currentStep - 1)}
             >
               Previous Step
             </Button>
-            <Button 
+            <Button
               onClick={() => {
                 if (currentStep < builderSteps.length - 1) {
                   setCurrentStep(currentStep + 1);
