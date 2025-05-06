@@ -7,7 +7,7 @@ import campaignApi from '@/api/campaignApi';
 import { Loader } from '@/components/pages/loader';
 import { Button } from '@/components/ui/button';
 // import useEditableContent from '@/hooks/useEditableContent';
-import EditableText from '../builder/editable-text';
+import EditableTextEmail from './editable-text-email';
 import { toast } from 'react-toastify';
 import useEmailEditableContent from '@/hooks/useEmailEditableContent';
 
@@ -86,7 +86,7 @@ export default function EmailBuilder() {
     return content
       .replace(/{{referrerName}}/g, 'Referrer')
       .replace(/{{businessName}}/g, 'Business')
-      .replace(/{{code}}/g, campaign?.reward?.method == 'added' ? campaign?.reward?.code : 'Code' );
+      .replace(/{{code}}/g, campaign?.reward?.method == 'added' ? campaign?.reward?.code : 'Coupon/Giftcard Code' );
   };
 
   if (getCampaignbyIdMutation.isPending) {
@@ -192,7 +192,7 @@ export default function EmailBuilder() {
                       className="w-40 h-40 mx-auto cursor-pointer hover:border-2 hover:border-dashed hover:border-blue-500 transition duration-200 ease-in-out"
                       onClick={() => setSelectedElement('logo')}
                     />
-                    <EditableText
+                    <EditableTextEmail
                       value={content.header?.content}
                       onChange={(value) => updateContent('header', value)}
                       className="text-center text-xl hover:border-2 hover:border-dashed hover:border-blue-500 transition duration-200 ease-in-out cursor-pointer"
@@ -200,9 +200,10 @@ export default function EmailBuilder() {
                       elementName="header"
                       setSelectedElement={setSelectedElement}
                       renderContent={renderContent}
+                      isEditable={true}
                     />
                   </div>
-                  <EditableText
+                  <EditableTextEmail
                     value={content.description1?.content}
                     onChange={(value) => updateContent('description1', value)}
                     className="text-md text-gray-800 dark:text-gray-200 mb-4 text-center hover:border-2 hover:border-dashed hover:border-blue-500 transition duration-200 ease-in-out cursor-pointer"
@@ -210,9 +211,10 @@ export default function EmailBuilder() {
                     elementName="description1"
                     setSelectedElement={setSelectedElement}
                     renderContent={renderContent}
+                    isEditable={true}
                   />
 
-                  {/* <EditableText
+                  {/* <EditableTextEmail
                     value={content.couponCode?.content}
                     // onChange={(value) => updateContent('couponCode', value)}
                     className="text-md text-gray-800 dark:text-gray-200 mb-4 text-center hover:border-2 hover:border-dashed hover:border-blue-500 transition duration-200 ease-in-out cursor-pointer"
@@ -222,7 +224,7 @@ export default function EmailBuilder() {
                     renderContent={renderContent}
                   /> */}
 
-                  <EditableText
+                  <EditableTextEmail
                     value={content.couponCode?.content}
                     // onChange={() => { }} // Disable editing by passing an empty function
                     className="text-md text-gray-800 dark:text-gray-200 mb-4 text-center hover:border-2 hover:border-dashed hover:border-blue-500 transition duration-200 ease-in-out cursor-pointer"
@@ -232,7 +234,7 @@ export default function EmailBuilder() {
                     renderContent={renderContent}
                     isEditable={false} // Optional: Add a prop to explicitly disable editing
                   />
-                  <EditableText
+                  <EditableTextEmail
                     value={content.description2?.content}
                     onChange={(value) => updateContent('description2', value)}
                     className="text-md text-gray-800 dark:text-gray-200 mb-4 text-center hover:border-2 hover:border-dashed hover:border-blue-500 transition duration-200 ease-in-out cursor-pointer"
@@ -240,6 +242,7 @@ export default function EmailBuilder() {
                     elementName="description2"
                     setSelectedElement={setSelectedElement}
                     renderContent={renderContent}
+                    isEditable={true}
                   />
                 </div>
                 <div className="flex justify-between">
