@@ -1295,7 +1295,7 @@ const useEditableContent = () => {
           id: 'name',
           type: 'text',
           label: 'Name',
-          placeholder: '',
+          placeholder: 'Your Name',
           required: true,
           styles: {
             desktop: { 
@@ -1594,3 +1594,20 @@ const useEditableContent = () => {
 };
 
 export default useEditableContent;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
