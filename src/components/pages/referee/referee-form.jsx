@@ -1,17 +1,17 @@
 import businessApi from '@/api/businessApi';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
-} from "@/components/ui/popover"
-import { format } from "date-fns"
-import { CalendarIcon } from "lucide-react"
+} from "@/components/ui/popover";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
 import refereeApi from '@/api/refereeApi';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../ui/card';
 import { Label } from '@/components/ui/label';
@@ -19,44 +19,43 @@ import { Input } from '@/components/ui/input';
 import { toast } from 'react-toastify';
 import Spinner from '@/components/spinner';
 import campaignApi from '@/api/campaignApi';
-import { date } from 'zod';
-
 import { Helmet } from 'react-helmet';
+import useMediaQuery  from '@/hooks/use-media-query';
 
 export default function RefereeForm() {
     const [formData, setFormData] = useState({});
     const { businessId, campaignId, qrId } = useParams();
-    const user = JSON.parse(localStorage.getItem('user'))
+    const [submitted, setSubmitted] = useState(false);
+    const user = JSON.parse(localStorage.getItem('user'));
     const [updatedContent, setUpdatedContent] = useState(null);
     const content = updatedContent || {};
+    const isDesktop = useMediaQuery('(min-width: 1024px)');
+    const isTablet = useMediaQuery('(min-width: 768px)');
 
     const { data: business = [] } = useQuery({
         queryKey: ['getBusinessById', businessId],
         queryFn: () => businessApi.getBusinessById(businessId),
         enabled: !!businessId
-    })
+    });
 
     const createRefereeMutation = useMutation({
         mutationFn: refereeApi.createReferee,
         onSuccess: (data) => {
-            console.log(data, 'sucssess in create Referee');
-            toast.success('Form Submitted Successfully')
+            console.log(data, 'success in create Referee');
+            setSubmitted(true);
+            toast.success('Form Submitted Successfully');
         },
         onError: (err) => {
             console.log(err, 'on create Referee');
-            toast.error('Internal Server Error')
+            toast.error('Internal Server Error');
         }
-    })
+    });
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const { referrerName, businessName } = getReferrerInfo(business, qrId);
         const { referrerId } = business.qrCodes?.find(qrCode => qrCode.id == qrId) || {};
-        // Convert date to ISO string
-        // const formattedDate = date instanceof Date ? date.toISOString() : null;
-
-        // Convert date fields to ISO strings
+        
         const submissionData = Object.keys(formData).reduce((acc, key) => {
             acc[key] = formData[key] instanceof Date
                 ? formData[key].toISOString()
@@ -69,9 +68,8 @@ export default function RefereeForm() {
             businessId,
             campaignId,
             referrerId,
-        })
-    }
-
+        });
+    };
 
     const { data: campaign = null } = useQuery({
         queryKey: ['getCampaignById', campaignId],
@@ -79,7 +77,6 @@ export default function RefereeForm() {
         enabled: !!campaignId,
     });
 
-    // Initialize form data based on JSON fields
     useEffect(() => {
         if (content?.form?.fields) {
             const initialData = {};
@@ -104,6 +101,12 @@ export default function RefereeForm() {
         };
     };
 
+    const getDeviceStyles = (styles) => {
+        if (isDesktop) return styles.desktop;
+        if (isTablet) return styles.tablet;
+        return styles.mobile;
+    };
+
     useEffect(() => {
         if (campaign?.refereeJSON && business) {
             try {
@@ -117,12 +120,12 @@ export default function RefereeForm() {
 
                 const refereeData = JSON.parse(campaign.refereeJSON);
 
-                // Clone the data to avoid mutating original
                 const updatedData = {
                     ...refereeData,
                     header: { ...refereeData.header },
                     description1: { ...refereeData.description1 },
-                    description2: { ...refereeData.description2 }
+                    description2: { ...refereeData.description2 },
+                    thankYouPage: { ...refereeData.thankYouPage }
                 };
 
                 if (updatedData.header?.content) {
@@ -137,6 +140,10 @@ export default function RefereeForm() {
                     updatedData.description2.content = replacePlaceholders(updatedData.description2.content);
                 }
 
+                if (updatedData.thankYouPage?.content) {
+                    updatedData.thankYouPage.content = replacePlaceholders(updatedData.thankYouPage.content);
+                }
+
                 setUpdatedContent(updatedData);
             } catch (error) {
                 console.error("Error parsing refereeJSON:", error);
@@ -144,59 +151,114 @@ export default function RefereeForm() {
         }
     }, [campaign, business, qrId]);
 
-
+    if (submitted) {
+        return (
+            <div 
+                className="min-h-screen flex items-center justify-center p-4"
+                style={{
+                    background: content.thankYouPage?.background?.color || '#ffffff',
+                    backgroundImage: content.thankYouPage?.background?.image 
+                        ? `url(${content.thankYouPage.background.image})` 
+                        : 'none',
+                    backgroundRepeat: content.thankYouPage?.background?.repeat || 'no-repeat',
+                    backgroundSize: content.thankYouPage?.background?.size || 'cover',
+                    backgroundPosition: content.thankYouPage?.background?.position || 'center',
+                    ...getDeviceStyles(content.thankYouPage?.background?.styles || {})
+                }}
+            >
+                <Helmet>
+                    <title>{campaign?.settings?.meta?.title || 'Thank You'}</title>
+                    <meta name="description" content={campaign?.settings?.meta?.description} />
+                    <link rel="icon" href={campaign?.settings?.campaignFavicon} />
+                </Helmet>
+                
+                <div className="max-w-4xl mx-auto bg-white bg-opacity-90 p-8 rounded-lg shadow-lg">
+                    <h1 
+                        className="text-3xl font-bold mb-6"
+                        style={getDeviceStyles(content.thankYouPage?.styles || {})}
+                    >
+                        {content.thankYouPage?.content}
+                    </h1>
+                    <Button 
+                        onClick={() => window.location.reload()} 
+                        className="mt-6"
+                    >
+                        Submit Another Response
+                    </Button>
+                </div>
+            </div>
+        );
+    }
 
     return (
-        <div>
+        <div 
+            className="min-h-screen flex items-center justify-center p-4"
+            style={{
+                background: content.background?.color || '#ffffff',
+                backgroundImage: content.background?.image 
+                    ? `url(${content.background.image})` 
+                    : 'none',
+                backgroundRepeat: content.background?.repeat || 'no-repeat',
+                backgroundSize: content.background?.size || 'cover',
+                backgroundPosition: content.background?.position || 'center',
+                ...getDeviceStyles(content.background?.styles || {})
+            }}
+        >
             <Helmet>
                 <title>{campaign?.settings?.meta?.title}</title>
                 <meta name="description" content={campaign?.settings?.meta?.description} />
                 <link rel="icon" href={campaign?.settings?.campaignFavicon} />
-                {/* <link rel="icon" href={`${campaign?.settings?.campaignFavicon}?v=${Date.now()}`} /> */}
             </Helmet>
-            <div>
-                <div className="max-w-lg mx-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
+
+            <div className="w-full max-w-2xl">
+                <div className="bg-white bg-opacity-90 dark:bg-gray-900 p-6 rounded-lg shadow-md">
                     <div className="items-center mb-4">
-                        <img
-                            src={content?.logo?.content}
-                            style={content?.logo?.styles}
-                            alt=""
-                            className="w-40 h-40 mx-auto"
-                            onClick={() => setSelectedElement('logo')}
-                        />
+                        {content.logo?.content && (
+                            <img
+                                src={content.logo.content}
+                                alt="Campaign Logo"
+                                className="mx-auto"
+                                style={getDeviceStyles(content.logo.styles || {})}
+                            />
+                        )}
 
-                        <div
-                            value={content?.header?.content}
-                            className="text-center text-xl "
-                            style={content?.header?.styles}
+                        {content.header?.content && (
+                            <h1 
+                                className="text-center"
+                                style={getDeviceStyles(content.header.styles || {})}
+                            >
+                                {content.header.content}
+                            </h1>
+                        )}
+                    </div>
+
+                    {content.description1?.content && (
+                        <p 
+                            className="text-center"
+                            style={getDeviceStyles(content.description1.styles || {})}
                         >
-                            {content?.header?.content}
-                        </div>
-                    </div>
+                            {content.description1.content}
+                        </p>
+                    )}
 
-                    <div
-                        value={content?.description1?.content}
-                        className="text-md text-gray-800 text-center"
-                        style={content?.description1?.styles}
-                    >
-                        {content?.description1?.content}
-                    </div>
+                    {content.description2?.content && (
+                        <p 
+                            className="text-center mb-6"
+                            style={getDeviceStyles(content.description2.styles || {})}
+                        >
+                            {content.description2.content}
+                        </p>
+                    )}
 
-                    <div
-                        value={content?.description2?.content}
-                        className="text-md text-gray-800 dark:text-gray-200 mb-4 text-center"
-                        style={content?.description2?.styles}
-                    >
-                        {content?.description2?.content}
-                    </div>
-
-                    <Card className="mx-auto max-w-md cursor-pointer">
-                        <CardContent>
+                    <Card className="mx-auto cursor-pointer">
+                        <CardContent className="p-6">
                             <form onSubmit={handleSubmit}>
-                                <div className='grid gap-4 mt-4'>
+                                <div className='grid gap-4'>
                                     {content?.form?.fields?.map(field => (
                                         <div key={field.id} className="grid gap-2">
-                                            <Label htmlFor={field.id} style={field.styles}>{field.label}</Label>
+                                            <Label htmlFor={field.id} style={getDeviceStyles(field.styles || {})}>
+                                                {field.label}
+                                            </Label>
                                             {field.type === 'date' ? (
                                                 <Popover>
                                                     <PopoverTrigger asChild>
@@ -206,6 +268,7 @@ export default function RefereeForm() {
                                                                 "w-full justify-start text-left font-normal",
                                                                 !formData[field.id] && "text-muted-foreground"
                                                             )}
+                                                            style={getDeviceStyles(field.styles || {})}
                                                         >
                                                             <CalendarIcon className="mr-2 h-4 w-4" />
                                                             {formData[field.id] ? (
@@ -232,12 +295,16 @@ export default function RefereeForm() {
                                                     onChange={(e) => handleChange(field.id, e.target.value)}
                                                     required={field.required}
                                                     placeholder={field.placeholder}
-                                                    style={field.styles}
+                                                    style={getDeviceStyles(field.styles || {})}
                                                 />
                                             )}
                                         </div>
                                     ))}
-                                    <Button type="submit" className="w-full" disabled={createRefereeMutation.isPending}>
+                                    <Button 
+                                        type="submit" 
+                                        className="w-full mt-4"
+                                        disabled={createRefereeMutation.isPending}
+                                    >
                                         {createRefereeMutation.isPending
                                             ? (
                                                 <>
@@ -253,5 +320,5 @@ export default function RefereeForm() {
                 </div>
             </div>
         </div>
-    )
+    );
 }
