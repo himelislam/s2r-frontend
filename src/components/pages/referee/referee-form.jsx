@@ -179,12 +179,12 @@ export default function RefereeForm() {
                     >
                         {content.thankYouPage?.content}
                     </h1>
-                    <Button 
+                    {/* <Button 
                         onClick={() => window.location.reload()} 
                         className="mt-6"
                     >
                         Submit Another Response
-                    </Button>
+                    </Button> */}
                 </div>
             </div>
         );
@@ -253,9 +253,9 @@ export default function RefereeForm() {
                     <Card className="mx-auto cursor-pointer">
                         <CardContent className="p-6">
                             <form onSubmit={handleSubmit}>
-                                <div className='grid gap-4'>
+                                <div className='grid'>
                                     {content?.form?.fields?.map(field => (
-                                        <div key={field.id} className="grid gap-2">
+                                        <div key={field.id} className="grid">
                                             <Label htmlFor={field.id} style={getDeviceStyles(field.styles || {})}>
                                                 {field.label}
                                             </Label>
