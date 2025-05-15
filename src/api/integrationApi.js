@@ -31,9 +31,40 @@ const testZapierURL = async (data) => {
     return response.data;
 };
 
+
+
+
+//Save Pabbly Webhook URL
+const savePabblyURL = async (data) => {
+    const user = JSON.parse(localStorage.getItem('user'))
+
+    const response = await axios.post(API_URL + "/savePabblyURL", data, {
+        headers: {
+            Authorization: `Bearer ${user?.token}`
+        }
+    });
+
+    return response.data;
+};
+
+//Test Pabbly Webhook URL
+const testPabblyURL = async (data) => {
+    const user = JSON.parse(localStorage.getItem('user'))
+
+    const response = await axios.post(API_URL + "/testPabblyURL", data, {
+        headers: {
+            Authorization: `Bearer ${user?.token}`
+        }
+    });
+
+    return response.data;
+};
+
 const integrationApi = {
     saveZapierURL,
-    testZapierURL
+    testZapierURL,
+    savePabblyURL,
+    testPabblyURL
 };
 
 export default integrationApi;
