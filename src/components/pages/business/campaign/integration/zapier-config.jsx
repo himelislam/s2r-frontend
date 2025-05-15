@@ -70,6 +70,7 @@ export function ZapierConfig({ campaignId }) {
         onSuccess: (data) => {
             console.log(data, 'Success');
             toast.success('Zapier Test Successfull')
+            
         },
         onError: (err) => {
             console.log(err, 'Error')
