@@ -107,91 +107,105 @@ export function ApiConfig({ campaignId, onSuccess }) {
   }
 
   return (
-    <Card className="max-w-2xl">
-      <CardHeader>
-        <CardTitle>Configure Public API</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="endpoint"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>API Endpoint URL</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="https://api.yourdomain.com/referrals"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    Your API endpoint that will receive referral data
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+    // <Card className="max-w-2xl">
+    //   <CardHeader>
+    //     <CardTitle>Configure Public API</CardTitle>
+    //   </CardHeader>
+    //   <CardContent>
+    //     <Form {...form}>
+    //       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+    //         <FormField
+    //           control={form.control}
+    //           name="endpoint"
+    //           render={({ field }) => (
+    //             <FormItem>
+    //               <FormLabel>API Endpoint URL</FormLabel>
+    //               <FormControl>
+    //                 <Input
+    //                   placeholder="https://api.yourdomain.com/referrals"
+    //                   {...field}
+    //                 />
+    //               </FormControl>
+    //               <FormDescription>
+    //                 Your API endpoint that will receive referral data
+    //               </FormDescription>
+    //               <FormMessage />
+    //             </FormItem>
+    //           )}
+    //         />
 
-            <FormField
-              control={form.control}
-              name="method"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>HTTP Method</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select HTTP method" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="GET">GET</SelectItem>
-                      <SelectItem value="POST">POST</SelectItem>
-                      <SelectItem value="PUT">PUT</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormDescription>
-                    POST recommended for sending referral data
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+    //         <FormField
+    //           control={form.control}
+    //           name="method"
+    //           render={({ field }) => (
+    //             <FormItem>
+    //               <FormLabel>HTTP Method</FormLabel>
+    //               <Select onValueChange={field.onChange} defaultValue={field.value}>
+    //                 <FormControl>
+    //                   <SelectTrigger>
+    //                     <SelectValue placeholder="Select HTTP method" />
+    //                   </SelectTrigger>
+    //                 </FormControl>
+    //                 <SelectContent>
+    //                   <SelectItem value="GET">GET</SelectItem>
+    //                   <SelectItem value="POST">POST</SelectItem>
+    //                   <SelectItem value="PUT">PUT</SelectItem>
+    //                 </SelectContent>
+    //               </Select>
+    //               <FormDescription>
+    //                 POST recommended for sending referral data
+    //               </FormDescription>
+    //               <FormMessage />
+    //             </FormItem>
+    //           )}
+    //         />
 
-            {error && (
-              <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
-                <AlertTitle>Error</AlertTitle>
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
+    //         {error && (
+    //           <Alert variant="destructive">
+    //             <AlertCircle className="h-4 w-4" />
+    //             <AlertTitle>Error</AlertTitle>
+    //             <AlertDescription>{error}</AlertDescription>
+    //           </Alert>
+    //         )}
 
-            <Button type="submit" disabled={isLoading}>
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Saving...
-                </>
-              ) : (
-                "Activate API Integration"
-              )}
-            </Button>
-          </form>
-        </Form>
+    //         <Button type="submit" disabled={isLoading}>
+    //           {isLoading ? (
+    //             <>
+    //               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+    //               Saving...
+    //             </>
+    //           ) : (
+    //             "Activate API Integration"
+    //           )}
+    //         </Button>
+    //       </form>
+    //     </Form>
 
-        <Separator className="my-6" />
+    //     <Separator className="my-6" />
 
-        <div className="text-sm text-muted-foreground">
-          <h4 className="font-medium mb-2">API Requirements:</h4>
-          <ul className="list-disc pl-5 space-y-1">
-            <li>Your endpoint must accept HTTPS requests</li>
-            <li>For POST/PUT, it should accept JSON payloads</li>
-            <li>Should return 2xx status code for successful requests</li>
-            <li>We'll send referral data in real-time</li>
-          </ul>
-        </div>
+    //     <div className="text-sm text-muted-foreground">
+    //       <h4 className="font-medium mb-2">API Requirements:</h4>
+    //       <ul className="list-disc pl-5 space-y-1">
+    //         <li>Your endpoint must accept HTTPS requests</li>
+    //         <li>For POST/PUT, it should accept JSON payloads</li>
+    //         <li>Should return 2xx status code for successful requests</li>
+    //         <li>We'll send referral data in real-time</li>
+    //       </ul>
+    //     </div>
+    //   </CardContent>
+    // </Card>
+
+     <Card className="max-w-lg mx-auto mt-6">
+      <CardContent className="pt-6 text-center">
+        <h2 className="text-xl font-semibold mb-2">
+          Public APi integration coming soon
+        </h2>
+        <p className="text-muted-foreground mb-6">
+          We're working on adding this integration soon.
+        </p>
+        <Button className="bg-blue-500 hover:bg-blue-600">
+          Notify me when available
+        </Button>
       </CardContent>
     </Card>
   )

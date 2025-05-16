@@ -17,19 +17,27 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { CheckCircle2, AlertCircle, Loader2 } from "lucide-react"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import campaignApi from "@/api/campaignApi"
+import integrationApi from "@/api/integrationApi"
+import { toast } from "react-toastify"
 
 const formSchema = z.object({
   webhookUrl: z.string().url({
     message: "Please enter a valid Make.com webhook URL",
-  }),
+  }).refine(
+    url => url.startsWith("https://hook.eu2.make.com/"),
+    {
+      message: "Must be a Make webhook URL (starts with https://hook.eu2.make.com/)",
+    }
+  ),
 })
 
 export function MakeConfig({ campaignId, onSuccess }) {
   const [isLoading, setIsLoading] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
   const [error, setError] = useState(null)
+  const queryClient = useQueryClient()
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -38,20 +46,10 @@ export function MakeConfig({ campaignId, onSuccess }) {
     },
   })
 
-  const saveMakeMutation = useMutation({
-    mutationFn: (data) => campaignApi.updateCampaign({
-      campaignId,
-      updates: {
-        'integrations.make': {
-          webhookUrl: data.webhookUrl,
-          isActive: true,
-          lastTriggeredAt: null
-        }
-      }
-    }),
-    onSuccess: () => {
+  const saveMakeWebhookUrlMutation = useMutation({
+    mutationFn: integrationApi.saveMakeURL,
+    onSuccess: (data) => {
       setIsSuccess(true)
-      onSuccess?.()
     },
     onError: (err) => {
       setError(err instanceof Error ? err.message : "An unknown error occurred")
@@ -59,9 +57,33 @@ export function MakeConfig({ campaignId, onSuccess }) {
   })
 
   async function onSubmit(values) {
+
     setIsLoading(true)
     setError(null)
-    saveMakeMutation.mutate(values)
+    saveMakeWebhookUrlMutation.mutate({
+      campaignId: campaignId,
+      makeWebhookUrl: values.webhookUrl,
+    })
+  }
+
+  const testMakeWebhookUrlMutation = useMutation({
+    mutationFn: integrationApi.testMakeURL,
+    onSuccess: (data) => {
+      console.log(data, 'Success');
+      toast.success('Make Test Successfull')
+      queryClient.invalidateQueries({
+        queryKey: ['getCampaignById'] 
+      });
+    },
+    onError: (err) => {
+      console.log(err, 'Error')
+    }
+  })
+
+  const handleTestMakeWebhookUrl = () => {
+    testMakeWebhookUrlMutation.mutate({
+      campaignId: campaignId
+    })
   }
 
   if (isSuccess) {
@@ -84,6 +106,7 @@ export function MakeConfig({ campaignId, onSuccess }) {
           <div className="space-y-4">
             <h4 className="font-medium">Next Steps in Make.com:</h4>
             <ol className="list-decimal pl-5 space-y-2">
+              <li><span onClick={() => handleTestMakeWebhookUrl()} className="text-blue-600 hover:text-blue-800 cursor-pointer font-medium underline hover:no-underline transition-colors">Click Here</span> to send test data</li>
               <li>Complete your scenario setup</li>
               <li>Add modules to process the referral data</li>
               <li>Turn on your scenario</li>
