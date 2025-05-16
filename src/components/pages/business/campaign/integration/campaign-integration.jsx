@@ -28,6 +28,8 @@ import { WebhookConfig } from '../integration/webhook-config'
 import { PabblyConfig } from '../integration/pabbly-config'
 import { MakeConfig } from '../integration/make-config'
 import { ApiConfig } from '../integration/api-config'
+import integrationApi from '@/api/integrationApi'
+import { toast } from 'react-toastify'
 
 export default function CampaignIntegration() {
   const { campaignId } = useParams()
@@ -72,8 +74,9 @@ export default function CampaignIntegration() {
   }
 
   const deleteIntegrationMutation = useMutation({
-    mutationFn: (data) => campaignApi.updateCampaign(data),
+    mutationFn: (data) => integrationApi.updateIntegration(data),
     onSuccess: () => {
+      toast.success('Integration deleted')
       getCampaignbyIdMutation.mutate({ campaignId })
       setShowDeleteDialog(false)
     },
@@ -88,6 +91,7 @@ export default function CampaignIntegration() {
       updates: {
         [`integrations.${integrationToDelete}.isActive`]: false,
         [`integrations.${integrationToDelete}.webhookUrl`]: null,
+        [`integrations.${integrationToDelete}.lastTriggeredAt`]: null,
         ...(integrationToDelete === 'zapier' && { 'integrations.zapier.secretKey': null })
       }
     }

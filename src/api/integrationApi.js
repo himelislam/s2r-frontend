@@ -32,8 +32,6 @@ const testZapierURL = async (data) => {
 };
 
 
-
-
 //Save Pabbly Webhook URL
 const savePabblyURL = async (data) => {
     const user = JSON.parse(localStorage.getItem('user'))
@@ -88,13 +86,27 @@ const testMakeURL = async (data) => {
     return response.data;
 };
 
+
+const updateIntegration = async (data) => {
+    const user = JSON.parse(localStorage.getItem('user'))
+
+    const response = await axios.post(API_URL + "/updateIntegration", data, {
+        headers: {
+            Authorization: `Bearer ${user?.token}`
+        }
+    });
+
+    return response.data;
+};
+
 const integrationApi = {
     saveZapierURL,
     testZapierURL,
     savePabblyURL,
     testPabblyURL,
     saveMakeURL,
-    testMakeURL
+    testMakeURL,
+    updateIntegration
 };
 
 export default integrationApi;
