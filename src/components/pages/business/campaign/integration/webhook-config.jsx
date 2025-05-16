@@ -96,87 +96,101 @@ export function WebhookConfig({ campaignId, onSuccess }) {
   }
 
   return (
-    <Card className="max-w-2xl">
-      <CardHeader>
-        <CardTitle>Configure Webhook</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="url"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Webhook URL</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="https://yourdomain.com/webhook"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    The URL where data will be sent
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+    // <Card className="max-w-2xl">
+    //   <CardHeader>
+    //     <CardTitle>Configure Webhook</CardTitle>
+    //   </CardHeader>
+    //   <CardContent>
+    //     <Form {...form}>
+    //       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+    //         <FormField
+    //           control={form.control}
+    //           name="url"
+    //           render={({ field }) => (
+    //             <FormItem>
+    //               <FormLabel>Webhook URL</FormLabel>
+    //               <FormControl>
+    //                 <Input
+    //                   placeholder="https://yourdomain.com/webhook"
+    //                   {...field}
+    //                 />
+    //               </FormControl>
+    //               <FormDescription>
+    //                 The URL where data will be sent
+    //               </FormDescription>
+    //               <FormMessage />
+    //             </FormItem>
+    //           )}
+    //         />
 
-            <FormField
-              control={form.control}
-              name="method"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>HTTP Method</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select HTTP method" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="GET">GET</SelectItem>
-                      <SelectItem value="POST">POST</SelectItem>
-                      <SelectItem value="PUT">PUT</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+    //         <FormField
+    //           control={form.control}
+    //           name="method"
+    //           render={({ field }) => (
+    //             <FormItem>
+    //               <FormLabel>HTTP Method</FormLabel>
+    //               <Select onValueChange={field.onChange} defaultValue={field.value}>
+    //                 <FormControl>
+    //                   <SelectTrigger>
+    //                     <SelectValue placeholder="Select HTTP method" />
+    //                   </SelectTrigger>
+    //                 </FormControl>
+    //                 <SelectContent>
+    //                   <SelectItem value="GET">GET</SelectItem>
+    //                   <SelectItem value="POST">POST</SelectItem>
+    //                   <SelectItem value="PUT">PUT</SelectItem>
+    //                 </SelectContent>
+    //               </Select>
+    //               <FormMessage />
+    //             </FormItem>
+    //           )}
+    //         />
 
-            {error && (
-              <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
-                <AlertTitle>Error</AlertTitle>
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
+    //         {error && (
+    //           <Alert variant="destructive">
+    //             <AlertCircle className="h-4 w-4" />
+    //             <AlertTitle>Error</AlertTitle>
+    //             <AlertDescription>{error}</AlertDescription>
+    //           </Alert>
+    //         )}
 
-            <Button type="submit" disabled={isLoading}>
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Saving...
-                </>
-              ) : (
-                "Connect Webhook"
-              )}
-            </Button>
-          </form>
-        </Form>
+    //         <Button type="submit" disabled={isLoading}>
+    //           {isLoading ? (
+    //             <>
+    //               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+    //               Saving...
+    //             </>
+    //           ) : (
+    //             "Connect Webhook"
+    //           )}
+    //         </Button>
+    //       </form>
+    //     </Form>
 
-        <Separator className="my-6" />
+    //     <Separator className="my-6" />
 
-        <div className="text-sm text-muted-foreground">
-          <h4 className="font-medium mb-2">Webhook Information:</h4>
-          <ul className="list-disc pl-5 space-y-1">
-            <li>POST method will send data as JSON in the request body</li>
-            <li>GET method will append data as query parameters</li>
-            <li>We'll send referral data in real-time when configured</li>
-          </ul>
-        </div>
+    //     <div className="text-sm text-muted-foreground">
+    //       <h4 className="font-medium mb-2">Webhook Information:</h4>
+    //       <ul className="list-disc pl-5 space-y-1">
+    //         <li>POST method will send data as JSON in the request body</li>
+    //         <li>GET method will append data as query parameters</li>
+    //         <li>We'll send referral data in real-time when configured</li>
+    //       </ul>
+    //     </div>
+    //   </CardContent>
+    // </Card>
+
+    <Card className="max-w-lg mx-auto mt-6">
+      <CardContent className="pt-6 text-center">
+        <h2 className="text-xl font-semibold mb-2">
+          Webhook integration coming soon
+        </h2>
+        <p className="text-muted-foreground mb-6">
+          We're working on adding this integration soon.
+        </p>
+        <Button className="bg-blue-500 hover:bg-blue-600">
+          Notify me when available
+        </Button>
       </CardContent>
     </Card>
   )

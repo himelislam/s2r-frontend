@@ -32,8 +32,6 @@ const testZapierURL = async (data) => {
 };
 
 
-
-
 //Save Pabbly Webhook URL
 const savePabblyURL = async (data) => {
     const user = JSON.parse(localStorage.getItem('user'))
@@ -60,11 +58,55 @@ const testPabblyURL = async (data) => {
     return response.data;
 };
 
+
+
+//Save Make Webhook URL
+const saveMakeURL = async (data) => {
+    const user = JSON.parse(localStorage.getItem('user'))
+
+    const response = await axios.post(API_URL + "/saveMakeURL", data, {
+        headers: {
+            Authorization: `Bearer ${user?.token}`
+        }
+    });
+
+    return response.data;
+};
+
+//Test Make Webhook URL
+const testMakeURL = async (data) => {
+    const user = JSON.parse(localStorage.getItem('user'))
+
+    const response = await axios.post(API_URL + "/testMakeURL", data, {
+        headers: {
+            Authorization: `Bearer ${user?.token}`
+        }
+    });
+
+    return response.data;
+};
+
+
+const updateIntegration = async (data) => {
+    const user = JSON.parse(localStorage.getItem('user'))
+
+    const response = await axios.post(API_URL + "/updateIntegration", data, {
+        headers: {
+            Authorization: `Bearer ${user?.token}`
+        }
+    });
+
+    return response.data;
+};
+
 const integrationApi = {
     saveZapierURL,
     testZapierURL,
     savePabblyURL,
-    testPabblyURL
+    testPabblyURL,
+    saveMakeURL,
+    testMakeURL,
+    updateIntegration
 };
 
 export default integrationApi;
