@@ -70,6 +70,7 @@ export function NavMain({
             </Link>
           // </Collapsible>
         ))}
+        <button className="fixed left-3 top-3/4 -translate-y-1/2 -rotate-90 origin-left bg-blue-600 text-white px-3 py-2 rounded-tr-md rounded-tl-md shadow-md hover:bg-blue-700 transition-all" data-tally-open="mZyJ0A" data-tally-layout="modal" data-tally-width="600" data-tally-emoji-text="👋" data-tally-emoji-animation="wave">Feedback</button>
       </SidebarMenu>
     </SidebarGroup>
   )
