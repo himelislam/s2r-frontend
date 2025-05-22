@@ -38,6 +38,7 @@ import CampaignIntegration from "./components/pages/business/campaign/integratio
 import CampaignSettings from "./components/pages/business/campaign/settings/campaign-settings";
 import CampaignReward from "./components/pages/business/campaign/reward/campaign-reward";
 import CampaignPromotes from "./components/pages/business/campaign/promotes/campaign-promotes";
+import PaymentSuccess from "./components/pages/business/payment-success";
 
 
 
@@ -46,16 +47,16 @@ export const appRoutes = createBrowserRouter([
     {
         path: '/',
         element: <App />,
-        errorElement: <Errorpage/>, // Error page
+        errorElement: <Errorpage />, // Error page
         children: [
-            {   
+            {
                 path: '/',
-                element: <AuthLayout/>,
-                errorElement: <Errorpage/>,
+                element: <AuthLayout />,
+                errorElement: <Errorpage />,
                 children: [
                     {
                         path: 'login',
-                        element: <Login/>
+                        element: <Login />
                     },
                     {
                         path: 'signup',
@@ -63,18 +64,18 @@ export const appRoutes = createBrowserRouter([
                     },
                     {
                         path: 'forget-password',
-                        element: <ForgetPassword/>
+                        element: <ForgetPassword />
                     }
                 ]
             },
             {
                 path: 'reset-password/:token',
-                element: <ResetPassword/>
+                element: <ResetPassword />
             },
             {
                 path: '/b/dashboard',
                 element: <PrivateRoute allowedRoles={['owner']} />,
-                errorElement: <Errorpage/>,
+                errorElement: <Errorpage />,
                 children: [
                     {
                         path: '',
@@ -82,69 +83,73 @@ export const appRoutes = createBrowserRouter([
                         children: [
                             {
                                 index: true,
-                                element: <BusinessOverview/>
+                                element: <BusinessOverview />
                             },
                             {
                                 path: 'referrers',
-                                element: <Referrers/>
+                                element: <Referrers />
                             },
                             {
                                 path: 'referees',
-                                element: <BusinessReferees/>
+                                element: <BusinessReferees />
                             },
                             {
                                 path: 'payouts',
-                                element: <Payouts/>
+                                element: <Payouts />
                             },
                             {
                                 path: 'qr-codes',
-                                element: <BusinessQrCodes/>
+                                element: <BusinessQrCodes />
                             },
                             {
                                 path: 'campaign-portal',
-                                element: <BusinessCampaigns/>,
-                                children:[
+                                element: <BusinessCampaigns />,
+                                children: [
                                     {
                                         index: true,
-                                        element: <CampaignPortal/>
+                                        element: <CampaignPortal />
                                     },
                                     {
                                         path: 'builder/:campaignId',
-                                        element: <CampaignBuilder/>
+                                        element: <CampaignBuilder />
                                     },
                                     {
                                         path: 'reward/:campaignId',
-                                        element: <CampaignReward/>
+                                        element: <CampaignReward />
                                     },
                                     {
                                         path: 'settings/:campaignId',
-                                        element: <CampaignSettings/>
+                                        element: <CampaignSettings />
                                     },
                                     {
                                         path: 'email-builder/:campaignId',
-                                        element: <EmailBuilder/>
+                                        element: <EmailBuilder />
                                     },
                                     {
                                         path: 'integration/:campaignId',
-                                        element: <CampaignIntegration/>
+                                        element: <CampaignIntegration />
                                     },
                                     {
                                         path: 'promotes/:campaignId',
-                                        element: <CampaignPromotes/>
+                                        element: <CampaignPromotes />
                                     }
                                 ]
                             },
                             {
                                 path: 'invite-referrer',
-                                element: <InviteReferrer/>
+                                element: <InviteReferrer />
                             },
                             {
                                 path: 'add-referrer',
-                                element: <AddReferrer/>
+                                element: <AddReferrer />
                             },
                             {
                                 path: 'account-settings',
-                                element: <BusinessAccountSettings/>
+                                element: <BusinessAccountSettings />
+                            },
+                            {
+                                path: 'payment-success',
+                                element: <PaymentSuccess />,
                             }
                         ]
                     },
@@ -153,31 +158,31 @@ export const appRoutes = createBrowserRouter([
             {
                 path: '/r/dashboard',
                 element: <PrivateRoute allowedRoles={['referrer']} />,
-                errorElement: <Errorpage/>,
+                errorElement: <Errorpage />,
                 children: [
                     {
                         path: '',
                         element: <ReferrerDashboard />, // Dashboard for referrers
-                        children : [
+                        children: [
                             {
                                 index: true,
-                                element: <ReferrerOverview/>
+                                element: <ReferrerOverview />
                             },
                             {
                                 path: 'referees',
-                                element: <ReferrerReferees/>
+                                element: <ReferrerReferees />
                             },
                             {
                                 path: 'rewards',
-                                element: <Rewards/>
+                                element: <Rewards />
                             },
                             {
                                 path: 'campaigns',
-                                element: <Campaigns/>
+                                element: <Campaigns />
                             },
                             {
                                 path: 'account-settings',
-                                element: <ReferrerAccountSettings/>
+                                element: <ReferrerAccountSettings />
                             }
                         ]
                     },
@@ -199,22 +204,22 @@ export const appRoutes = createBrowserRouter([
     },
     {
         path: 'qr/:businessId/:campaignId/:qrId',
-        element: <RefereeForm/>
+        element: <RefereeForm />
     },
     {
         path: 'referrer-signup/:businessId/:campaignId/:email?/:name?',
-        element: <ReferrerSignup/>
+        element: <ReferrerSignup />
     },
     {
         path: 'referrer-invitation-setup/:businessId/:campaignId/:email/:name',
-        element: <ReferrerInvitationSetup/>
+        element: <ReferrerInvitationSetup />
     },
     {
         path: 'referee-list/:refereerId',
-        element: <RefereeList/>
+        element: <RefereeList />
     },
     {
         path: 'referrer-setup-pass/:businessId/:referrerId/:email',
-        element: <ReferrerSetupPass/>
+        element: <ReferrerSetupPass />
     }
 ]);
