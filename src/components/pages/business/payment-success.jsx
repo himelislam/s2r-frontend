@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { CheckCircle } from 'lucide-react';
-import Spinner from '@/components/Spinner';
 import { toast } from 'react-toastify';
 import paymentApi from '@/api/paymentApi';
+import Spinner from '@/components/spinner';
 
 export default function PaymentSuccess() {
   const navigate = useNavigate();
