@@ -3,7 +3,6 @@ import { loadStripe } from '@stripe/stripe-js';
 import { CreditCard, Loader2, Check, ArrowUpRight } from 'lucide-react';
 import paymentApi from '@/api/paymentApi';
 import { useQuery } from '@tanstack/react-query';
-import Spinner from '@/components/Spinner';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -14,6 +13,7 @@ import { Progress } from '@/components/ui/progress';
 import businessApi from '@/api/businessApi';
 import { Badge } from '@/components/ui/badge';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import Spinner from '@/components/spinner';
 
 export default function BusinessSettingsBilling() {
   const [plans, setPlans] = useState([]);

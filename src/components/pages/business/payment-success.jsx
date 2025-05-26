@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { CheckCircle } from 'lucide-react';
 import { toast } from 'react-toastify';
 import paymentApi from '@/api/paymentApi';
+import Spinner from '@/components/spinner';
 
 export default function PaymentSuccess() {
   const navigate = useNavigate();
@@ -48,6 +49,7 @@ export default function PaymentSuccess() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
+        <Spinner/>
         <p className="ml-2">Processing your payment...</p>
       </div>
     );
