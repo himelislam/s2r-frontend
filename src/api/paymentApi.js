@@ -38,7 +38,8 @@ const createCheckoutSession = async (data) => {
 
 const handlePaymentSuccess = async (sessionId) => {
      const user = JSON.parse(localStorage.getItem('user'))
-    const response = await axios.get(`${API_URL}/success?session_id=${sessionId}`, {
+     
+    const response = await axios.post(`${API_URL}/success?session_id=${sessionId}`,"", {
         headers: {
             Authorization: `Bearer ${user?.token}`
         }
