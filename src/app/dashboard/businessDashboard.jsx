@@ -16,7 +16,7 @@ export default function BusinessDashboard() {
   const user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null;
   const { businessState, dispatch } = useBusiness();
 
-  const {data: business =[], isLoading, isSuccess} = useQuery({
+  const { data: business = [], isLoading, isSuccess } = useQuery({
     queryKey: ['getBusinessById', user?.userId],
     queryFn: () => businessApi.getBusinessById(user?.userId),
     enabled: !!user?.userId
@@ -29,9 +29,9 @@ export default function BusinessDashboard() {
     }
   }, [isSuccess, business]);
 
-if(isLoading){
-  return <Loader/>
-}
+  if (isLoading) {
+    return <Loader />
+  }
 
   return (
     <SidebarProvider>
@@ -50,7 +50,7 @@ if(isLoading){
             <div className="aspect-video rounded-xl bg-muted/50" />
           </div>
           <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" /> */}
-          <Outlet/>
+          <Outlet />
         </div>
       </SidebarInset>
     </SidebarProvider>
