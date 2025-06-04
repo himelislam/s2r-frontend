@@ -148,8 +148,9 @@ export default function BusinessSettingsBilling() {
     setIsCanceling(true);
     try {
       const response = await paymentApi.cancelSubscription({
-        subscriptionId: subscription.stripeSubscriptionId
-      });
+        businessId: business._id,
+        cancelAtPeriodEnd: subscription.cancelAtPeriodEnd
+      })
       
       if (response?.subscription) {
         setSubscription(response.subscription);
