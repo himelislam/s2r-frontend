@@ -176,7 +176,8 @@ export default function BusinessReferees() {
                   <TableHead className="text-gray-600 font-medium py-3">Name</TableHead>
                   <TableHead className="text-gray-600 font-medium py-3">Phone</TableHead>
                   <TableHead className="text-gray-600 font-medium py-3">Status</TableHead>
-                  <TableHead className="text-right text-gray-600 font-medium py-3">Actions</TableHead>
+                  <TableHead className="text-gray-600 font-medium py-3">QR Id</TableHead>
+                  {/* <TableHead className="text-right text-gray-600 font-medium py-3">Actions</TableHead> */}
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -192,7 +193,8 @@ export default function BusinessReferees() {
                     <TableCell className="py-3">
                       <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded-md text-sm">{referrer?.campaignStatus ? 'Active' : 'Disabled'}</span>
                     </TableCell>
-                    <TableCell className="py-3 text-right">
+                    <TableCell className="py-3">{referrer?.qrCodeId}</TableCell>
+                    {/* <TableCell className="py-3 text-right">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
@@ -206,7 +208,7 @@ export default function BusinessReferees() {
                           <DropdownMenuItem onClick={()=> handleUpdateRefereeStatus(referrer._id, 'Cancel')} className="text-red-500">Cancel</DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
-                    </TableCell>
+                    </TableCell> */}
                   </TableRow>
                 ))}
               </TableBody>
