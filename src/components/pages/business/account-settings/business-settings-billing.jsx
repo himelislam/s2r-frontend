@@ -238,7 +238,7 @@ export default function BusinessSettingsBilling() {
                   </div>
                   <p className="text-sm text-muted-foreground">
                     {subscription?.plan
-                      ? `${formatPrice(subscription.plan.price)}/${
+                      ? `${formatPrice(subscription?.plan?.price)}/${
                           subscription.plan.type === 'lifetime'
                             ? 'one-time'
                             : subscription.plan.type
@@ -272,7 +272,7 @@ export default function BusinessSettingsBilling() {
           </div>
 
           {/* Usage Section */}
-          <div className="space-y-4">
+          {/* <div className="space-y-4">
             <Label>Usage</Label>
             <div className="space-y-4">
               {subscription?.plan?.limits && Object.entries(subscription.plan.limits).map(([feature, limit]) => {
@@ -295,12 +295,12 @@ export default function BusinessSettingsBilling() {
                 );
               })}
             </div>
-          </div>
+          </div> */}
 
           <Separator />
 
           {/* Upgrade Section */}
-          {plans.length > 0 && (
+          {/* {plans.length > 0 && (
             <div className="space-y-6">
               <div className="flex flex-col space-y-2">
                 <Label>Upgrade Plan</Label>
@@ -398,7 +398,7 @@ export default function BusinessSettingsBilling() {
                 })}
               </div>
             </div>
-          )}
+          )} */}
 
           <Separator />
 
