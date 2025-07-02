@@ -47,9 +47,9 @@ const handlePaymentSuccess = async (sessionId) => {
     return response.data;
 };
 
-const cancelSubscription = async () => {
+const cancelSubscription = async (data) => {
      const user = JSON.parse(localStorage.getItem('user'))
-    const response = await axios.post(`${API_URL}/cancel-subscription`, {}, {
+    const response = await axios.post(`${API_URL}/cancel-subscription`, data, {
         headers: {
             Authorization: `Bearer ${user?.token}`
         }
