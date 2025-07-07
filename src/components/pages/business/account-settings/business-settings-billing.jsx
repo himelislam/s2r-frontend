@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
-import { CreditCard, Loader2, Check, ArrowUpRight } from 'lucide-react';
+import { CreditCard, Loader2, Check, ArrowUpRight, Gift } from 'lucide-react';
 import paymentApi from '@/api/paymentApi';
 import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -129,7 +129,7 @@ export default function BusinessSettingsBilling() {
         businessId: business._id,
         planId: planId
       });
-      
+
       if (response?.sessionId) {
         const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
         await stripe.redirectToCheckout({ sessionId: response.sessionId });
@@ -144,14 +144,14 @@ export default function BusinessSettingsBilling() {
 
   const handleCancelSubscription = async () => {
     if (!subscription?.stripeSubscriptionId) return;
-    
+
     setIsCanceling(true);
     try {
       const response = await paymentApi.cancelSubscription({
         businessId: business._id,
         cancelAtPeriodEnd: subscription.cancelAtPeriodEnd
       })
-      
+
       if (response?.subscription) {
         setSubscription(response.subscription);
         toast.success('Your subscription has been canceled');
@@ -238,11 +238,10 @@ export default function BusinessSettingsBilling() {
                   </div>
                   <p className="text-sm text-muted-foreground">
                     {subscription?.plan
-                      ? `${formatPrice(subscription?.plan?.price)}/${
-                          subscription.plan.type === 'lifetime'
-                            ? 'one-time'
-                            : subscription.plan.type
-                        }`
+                      ? `${formatPrice(subscription?.plan?.price)}/${subscription.plan.type === 'lifetime'
+                        ? 'one-time'
+                        : subscription.plan.type
+                      }`
                       : 'Basic features with limited access'}
                   </p>
                 </div>
@@ -298,6 +297,8 @@ export default function BusinessSettingsBilling() {
           </div> */}
 
           <Separator />
+
+
 
           {/* Upgrade Section */}
           {/* {plans.length > 0 && (
@@ -401,6 +402,26 @@ export default function BusinessSettingsBilling() {
           )} */}
 
           <Separator />
+
+          <div className="space-y-4">
+            <Label>Paid Plan</Label>
+            <div className="rounded-lg border p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <Gift className="h-6 w-6" /> {/* Using a gift icon for free trial */}
+                  <div>
+                    <p className="font-medium">Upgrade (Coming Soon)</p>
+                    <p className="text-sm text-muted-foreground">
+                      Paid plans are coming soon! Enjoy our free trial with no restrictions.
+                    </p>
+                  </div>
+                </div>
+                <Button variant="outline" disabled>
+                  Upgrade (Coming Soon)
+                </Button>
+              </div>
+            </div>
+          </div>
 
           {/* Payment Method Section */}
           <div className="space-y-4">
