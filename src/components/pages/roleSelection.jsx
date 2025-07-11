@@ -22,20 +22,20 @@ export function RoleSelection() {
   return (
     <div className="flex h-screen w-full items-center justify-center px-4">
     <Card className="mx-auto max-w-5xl px-32 py-12">
-      <CardTitle className="text-2xl text-center">Choose Your Role</CardTitle>
+      <CardTitle className="text-2xl text-center">Welcome! Let’s get to know you better. <br /> How will you be using the platform?</CardTitle>
       <CardContent className="flex flex-col items-center space-y-4 mt-6">
         <Button 
           className="w-full py-2" 
           onClick={() => handleRoleSelection("business")}
         >
-          I am a Business
+          Business Owner
         </Button>
         <Button 
           className="w-full py-2" 
           onClick={() => handleRoleSelection("referrer")}
           variant="outline"
         >
-          I am a Referrer
+          Invited by a Owner as a Referrer
         </Button>
       </CardContent>
     </Card>

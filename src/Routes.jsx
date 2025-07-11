@@ -39,6 +39,7 @@ import CampaignSettings from "./components/pages/business/campaign/settings/camp
 import CampaignReward from "./components/pages/business/campaign/reward/campaign-reward";
 import CampaignPromotes from "./components/pages/business/campaign/promotes/campaign-promotes";
 import PaymentSuccess from "./components/pages/business/payment-success";
+import OnboardingForm from "./components/pages/onboarding-form";
 
 
 
@@ -201,6 +202,10 @@ export const appRoutes = createBrowserRouter([
     {
         path: 'referrer-setup',
         element: <ReferrerSetup />
+    },
+    {
+        path: 'welcome',
+        element: <OnboardingForm/>
     },
     {
         path: 'qr/:businessId/:campaignId/:qrId',

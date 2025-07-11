@@ -43,7 +43,7 @@ export function BusinessSetup() {
       //     userId: data?._id
       //   }
       // })
-      navigate('/b/dashboard')
+      navigate('/welcome')
     },
     onError: (err) => {
       console.error('Cant sign up as a Busiess', err?.message);
