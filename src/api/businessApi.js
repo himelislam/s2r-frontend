@@ -116,6 +116,18 @@ const uploadImage = async (data) => {
     return response.data;
 }
 
+const createOnboardingData = async(data) =>{
+    const user = JSON.parse(localStorage.getItem('user'))
+
+    const response = await axios.post(API_URL + '/onboarding', data, {
+        headers: {
+            Authorization: `Bearer ${user?.token}`
+        }
+    })
+
+    return response.data;
+}
+
 const businessApi = {
     createBusiness,
     addReferrer,
@@ -125,7 +137,8 @@ const businessApi = {
     inviteReferrer,
     updateProfile,
     updateBusinessProfile,
-    uploadImage
+    uploadImage,
+    createOnboardingData
 };
 
 export default businessApi;
