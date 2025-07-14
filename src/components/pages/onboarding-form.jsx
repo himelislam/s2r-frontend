@@ -113,7 +113,7 @@ export default function OnboardingForm() {
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+      <div className="min-h-screen flex items-center justify-center p-4">
         <Card className="w-full max-w-md mx-auto shadow-lg border-0 bg-white/80 backdrop-blur-sm">
           <CardContent className="pt-8 pb-8 text-center">
             <div className="mb-6">
@@ -134,7 +134,7 @@ export default function OnboardingForm() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+    <div className="min-h-screen  flex items-center justify-center p-4">
       <Card className="w-full max-w-md mx-auto shadow-lg border-0 bg-white/80 backdrop-blur-sm transition-all duration-300 ease-in-out">
         <CardHeader className="text-center pb-4">
           <div className="flex justify-center mb-4">
