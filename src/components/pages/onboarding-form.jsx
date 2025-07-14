@@ -99,7 +99,7 @@ export default function OnboardingForm() {
   const getStepDescription = () => {
     switch (currentStep) {
       case 0:
-        return "Help us understand what type of business you're running"
+        return "Help us to understand the type of business you're running or want to establish"
       case 1:
         return "We'd love to know how you discovered our platform"
       case 2:
