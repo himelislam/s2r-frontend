@@ -12,7 +12,7 @@ import { useMutation } from "@tanstack/react-query"
 import businessApi from "@/api/businessApi"
 import { useNavigate } from "react-router-dom"
 
-const businessTypeOptions = ["E-commerce", "Service-based", "SaaS", "Agency", "Personal brand", "Other"]
+const businessTypeOptions = ["E-commerce", "Service-based", "SaaS (Software as a service)", "Agency", "Personal brand", "Other"]
 
 const hearAboutUsOptions = ["Google", "YouTube", "Friend or colleague", "Social Media", "Newsletter", "Other"]
 
