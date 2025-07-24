@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import authApi from "@/api/authApi";
 import { toast } from "react-toastify";
+import InfoSidebar from "./Infosidebar";
 
 export default function ForgetPassword() {
     const [email, setEmail] = useState('');
@@ -31,6 +32,7 @@ export default function ForgetPassword() {
     }
     return (
         <div className="flex min-h-screen items-center justify-center">
+            <InfoSidebar/>
             <div className="mx-auto w-full max-w-sm space-y-4 rounded-lg bg-white p-6 shadow-lg dark:bg-gray-900">
                 <div className="space-y-2">
                     <h1 className="text-2xl font-bold">Forgot Password</h1>
@@ -54,7 +56,7 @@ export default function ForgetPassword() {
                 </form>
                 <div className="text-center text-sm text-gray-500 dark:text-gray-400">
                     Remember your password?{" "}
-                    <Link to="/login" className="font-medium underline" prefetch={false}>
+                    <Link to="/auth/login" className="font-medium underline" prefetch={false}>
                         Login
                     </Link>
                 </div>

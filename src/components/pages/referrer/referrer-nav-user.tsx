@@ -53,7 +53,7 @@ export function ReferrerNavUser({
     mutationFn: authApi.logout,
     onSuccess: (data) => {
       console.log('loged out', data);
-      navigate('/login')
+      navigate('/auth/login')
     },
     onError: (err) => {
       console.log('unable to signout', err);

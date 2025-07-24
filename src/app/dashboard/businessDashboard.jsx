@@ -10,11 +10,14 @@ import {
 import useBusiness from "@/hooks/useBusiness";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { Outlet } from "react-router-dom"
+import { Outlet, useNavigate } from "react-router-dom"
 
 export default function BusinessDashboard() {
   const user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null;
   const { businessState, dispatch } = useBusiness();
+
+   const navigate = useNavigate();
+  const skipType = user?.skipType;
 
   const { data: business = [], isLoading, isSuccess } = useQuery({
     queryKey: ['getBusinessById', user?.userId],
@@ -36,6 +39,15 @@ export default function BusinessDashboard() {
   return (
     <SidebarProvider>
       <BusinessAppSidebar business={business} />
+      {skipType === "later" && (
+        <button
+          onClick={() => navigate("/welcome")}
+          className="fixed left-0 bottom-[100px] z-50 bg-blue-600 text-white text-xs px-2 py-1 origin-bottom-left hover:bg-blue-700"
+        >
+          Complete Onboarding
+        </button>
+      )}
+
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2 px-4">

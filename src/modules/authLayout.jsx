@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 export default function AuthLayout() {
     const navigate = useNavigate();
+    const location = useLocation();
 
     const sessionCurrentUser = JSON.parse(sessionStorage.getItem('user'));
     const localCurrentUser = JSON.parse(localStorage.getItem('user'));
@@ -25,10 +26,13 @@ export default function AuthLayout() {
                 toast.error('Please select a role to login')
             }
         } else {
-            console.log('Redirecting to login...');
-            navigate('/login');
+            // Only redirect to login if not already on an auth page
+            if (!location.pathname.startsWith('/auth/')) {
+                console.log('Redirecting to login...');
+                navigate('/auth/login');
+            }
         }
-    }, [isLoggedIn, currentUser, navigate]);
+    }, [isLoggedIn, currentUser, navigate, location.pathname]);
 
     // Render nothing while redirecting
     if (isLoggedIn) {

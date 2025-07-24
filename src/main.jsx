@@ -10,23 +10,31 @@ import { UserProvider } from './context/usercontext'
 import { BusinessProvider } from './context/business/BusinessContext'
 import { ReferrerProvider } from './context/referrer/ReferrerContext'
 import { ThemeProvider } from './components/theme-provider'
+import { PlanProvider } from './context/planContext'
 
-
-const queryClient = new QueryClient()
-
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+})
 
 createRoot(document.getElementById('root')).render(
   <QueryClientProvider client={queryClient}>
     <StrictMode>
       <ThemeProvider>
-      <UserProvider>
-        <BusinessProvider>
-          <ReferrerProvider>
-            <RouterProvider router={appRoutes} />
-            <ToastContainer />
-          </ReferrerProvider>
-        </BusinessProvider>
-      </UserProvider>
+        <UserProvider>
+          <PlanProvider>
+            <BusinessProvider>
+              <ReferrerProvider>
+                <RouterProvider router={appRoutes} />
+                <ToastContainer />
+              </ReferrerProvider>
+            </BusinessProvider>
+          </PlanProvider>
+        </UserProvider>
       </ThemeProvider>
     </StrictMode>
   </QueryClientProvider>,

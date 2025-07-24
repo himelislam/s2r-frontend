@@ -56,7 +56,7 @@ export default function ResetPassword() {
                 </form>
                 <div className="text-center text-sm text-gray-500 dark:text-gray-400">
                     Remember your password?{" "}
-                    <Link to="/login" className="font-medium underline" prefetch={false}>
+                    <Link to="/auth/login" className="font-medium underline" prefetch={false}>
                         Login
                     </Link>
                 </div>

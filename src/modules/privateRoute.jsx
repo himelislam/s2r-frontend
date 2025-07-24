@@ -16,7 +16,7 @@ export default function PrivateRoute({ allowedRoles }) {
             draggable: true,
             progress: undefined,
         })
-        return <Navigate to="/login" state={{ from: location }}/>;
+        return <Navigate to="/auth/login" state={{ from: location }}/>;
     }
 
     const token = localCurrentUser.token;
@@ -34,7 +34,7 @@ export default function PrivateRoute({ allowedRoles }) {
             progress: undefined,
         });
         localStorage.removeItem('user');
-        return <Navigate to="/login" state={{ from: location }}/>;
+        return <Navigate to="/auth/login" state={{ from: location }}/>;
     }
 
     // Check if the user's role is allowed

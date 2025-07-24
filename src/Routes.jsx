@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import Login from "./components/pages/login";
 import Signup from "./components/pages/signup";
+import Home from "./components/pages/home";
 import BusinessOverview from "./components/pages/business/businessOverview";
 import Referrers from "./components/pages/business/referrers";
 import RoleSelection from "./components/pages/roleSelection";
@@ -41,17 +42,18 @@ import CampaignPromotes from "./components/pages/business/campaign/promotes/camp
 import PaymentSuccess from "./components/pages/business/payment-success";
 import OnboardingForm from "./components/pages/onboarding-form";
 
-
-
-
 export const appRoutes = createBrowserRouter([
     {
         path: '/',
         element: <App />,
-        errorElement: <Errorpage />, // Error page
+        errorElement: <Errorpage />,
         children: [
             {
-                path: '/',
+                index: true,
+                element: <Home />
+            },
+            {
+                path: 'auth',
                 element: <AuthLayout />,
                 errorElement: <Errorpage />,
                 children: [
@@ -80,7 +82,7 @@ export const appRoutes = createBrowserRouter([
                 children: [
                     {
                         path: '',
-                        element: <BusinessDashboard />, // Dashboard for owners
+                        element: <BusinessDashboard />,
                         children: [
                             {
                                 index: true,
@@ -163,7 +165,7 @@ export const appRoutes = createBrowserRouter([
                 children: [
                     {
                         path: '',
-                        element: <ReferrerDashboard />, // Dashboard for referrers
+                        element: <ReferrerDashboard />,
                         children: [
                             {
                                 index: true,
